@@ -47,7 +47,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/netlify-files',
-    // '@nuxtjs/robots',
+    '@nuxtjs/robots',
     // '@nuxtjs/sitemap',
   ],
   // sitemap:{
