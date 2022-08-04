@@ -46,8 +46,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
+    // '@nuxtjs/sitemap',
+    // '@nuxtjs/robots',
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
