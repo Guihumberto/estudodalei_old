@@ -6,14 +6,14 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="red lighten-2"
+          color="primary lighten-2"
           dark
           v-bind="attrs"
           v-on="on"
           x-small
           outlined
         >
-        <v-icon small>mdi-scale-balance</v-icon>
+        <v-icon small>mdi-gavel</v-icon>
        
         </v-btn>
       </template>

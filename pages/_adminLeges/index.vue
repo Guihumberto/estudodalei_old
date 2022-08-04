@@ -15,21 +15,24 @@
                 {{law[3]}} - {{law[4]}}
             </v-card-title>
         </v-card>
-        <v-card v-if="textLaw[0]">
+        <v-card v-if="textLaw[0]" outlined>
             <v-card-text>
                 <v-list>
-                    <v-list-item v-for="item, index in textLaw" :key="index">
+                    <v-list-item v-for="item, index in textLaw.slice(0, showMore)" :key="index">
                         <v-list-item-content>
                             <!-- <v-list-item-subtitle>{{index}}</v-list-item-subtitle> -->
                             <p>{{item.textLaw}}</p>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <div d-flex>
+                            <div class="d-flex">
                                 <link-sumula :dispositivo="item" :law="law" :index="index" />
+                                <link-juris class="mx-1" :dispositivo="item" :law="law" :index="index" />
+                                <link-questions :dispositivo="item" :law="law" :index="index" />
                             </div>
                         </v-list-item-action>
                     </v-list-item>
                 </v-list>
+                <v-btn block color="primary" outlined @click="showMore += 50">mostrar mais</v-btn>
             </v-card-text>
         </v-card>
         <!-- loading -->
@@ -49,13 +52,16 @@
 <script>
     import { mapActions } from 'vuex'
     import linkSumula from '../../components/adm/forms/linkSumula.vue'
+    import linkJuris from '../../components/adm/forms/linkJuris.vue'
+    import linkQuestions from '../../components/adm/forms/linkQuestoes.vue'
     export default {
-  components: { linkSumula },
+        components: { linkSumula, linkJuris, linkQuestions },
         data(){
             return{
                 id: this.$route.query.id,
                 title: this.$route.params.law,
-                search: ''
+                search: '',
+                showMore: 50,
             }
         },
         computed:{
