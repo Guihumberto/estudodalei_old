@@ -24,6 +24,7 @@
     "webpack": "^4.46.0"
   },
   "devDependencies": {
+    "@nuxtjs/netlify-files": "^1.2.0",
     "@nuxtjs/vuetify": "^1.12.3"
   }
 }
