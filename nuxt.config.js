@@ -48,11 +48,11 @@ export default {
   modules: [
     '@nuxtjs/netlify-files',
     '@nuxtjs/robots',
-    // '@nuxtjs/sitemap',
+    '@nuxtjs/sitemap',
   ],
-  // sitemap:{
-  //   hostname: 'https://www.estudodalei.com.br/',
-  // },
+  sitemap:{
+    hostname: 'https://www.estudodalei.com.br/',
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
