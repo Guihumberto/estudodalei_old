@@ -47,11 +47,11 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/robots',
-    '@nuxtjs/sitemap',
+    // '@nuxtjs/sitemap',
   ],
-  sitemap:{
-    hostname: 'https://www.estudodalei.com.br/',
-  },
+  // sitemap:{
+  //   hostname: 'https://www.estudodalei.com.br/',
+  // },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
