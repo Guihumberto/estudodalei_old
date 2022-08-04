@@ -10,6 +10,8 @@
     <v-app-bar app flat>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
     </v-app-bar>
     <v-main>
        <nuxt />

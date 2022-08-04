@@ -46,6 +46,10 @@
                 <v-alert>
                     <p class="formatText font-italic">"Nós acreditamos que um uma boa preparação em prova de concurso público necessariamente passa pelo estudo da lei seca,
                      em algum momento você irá fazer o estudo da lei e irá precisar de uma boa ferramenta de apoio"</p> 
+                     <v-subheader>
+                        <v-spacer></v-spacer>
+                        João Humberto
+                     </v-subheader>
                      <p class="formatText mt-2 font-weight-light">entre 70% a 80% de uma prova de concurso é composta por questionamentos diretos acerca das disposições legais.</p>
                 </v-alert>
             </v-card-text>
