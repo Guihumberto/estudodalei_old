@@ -2,7 +2,7 @@
     <v-container class="mt-5" style="max-width: 1080px">
         <h1 class="text-h4">Login</h1>
         <v-card class="mt-5" outlined>
-            <v-card-title>em construção</v-card-title>
+            <v-card-title>em construção... <v-icon>mdi-hammer-wrench</v-icon></v-card-title>
             <v-card-text>
                 <p>Dê uma conferida no que vem por ai</p>
                 <v-card
@@ -52,6 +52,28 @@
                      </v-subheader>
                      <p class="formatText mt-2 font-weight-light">entre 70% a 80% de uma prova de concurso é composta por questionamentos diretos acerca das disposições legais.</p>
                 </v-alert>
+            </v-card-text>
+            <v-card-text>
+                <v-card outlined>
+                    <v-card-text>
+                        <div class="text-center">
+                            <v-avatar 
+                                size="108"
+                                color="red" class="mb-5">
+                                <span class="white--text text-h5">JH</span>
+                            </v-avatar> <br>
+                            <span class="font-weight-medium">João Humberto Silva Ribeiro Júnior </span> <br>
+                            Idealizador e desenvolvedor do Estudo da Lei - Leges <br>
+                            www.estudodalei.com.br <br>
+                            <p class="mt-5 formatText">
+                                Servidor Público há 12 anos, atualmente é Auditor Fiscal da Fazenda Estadual, 
+                                mas já passou pelo Tribunal de Contas, Fazenda Municipal e outros órgãos e autarquias da esfera Municipal, Estadual e Federal.
+                            </p>
+                        </div>
+
+                    </v-card-text>
+                </v-card>
+
             </v-card-text>
         </v-card>
     </v-container>
