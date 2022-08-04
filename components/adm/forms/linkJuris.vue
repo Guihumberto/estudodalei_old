@@ -20,19 +20,21 @@
 
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
-          Criar vínculo
+          Criar vínculo - Jurisprudência
           <v-spacer></v-spacer>
           <v-btn @click="dialog = !dialog" icon> <v-icon>mdi-close</v-icon> </v-btn>
         </v-card-title>
 
         <v-card-text class="mt-5">
+          <!-- dispositivo filtrado -->
           <v-alert outlined text type="success">
             Art. {{dispositivo.art}}º <br>
             {{dispositivo.textLaw}}
           </v-alert>
+          <!-- mostra as sumulas vinculadas -->
           <v-card-text>
             <p>Sumulas Vinculadas <v-btn @click="sumulasVinculadas = !sumulasVinculadas" x-small icon> <v-icon>{{sumulasVinculadas ? 'mdi-eye' : 'mdi-eye-off'}}</v-icon> </v-btn></p>
-            <p>{{index}}</p> 
+            <p>Index: {{index}}</p> 
             <v-expand-transition>
               <div v-if="sumulasVinculadas">
                 <v-alert v-for="item, index in sumulasVincsDispositivos" :key="index"
@@ -60,12 +62,8 @@
               :value="n"
             ></v-radio>
           </v-radio-group>
-          <v-switch
-            label="vinculante"
-            v-model="vinculante"
-            v-if="orgao == 'STF'"
-          ></v-switch>
         </v-card-text>
+        <!-- jurispurdencia listada -->
         <v-card-text>
           <v-card-title>
             <v-spacer></v-spacer>
@@ -73,15 +71,15 @@
           </v-card-title>
           <v-expand-transition>
               <v-list v-show="sumulasView">
-                <template v-for="item, index in sumulas">
+                <template v-for="item, index in sumulas.slice(0, 5)">
                   <v-divider v-if="index != 0"></v-divider>
                   <v-list-item :key="index">
                     <v-list-item-avatar>
                       <v-avatar>{{item.orgao}}</v-avatar>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title>Súmulas <span v-if="item.vinculante">Vinculante</span> {{item.nro}}</v-list-item-title>
-                      {{item.text}}
+                      <v-list-item-title>Informativo {{item.info}} - {{item.disciplina}} - {{item.subject}}</v-list-item-title>
+                      {{item.texto}}
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-btn icon :color="item.add ? 'error' :'primary'" @click="sendSumula(item)">
@@ -107,8 +105,8 @@
             <template v-for="item, index in listSumulasVincular">
               <v-list-item :key="index">
                 <v-list-item-content>
-                  <v-list-item-title>{{item.orgao}} - Súmula <span v-if="item.vinculante">Vinculante</span> {{item.nro}}</v-list-item-title>
-                  <v-list-item-subtitle>{{item.text}}</v-list-item-subtitle>
+                  <v-list-item-title>{{item.orgao}} - Informativo {{item.info}}</v-list-item-title>
+                  <v-list-item-subtitle>{{item.texto}}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-btn small color="error" @click="sendSumula(item)" icon> <v-icon>mdi-delete</v-icon></v-btn>
@@ -156,7 +154,7 @@
     },
     computed:{
       sumulas(){
-        let sumulas = this.$store.getters.readSumulas
+        let sumulas = this.$store.getters.readJuris
         let sumulasAll = sumulas
 
         if(this.search){
@@ -165,21 +163,14 @@
              if(this.orgao != 'Tudo'){
               sumulas = sumulas.filter (i => i.orgao == this.orgao)
              }
-             let filtro = sumulas.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.nro ))
-
-             if(this.orgao == 'STF' && this.vinculante) {
-                  filtro = filtro.filter (i => i.vinculante)
-              }
+             let filtro = sumulas.filter(item => exp.test(item.texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.info ))
              
              return filtro.sort(this.order)
 
         } else {
             if(this.orgao != 'Tudo'){
-                sumulas = sumulas.filter (i => i.orgao == this.orgao)
 
-                if(this.orgao == 'STF' && this.vinculante) {
-                  sumulas = sumulas.filter (i => i.vinculante)
-                }
+                sumulas = sumulas.filter (i => i.orgao == this.orgao)
 
                 return sumulas.sort(this.order)
             } else {
@@ -188,7 +179,7 @@
         }
       },
       sumulasVincsDispositivos(){
-        let sumulas = this.$store.getters.readSumulas
+        let sumulas = this.$store.getters.readJuris
         let sumulasDispo = []
         if(Array.isArray(this.dispositivo.sumulas)){
           this.dispositivo.sumulas.forEach( disp => {
@@ -238,8 +229,8 @@
       },
       order(a, b){ 
           return this.reverse
-          ? a.nro -  b.nro
-          : b.nro -  a.nro
+          ? a.info -  b.info
+          : b.info -  a.info
         }
     }
   }
