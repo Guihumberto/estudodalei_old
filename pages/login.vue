@@ -144,7 +144,7 @@
             },
             userLoginIn(){
                 this.userLogin = true
-                let userON = !!this.$store.getters.readUser
+                let userON = false || !!this.$store.getters.readUser
                 if(userON){
                     this.$router.push( '/' )
                 } else {
