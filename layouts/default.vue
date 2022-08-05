@@ -11,8 +11,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn color="purple" dark v-if="false" fab small elevation="0"><v-icon>mdi-account</v-icon></v-btn>
-      <v-btn v-if="user.name" @click="logout()" color="error" icon> <v-icon>mdi-logout</v-icon></v-btn>
+      <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="logout()" />
       <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
     </v-app-bar>
     <v-main>

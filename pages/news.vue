@@ -14,7 +14,7 @@
                     >
                         <v-row class="fill-height">
                             <v-card-title>
-                                <div class="text-h4 pl-12 pt-12">
+                                <div class="text-h4 pl-12 pt-12 sombraText">
                                     Estudo da Lei
                                 </div>
                             </v-card-title>
@@ -99,5 +99,8 @@
 .formatText{
     text-align: justify;
     hyphens: auto;
+}
+.sombraText{
+    text-shadow: 0.1em 0.1em 0.2em black
 }
 </style>

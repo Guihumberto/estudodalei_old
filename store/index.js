@@ -92,7 +92,7 @@ export const mutations = {
         state.user = payload
     },
     setLogout(state){
-        state.user = {}
+        state.user = ""
     }
 }
 
