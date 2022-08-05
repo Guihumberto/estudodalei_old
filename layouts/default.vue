@@ -7,11 +7,13 @@
     <layoutSite-sideBar />
     </v-navigation-drawer>
 
-    <v-app-bar app flat>
+    <v-app-bar app flat color="grey lighten-2">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
+      <v-btn color="purple" dark v-if="false" fab small elevation="0"><v-icon>mdi-account</v-icon></v-btn>
+      <v-btn v-if="user.name" @click="logout()" color="error" icon> <v-icon>mdi-logout</v-icon></v-btn>
+      <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
     </v-app-bar>
     <v-main>
        <nuxt />
@@ -98,10 +100,19 @@
         ],
       }
     },
+    computed:{
+      user(){
+        const user = this.$store.getters.readUser
+        return user
+        ? user
+        : false
+      }
+    },
     methods:{
-       ...mapActions(['cargaLawList', 'cargaSumula', 'cargajuris']),
+       ...mapActions(['cargaLawList', 'cargaSumula', 'cargajuris', 'setUser', 'logout']),
     },
     created(){
+      this.setUser()
       this.cargaLawList()
       this.cargaSumula()
       this.cargajuris()

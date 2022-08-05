@@ -23,6 +23,7 @@
         <!-- leis renderizadas -->
         <v-card class="ml-2" v-else-if="lawList.length" flat min-height="50vh" color="#fafafa">
           <v-card-title>
+                <span class="caption">Total de Leis : {{lawList.length}}</span>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" @click="dashboard = !dashboard" class="mt-n6" icon><v-icon>{{viewDashboard.icon}}</v-icon></v-btn>
           </v-card-title>
@@ -62,19 +63,32 @@
                 :sm="viewDashboard.sm" :md="viewDashboard.md" 
                 v-for="(item, index) in lawList.slice(0, sizeScreen.qtd)" :key="index">
                 <v-card  
-                  height="120"
                   hover outlined min-height="100" 
-                  :to="{
+                >
+                  <v-list three-line class="pt-0">
+                    <v-list-item 
+                      :to="{
                         name: 'law-leges',
                         params:{law: item.id},
                         // query:{id:item.id}  
                       }"
-                >
-                  <v-card-text>
+                    >
+                      <v-list-item-content>
+                        <v-list-item-title>{{item.nickname}}</v-list-item-title>
+                        <v-list-item-subtitle>{{item.nro}}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="caption">{{item.description}}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-subheader class="my-n3">
+                      <v-spacer></v-spacer>
+                      <v-btn title="Favoritar" x-small icon><v-icon>mdi-star-outline</v-icon></v-btn>
+                    </v-subheader>
+                  </v-list>
+                  <!-- <v-card-text>
                     <span class="font-weight-medium">{{item.nickname | truncate(viewDashboard.trun)}}</span> <br>
                     {{item.nro}} <br>
                     {{item.description | truncate(40)}}     
-                  </v-card-text>
+                  </v-card-text> -->
                 </v-card>
               </v-col>
             </v-row>  

@@ -1,104 +1,136 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
-        <h1 class="text-h4">Login</h1>
-        <v-card class="mt-5" outlined>
-            <v-card-title>em construção... <v-icon>mdi-hammer-wrench</v-icon></v-card-title>
+        <div class="text-center">
+            <v-avatar color="primary" class="text--white mb-5"><span class="text-h5">EL</span></v-avatar>
+            <p class="text-h5 font-weight-light">Estudo da Lei</p>
+        </div>
+        <v-card outlined max-width="400" class="mx-auto pt-5">
             <v-card-text>
-                <p>Dê uma conferida no que vem por ai</p>
-                <v-card
-                    class="mx-auto"
-                >
-                    <v-img
-                    src="https://www.fundacred.org.br/site/wp-content/uploads/2019/04/cacd-diplomata-itamaraty-diplomacia-sugestao-de-leitura-brasil-e-israel.png"
-                    height="300px"
-                    dark
-                    >
-                        <v-row class="fill-height">
-                            <v-card-title>
-                                <div class="text-h4 pl-12 pt-12">
-                                    Estudo da Lei
-                                </div>
-                            </v-card-title>
-                        </v-row>
-                    </v-img>
-
-                    <v-list two-line>
-                        <template v-for="item, index in news">
-                            <v-divider inset></v-divider>
-
-                            <v-list-item :key="index">
-                                <v-list-item-icon>
-                                <v-icon color="indigo">
-                                    mdi-arrow-right-circle
-                                </v-icon>
-                                </v-list-item-icon>
-
-                                <v-list-item-content>
-                                    <v-list-item-title class="mb-2">{{item.title}}</v-list-item-title>                 
-                                        <p class="caption formatText">{{item.text}}</p>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </template>
-                    </v-list>
-                </v-card>
+                <p class="text--bold">Nesta versão beta está disponível criação de contas apenas com o google. Aproveite!</p>
             </v-card-text>
             <v-card-text>
-                <v-alert>
-                    <p class="formatText font-italic">"Nós acreditamos que um uma boa preparação em prova de concurso público necessariamente passa pelo estudo da lei seca,
-                     em algum momento você irá fazer o estudo da lei e irá precisar de uma boa ferramenta de apoio"</p> 
-                     <v-subheader>
-                        <v-spacer></v-spacer>
-                        João Humberto
-                     </v-subheader>
-                     <p class="formatText mt-2 font-weight-light">entre 70% a 80% de uma prova de concurso é composta por questionamentos diretos acerca das disposições legais.</p>
-                </v-alert>
-            </v-card-text>
-            <v-card-text>
-                <v-card outlined>
-                    <v-card-text>
-                        <div class="text-center">
-                            <v-avatar 
-                                size="108"
-                                color="red" class="mb-5">
-                                <span class="white--text text-h5">JH</span>
-                            </v-avatar> <br>
-                            <span class="font-weight-medium">João Humberto Silva Ribeiro Júnior </span> <br>
-                            Idealizador e desenvolvedor do Estudo da Lei - Leges <br>
-                            www.estudodalei.com.br <br>
-                            <p class="mt-5 formatText">
-                                Servidor Público há 12 anos, atualmente é Auditor Fiscal da Fazenda Estadual, 
-                                mas já passou pelo Tribunal de Contas, Fazenda Municipal e outros órgãos e autarquias da esfera Municipal, Estadual e Federal.
-                            </p>
-                        </div>
-
+                <v-form>
+                    <v-expand-transition>
+                        <v-text-field
+                            label="Nome" 
+                            dense outlined
+                            v-model="userLogin.name"
+                            disabled
+                            append-icon="mdi-account"
+                            type="text"
+                            v-if="isLogin"
+                        ></v-text-field>
+                    </v-expand-transition>
+                    <v-text-field
+                        label="E-mail" 
+                        append-icon="mdi-email"
+                        v-model="userLogin.email"
+                        disabled
+                        dense outlined
+                        type="email"
+                    ></v-text-field>
+                    <v-text-field
+                        label="Senha" 
+                        dense outlined
+                        disabled
+                        v-model="userLogin.password"
+                        disabled
+                        append-icon="mdi-lock"
+                        type="password"
+                    ></v-text-field>
+                    <v-card-actions class="d-flex">
+                        <v-btn block :color="loginCreate.color" >{{loginCreate.text}}</v-btn>
+                    </v-card-actions>
+                    <v-card-text class="text-center pb-0" v-if="isLogin">
+                        ou Esqueci a senha
                     </v-card-text>
-                </v-card>
-
+                </v-form>
             </v-card-text>
         </v-card>
+        <!-- entrar com o google -->
+        <v-alert 
+            class="mt-5 mx-auto text-center"
+            max-width="430"
+            >
+            <v-btn block color="error lighten-2" @click="google()">
+                <v-icon small class="mr-5">mdi-google</v-icon>
+                Continuar com o Google
+            </v-btn>
+        </v-alert>
+        <!-- nao possui conta/login -->
+        <v-alert 
+            class="mx-auto text-center"
+            max-width="400"
+            >
+            <span v-if="isLogin">
+                Já possui uma conta? <a class="text-primary text--bold" @click="isLogin = !isLogin">fazer login.</a> 
+            </span>
+            <span v-else>
+                Não possui uma conta? <a class="red--text text--bold" @click="isLogin = !isLogin">Criar Conta.</a>
+            </span>
+        </v-alert>
     </v-container>
 </template>
 
 <script>
+    import { firebase, auth, db} from '@/plugins/firebase.js'
     export default {
         data(){
             return{
-                news:[
-                        {title: "Questões de Concurso", text:"Não é questões de concurso da forma tradicional... talves sim :), de todo modo, são questões de concuro relacionado com os dispositivos da lei, no qual você pode acessar com um clique."},
-                        {title: "Dispositivos da lei mais cobrados", text:"Em decorrência das questões vinculadas, será possível ter acesso a estatísticas da lei, mostrando os pontos relevantes mais cobrados em prova."},
-                        {title: "Súmulas vinculadas aos dispositivos da lei", text:"você já pode conferir uma breve amostra dessa funcionalidade na CF/88 e no CTN"},
-                        {title: "Jurisprudência vinculada aos dispositivos da lei", text:"Estamos trabalhando nesse momento nessa funcionalidade para entregar o melhor site de leitura da lei para você."},
-                        {title: "Area do Usuário", text:"Uma área incrível para você organizar sua lei da melhor forma, com indicações de ponto relevantes e montar seu resumo da lei de forma ágil"},
-                        {title: "Muito mais", text:"Tá vindo muita coisa boa por aí, acompanhe a gente pelo instagram para não perder as novidades."},
-                    ]
+                isLogin: false,
+                userLogin:{
+                    name: "",
+                    email: "",
+                    uid: "",
+                    password: '',
+                    photo: ""
+                }
+            }
+        },
+        computed:{
+            loginCreate(){
+                return this.isLogin
+                ? {text: 'Criar Usuário', color:'primary lighten-1'}
+                : {text: 'entrar', color:'success lighten-1'}
+            }
+        },
+        methods:{
+            async google(){
+                const provider = new firebase.auth.GoogleAuthProvider();
+                firebase.auth().languageCode = 'pt-br';
+                
+                try {
+                    //login user
+                    const result = await firebase.auth().signInWithPopup(provider);
+                    const user = result.user;
+                    console.log(user);
+
+                    //register user
+                    const usuario = {
+                        name: user.displayName,
+                        email: user.email,
+                        uid: user.uid,
+                        photo: user.photoURL
+                    }
+
+                    // this.setUser(usuario)
+
+                    //Guardar en Firestore
+                    await db.collection('usuarios').doc(usuario.uid).set(
+                    usuario
+                    )
+                    console.log('Usuario guardado en DB');
+
+                    this.$router.push( '/' )
+
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
     }
 </script>
 
-<style scoped>
-.formatText{
-    text-align: justify;
-    hyphens: auto;
-}
+<style lang="scss" scoped>
+
 </style>

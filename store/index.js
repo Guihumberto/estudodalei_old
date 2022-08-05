@@ -1,3 +1,4 @@
+import { auth } from "@/plugins/firebase.js"
 export const strict = false
 
 export const state = () => ({
@@ -7,7 +8,9 @@ export const state = () => ({
     nameLaw: [],
     nameOtherLaw: [],
     sumulas: [],
-    juris: []
+    juris: [],
+    user:{},
+    dataUser:{}
 })
 
 export const getters = {
@@ -32,6 +35,9 @@ export const getters = {
     readJuris(state){
         return state.juris
     },
+    readUser(state){
+        return state.user
+    }
 }
 
 export const mutations = {
@@ -82,6 +88,12 @@ export const mutations = {
     deleteJuris(state, payload) {
         state.juris = state.juris.filter( item => item.id != payload)
     },
+    newUser(state, payload) {
+        state.user = payload
+    },
+    setLogout(state){
+        state.user = {}
+    }
 }
 
 export const actions = {
@@ -345,4 +357,27 @@ export const actions = {
             console.log(error)
         }
     },
+    async setUser({ commit }){
+        try {
+            await auth.onAuthStateChanged(function(user) {
+                if (user) {
+                    const userLogin = {
+                        name: user.displayName,
+                        email: user.email,
+                        uid: user.uid,
+                        photo: user.photoURL
+                    }
+                  commit('newUser', userLogin)
+                }
+            })
+        } catch(error) {
+            console.log(error)
+        }
+        
+    },
+    logout({commit}){
+        commit('setLogout')
+        auth.signOut()
+        this.$router.push( '/' )
+    }
 }

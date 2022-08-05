@@ -174,6 +174,7 @@
                                         :color="isJurisExist(item) ? 'success': 'error'"> 
                                         {{isJurisExist(item) ? '+' : '-' }}                                        
                                     </v-btn>
+                                    <v-btn class="ml-5 mr-n4" title="Favoritar" small icon><v-icon>mdi-star-outline</v-icon></v-btn>
                                 </v-subheader>
                             </v-list-item-content> 
                         </v-list-item>

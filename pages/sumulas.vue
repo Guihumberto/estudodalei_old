@@ -176,24 +176,28 @@
                     </v-btn>
                   </v-subheader>
                   <template v-for="(item, index) in listSubject || listSumulas.slice(0, showMoreSUmulas)">
-                  <v-divider class="my-1"></v-divider>
-                  <v-list-item :key="index">
-                  <v-list-item-content>
-                      <v-subheader class="ml-n4">
-                        <v-chip-group>
-                          <v-chip label small dark :color=" item.orgao == 'STF' ? 'indigo' : 'error'">{{item.orgao}}</v-chip>
-                          <v-chip label small v-for="(tag, index) in item.tag" :key="index">{{tag}}</v-chip>
-                        </v-chip-group>
-                      </v-subheader>                           
-                      <div> 
-                        <p class="caption formatText"> <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: {{item.text}}</p>
-                      </div>
-                  </v-list-item-content>
-                  <v-list-item-action v-if="item.cancel">
-                    <v-icon color="red" title="Súmula cancelada/superada">mdi-cancel</v-icon>
-                  </v-list-item-action>
-                  <!-- {{item.id}} -->
-                  </v-list-item>
+                    <v-divider class="my-1"></v-divider>
+                    <v-list-item :key="index">
+                      <v-list-item-content>
+                          <v-subheader class="ml-n4">
+                            <v-chip-group>
+                              <v-chip label small dark :color=" item.orgao == 'STF' ? 'indigo' : 'error'">{{item.orgao}}</v-chip>
+                              <v-chip label small v-for="(tag, index) in item.tag" :key="index">{{tag}}</v-chip>
+                            </v-chip-group>
+                          </v-subheader>                           
+                          <div> 
+                            <p class="caption formatText"> <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: {{item.text}}</p>
+                          </div>
+                      </v-list-item-content>
+                      <v-list-item-action v-if="item.cancel">
+                        <v-icon color="red" title="Súmula cancelada/superada">mdi-cancel</v-icon>
+                      </v-list-item-action>
+                    <!-- {{item.id}} -->
+                    </v-list-item>
+                    <v-subheader class="mt-n6 mb-n3">
+                      <v-spacer></v-spacer>
+                      <v-btn title="Favoritar" x-small icon><v-icon>mdi-star-outline</v-icon></v-btn>
+                    </v-subheader>
                   </template>
               </v-list>
               <!-- btn ver mais -->
