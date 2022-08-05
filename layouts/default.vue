@@ -60,7 +60,7 @@
 
 <script>
 
-  import { mapActions} from 'vuex'
+  import { mapGetters, mapActions} from 'vuex'
 
   export default {
      head: {

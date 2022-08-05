@@ -153,7 +153,7 @@
             }
         },
         created(){
-            this.userLoginIn()
+            // this.userLoginIn()
         }
     }
 </script>
