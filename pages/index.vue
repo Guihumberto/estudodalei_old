@@ -15,18 +15,32 @@
         <!-- busca nao encontrada -->
         <v-card v-if="lawList == 99" min-height="50vh" flat color="#fafafa">
           <v-card-text>
-            <v-alert outlined dense type="error">
-                Termo não encontrado... refaça a busca!
+            <v-alert
+              prominent
+              outlined
+              type="error"
+            >
+              <v-row align="center">
+                <v-col class="grow">
+                  Não houve resultados para seus filtros.
+                </v-col>
+                <v-col class="shrink">
+                  <v-btn outlined color="error" @click="clearFiltersAll()">LIMPAR FILTROS</v-btn>
+                </v-col>
+              </v-row>
             </v-alert>
           </v-card-text>
         </v-card>
         <!-- leis renderizadas -->
         <v-card class="ml-2" v-else-if="lawList.length" flat min-height="50vh" color="#fafafa">
+          <!-- total de lei e view -->
           <v-card-title>
                 <span class="caption">Total de Leis : {{lawList.length}}</span>
+                <v-btn @click="lawFavFilter = !lawFavFilter" class="ml-2" v-if="isLogin.login" small text>MEUS FAVORITOS <v-icon class="ml-1" small>mdi-star-outline</v-icon></v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" @click="dashboard = !dashboard" class="mt-n6" icon><v-icon>{{viewDashboard.icon}}</v-icon></v-btn>
           </v-card-title>
+          <!-- tags disciplinas -->
           <v-card-text v-if="!search">
             <v-row justify="space-around">
               <v-col
@@ -55,6 +69,7 @@
               </v-col>
             </v-row>
           </v-card-text>
+          <!-- leis listadas -->
           <v-card-text>
             <v-row >
               <v-col 
@@ -81,7 +96,12 @@
                     </v-list-item>
                     <v-subheader class="my-n3">
                       <v-spacer></v-spacer>
-                      <v-btn title="Favoritar" x-small icon><v-icon>mdi-star-outline</v-icon></v-btn>
+                      <v-btn title="Favoritar" 
+                        @click="favLaw(item)"
+                        :color=" listFavExist(item.id) ? '#FFD700': 'grey'"
+                        x-small icon>
+                        <v-icon>mdi-star</v-icon>
+                      </v-btn>
                     </v-subheader>
                   </v-list>
                   <!-- <v-card-text>
@@ -122,6 +142,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   export default {
     head: {
       title: 'Estudo da Lei',
@@ -153,12 +174,28 @@
           {name: 'D. Civil', sigla: 'CC'},
           {name: 'D. Penal', sigla: 'DP'},
         ],
-        listTags:[]
+        listTags:[],
+        listFav:[],
+        lawFavFilter: false
       }
     },
     computed:{
       lawList(){
             let listLaws = this.$store.getters.readLawsList
+            if(this.isLogin.login){
+              if(this.listFav.length > 0){
+                listLaws.forEach(i => {
+                  this.listFav.forEach(id => {
+                    if(i.id == id){
+                      i.fav = true
+                    }
+                  })
+                })
+              }
+              if(this.lawFavFilter){
+                listLaws = listLaws.filter(i => i.fav)
+              }
+            }
             if(this.search){
               //retirar acentuação
               let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
@@ -180,7 +217,9 @@
                   }
                 })
               })
-              return novoFiltro
+              return novoFiltro.length
+              ? novoFiltro
+              : 99
 
             } else {
 
@@ -209,13 +248,20 @@
         } else {
             return  {valeu: false, qtd: 50}
         }
+      },
+      isLogin(){
+        const user = this.$store.getters.readUser
+        return {uid: user.uid, login: !!user.uid}
+      },
+      userPreferences(){
+        return this.$store.getters.readPreferencesUser
       }
     },
     methods:{
+      ...mapActions(['addFavLaw', 'removeFavLaw']),
       filterTag(item){
         let findTag = this.listTags.find(i => i == item)
         findTag ? this.listTags.splice(item, 1) : this.listTags.push(item)
-        console.log(this.listTags)
       },
       closeTag(tag){
         let findTag = this.listTags.find(i => i == tag)
@@ -225,11 +271,45 @@
         let search = rota.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         //retirar caracteres especiais
         let exp = search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, "").replace('.', "").replace(' ', "")
+      },
+      cargaFav(){
+        this.listFav = this.userPreferences || []
+      },
+      listFavExist(item){
+        if(this.isLogin.login){
+          let result = this.listFav.find(i => i == item) || false
+          return !!result
+        }
+      },
+      favLaw(item){
+        if(this.isLogin.login){
+          if(this.listFavExist(item.id)){
+               this.listFav = this.listFav.filter(i => i != item.id)
+               this.$store.dispatch("snackbars/setSnackbars", {text:'Lei removida dos seus favoritos!', color:'error lighten-1'})
+               let dataUser = [this.isLogin.uid, this.listFav]
+               this.addFavLaw(dataUser)
+          } else {
+              this.listFav.push(item.id)
+              this.$store.dispatch("snackbars/setSnackbars", {text:'Lei adicionada aos seus favoritos!', color:'primary lighten-1'})
+              let dataUser = [this.isLogin.uid, this.listFav]
+              this.addFavLaw(dataUser)
+          }
+        }else{
+          this.$store.dispatch("snackbars/setSnackbars", {text:'Você precisa estar logado para favoritar as leis!', color:'error lighten-1'})
+        }
+      },
+      clearFiltersAll(){
+        this.search = ''
+        this.listTags = []
+        this.lawFavFilter = false
       }
     },
     created(){
       this.$store.commit("setTextLaw", '')
       this.$store.commit("setNameLaw", '')
+      setTimeout(() => {
+        this.cargaFav()
+      }, 2500)
     }
   }
 </script>

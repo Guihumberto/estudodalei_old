@@ -83,6 +83,7 @@
 </template>
 
 <script>
+    import { cargaUserPreferences, mapActions } from 'vuex'
     import { firebase, auth, db} from '@/plugins/firebase.js'
     export default {
         data(){
@@ -107,6 +108,7 @@
             }
         },
         methods:{
+            ...mapActions(['cargaUserPreferences']),
             async google(){
                 this.loading = true
                 const provider = new firebase.auth.GoogleAuthProvider();
@@ -116,7 +118,6 @@
                     //login user
                     const result = await firebase.auth().signInWithPopup(provider);
                     const user = result.user;
-                    console.log(user);
 
                     //register user
                     const usuario = {
@@ -132,10 +133,12 @@
                     await db.collection('usuarios').doc(usuario.uid).set(
                     usuario
                     )
-                    console.log('Usuario guardado en DB');
+                    // carregar preferencias do usuario
+                    this.cargaUserPreferences(usuario.uid)
 
                     this.$router.push( '/' )
                     this.loading = false
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Seja bem-vindo!', color:'primary lighten-1'})
 
                 } catch (error) {
                     console.log(error);

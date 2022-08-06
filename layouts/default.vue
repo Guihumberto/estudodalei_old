@@ -11,12 +11,26 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="logout()" />
+      <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="closeLogin()" />
       <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
     </v-app-bar>
+
     <v-main>
        <nuxt />
+       <v-snackbar 
+          v-for="(snack, i) in snacks.filter((s)=> s.showing)" :key="i + Math.random()"
+          v-model="snack.showing"
+          :timeout="snack.timeout"
+          :color="snack.color"
+          :style="`bottom: ${i * 60 + 8}px`"
+        >
+          <v-btn slot="action" icon small @click="snack.showing = false">
+            <v-icon small>mdi-close</v-icon>
+          </v-btn>
+        {{snack.text}}
+      </v-snackbar>
     </v-main>
+
     <v-footer
     dark
     padless
@@ -91,6 +105,7 @@
       return {
         drawer: false,
         titleWebSite: "Estudo da Lei (beta)",
+        snack: false,
         icons: [
           'mdi-facebook',
           'mdi-twitter',
@@ -100,6 +115,7 @@
       }
     },
     computed:{
+      ...mapGetters({snacks:"snackbars/readSnackbars"}),
       user(){
         const user = this.$store.getters.readUser
         return user
@@ -108,13 +124,21 @@
       }
     },
     methods:{
-       ...mapActions(['cargaLawList', 'cargaSumula', 'cargajuris', 'setUser', 'logout']),
+       ...mapActions(['cargaLawList', 'cargaSumula', 'cargajuris', 'setUser', 'logout', 'cargaUserPreferences']),
+       closeLogin(){
+        this.logout()
+        this.$store.dispatch("snackbars/setSnackbars", {text:'Sessão encerrada', color:'error'})
+        this.drawer = false
+      },
     },
     created(){
       this.setUser()
       this.cargaLawList()
       this.cargaSumula()
       this.cargajuris()
+      setTimeout( () => {
+        this.cargaUserPreferences(this.user.uid)
+      }, 2000)
     }
   }
 </script>

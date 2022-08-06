@@ -9,8 +9,9 @@ export const state = () => ({
     nameOtherLaw: [],
     sumulas: [],
     juris: [],
-    user:{},
-    dataUser:{}
+    user: {},
+    dataUser:[],
+    favLaw:[]
 })
 
 export const getters = {
@@ -37,6 +38,12 @@ export const getters = {
     },
     readUser(state){
         return state.user
+    },
+    readFavLaw(state){
+        return state.favLaw
+    },
+    readPreferencesUser(state){
+        return state.dataUser
     }
 }
 
@@ -93,6 +100,14 @@ export const mutations = {
     },
     setLogout(state){
         state.user = ""
+        state.favLaw = ""
+        state.dataUser = ""
+    },
+    setFavLaw(state, payload){
+        state.favLaw = payload
+    },
+    setUserPreference(state, payload){
+        state.dataUser = payload
     }
 }
 
@@ -304,7 +319,6 @@ export const actions = {
         }
     },
     async setJuris({ commit }, juris){
-
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/juris/${juris.id}.json`, {
                 method: 'PUT',
@@ -379,5 +393,38 @@ export const actions = {
         commit('setLogout')
         auth.signOut()
         this.$router.push( '/' )
+    },
+    async addFavLaw({commit}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favLaw.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data[1])
+            })
+
+            const dataDB = await res.json()
+            commit('setFavLaw', data[1])
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    // removeFavLaw({commit}, data){
+    //     console.log('retira',data);
+    // }
+    async cargaUserPreferences({commit}, uid){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${uid}/favLaw.json`)
+            const dataDB = await res.json()
+            const sumulas = []
+
+            for (let id in dataDB){
+                sumulas.push(dataDB[id])
+            }
+            commit('setUserPreference', sumulas)   
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
