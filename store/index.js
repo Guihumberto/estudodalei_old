@@ -11,10 +11,24 @@ export const state = () => ({
     juris: [],
     user: {},
     dataUser:[],
-    favLaw:[]
+    favLaw:[],
+    disciplinas: [
+        {name: 'D. Constitucional', sigla: 'DC'},
+        {name: 'D. Tributário', sigla: 'DT'},
+        {name: 'D. Administrativo', sigla: 'DA'},
+        {name: 'D. Previdenciário', sigla: 'PREV'},
+        {name: 'D. Empresarial', sigla: 'DE'},
+        {name: 'D. Civil', sigla: 'CC'},
+        {name: 'D. Penal', sigla: 'DP'},
+        {name: 'D. Financeiro', sigla: 'DF'},
+      ],
+    concursos: []
 })
 
 export const getters = {
+    readDisciplinas(state){
+        return state.disciplinas
+    },
     readLawsList(state){
         return state.lawsList
     },
@@ -44,7 +58,10 @@ export const getters = {
     },
     readPreferencesUser(state){
         return state.dataUser
-    }
+    },
+    readConcursosList(state){
+        return state.concursos
+    },
 }
 
 export const mutations = {
@@ -108,6 +125,9 @@ export const mutations = {
     },
     setUserPreference(state, payload){
         state.dataUser = payload
+    },
+    setconcursoList(state, payload){
+        state.concursos = payload
     }
 }
 
@@ -426,5 +446,36 @@ export const actions = {
         } catch (error) {
             console.log(error)
         }
-    }
+    },
+    async setConcurso({ commit }, concurso) {
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/concursos/${concurso.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(concurso)
+            })
+
+            const dataDB = await res.json()
+            // commit('setCreateconcurso', concurso)
+            console.log("concurso salvo");
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaConcursosList({ commit }){
+        try {
+            const res = await fetch('https://leges-estudo-default-rtdb.firebaseio.com/concursos.json')
+            const dataDB = await res.json()
+            const concursoList = []
+
+            for (let id in dataDB){
+                concursoList.push(dataDB[id])
+            }
+            commit('setconcursoList', concursoList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
 }

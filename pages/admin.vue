@@ -1,10 +1,11 @@
 <template>
-   <v-container class="mt-5" style="max-width: 1080px" v-if="false">
+   <v-container class="mt-5" style="max-width: 1080px" v-if="true">
         <v-card flat outlined min-height="80vh">
             <v-tabs  v-model="tab">
                 <v-tab>Leis</v-tab>
                 <v-tab>Súmulas</v-tab>
                 <v-tab>Jurisprudência</v-tab>
+                <v-tab>Concursos</v-tab>
             </v-tabs>
             <v-tabs-items v-model="tab">
                 <v-tab-item>
@@ -135,6 +136,12 @@
                         Jurisprudência
                     </v-card-title>
                     <adm-forms-jurisForms />
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card-title  class="grey lighten-2">
+                        Concurso
+                    </v-card-title>
+                    <adm-forms-concursoCreated />
                 </v-tab-item>
             </v-tabs-items>
        </v-card>

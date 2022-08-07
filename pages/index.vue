@@ -136,6 +136,7 @@
         </v-card>
 
         <sumulaBanner />
+        <concursoBanner />
         <funcionalidades />
         <mail />
   </v-container>
@@ -170,6 +171,7 @@
           {name: 'D. Tributário', sigla: 'DT'},
           {name: 'D. Administrativo', sigla: 'DA'},
           {name: 'D. Previdenciário', sigla: 'PREV'},
+          {name: 'D. Financeiro', sigla: 'DF'},
           {name: 'D. Empresarial', sigla: 'DE'},
           {name: 'D. Civil', sigla: 'CC'},
           {name: 'D. Penal', sigla: 'DP'},
@@ -255,7 +257,7 @@
       },
       userPreferences(){
         return this.$store.getters.readPreferencesUser
-      }
+      },
     },
     methods:{
       ...mapActions(['addFavLaw', 'removeFavLaw']),
