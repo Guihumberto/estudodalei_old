@@ -8,7 +8,7 @@
                     <v-col cols="6" sm="4">
                         {{findConcurso.name}} <br>
                         Banca: {{findConcurso.banca}} <br>
-                        Situação: {{nameStatus(findConcurso.status)}}<br>
+                        Situação: <v-chip small outlined color="success">{{nameStatus(findConcurso.status)}}</v-chip> <br>
                         Inscrição:  {{findConcurso.dateStartIns}} <span v-show="findConcurso.dateStartIns">a</span> {{findConcurso.dateLastIns}}<br>
                         Data da prova:  {{findConcurso.dateProva}}<br>
                     </v-col>
