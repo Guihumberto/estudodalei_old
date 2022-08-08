@@ -54,8 +54,9 @@
                 <leges-dialogs-anexos />
             </v-btn-toggle>
         </v-col>
-        <v-col cols="12" sm="2" class="mt-n6" v-if="!artsFilterActive">
+        <v-col cols="12" sm="2" class="mt-n3" v-if="!artsFilterActive">
             <v-select
+            class="pt-4"
             v-if="dispositiveBtn"
             :items="dispositivosPerPage"
             :label="`Dispositivos por página: ${pagination.perPage}`"

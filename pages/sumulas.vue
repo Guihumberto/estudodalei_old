@@ -49,6 +49,19 @@
               <v-btn @click="disciplinaVue = !disciplinaVue" x-small text>busca por disciplina 
                 <v-icon small> {{disciplinaVue ? 'mdi-menu-down' : 'mdi-menu-right'}} </v-icon>
               </v-btn>
+              <v-btn
+                  v-if="isLogin"
+                  x-small
+                  text
+                  :outlined="justBookFilter"
+                  :color="justBookFilter ? 'warning':'secondary'"
+                  @click="justBookFilter = !justBookFilter"
+                  >
+                  Meus Favoritos
+                  <v-icon 
+                      v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
+                      small>mdi-book-heart</v-icon>
+              </v-btn>
             </v-card-text>
             <v-expand-transition>
               <v-card-text v-if="disciplinaVue">
@@ -169,19 +182,6 @@
             <v-card-text>
               <v-list>
                   <v-subheader>
-                    <v-btn
-                        v-if="isLogin"
-                        small
-                        text
-                        :outlined="justBookFilter"
-                        :color="justBookFilter ? 'warning':'secondary'"
-                        @click="justBookFilter = !justBookFilter"
-                        >
-                        Meus Favoritos
-                        <v-icon 
-                            v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
-                            small>mdi-book-heart</v-icon>
-                    </v-btn>
                     <v-spacer></v-spacer>
                     Total: {{listSubject ? listSubject.length : listSumulas.length}}
                     <v-btn icon @click="reverse = !reverse">

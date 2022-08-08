@@ -130,8 +130,15 @@ export const mutations = {
         state.favJuris = []
         state.favSumulas = []
     },
-    setFavLaw(state, payload){
+    cargaFavLaw(state, payload){
         state.favLaw = payload
+        console.log("deu certo");
+    },
+    setFavLaw(state, payload){
+        state.favLaw.push(payload)
+    },
+    deleteFavLaw(state, payload) {
+        state.favLaw = state.favLaw.filter( item => item != payload)
     },
     setUserPreference(state, payload){
         state.dataUser = payload
@@ -443,7 +450,7 @@ export const actions = {
     },
     async addFavLaw({commit}, data){
         try {
-            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favLaw.json`, {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favLaw/${data[1]}.json`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -457,9 +464,16 @@ export const actions = {
             console.log(error)
         } 
     },
-    // removeFavLaw({commit}, data){
-    //     console.log('retira',data);
-    // }
+    async removeFavLaw({commit}, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favLaw/${data[1]}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteFavLaw', data[1])
+        } catch (error) {
+            console.log(error)
+        }
+    },
     async cargaUserPreferences({commit}, uid){
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${uid}/favLaw.json`)
@@ -469,7 +483,8 @@ export const actions = {
             for (let id in dataDB){
                 sumulas.push(dataDB[id])
             }
-            commit('setUserPreference', sumulas)   
+            commit('setUserPreference', sumulas)  
+            commit('cargaFavLaw', sumulas)  
         } catch (error) {
             console.log(error)
         }

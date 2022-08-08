@@ -36,7 +36,12 @@
           <!-- total de lei e view -->
           <v-card-title>
                 <span class="caption">Total de Leis : {{lawList.length}}</span>
-                <v-btn @click="lawFavFilter = !lawFavFilter" class="ml-2" v-if="isLogin.login" small :outlined="lawFavFilter" text>
+                <v-btn 
+                  @click="lawFavFilter = !lawFavFilter" 
+                  class="ml-2" v-if="isLogin.login" small 
+                  :outlined="lawFavFilter" 
+                  :color="lawFavFilter ? 'warning' : 'secondary'"
+                  text>
                   MEUS FAVORITOS 
                   <v-icon class="ml-1" small v-text="lawFavFilter ?'mdi-star': 'mdi-star-outline'"></v-icon>
                 </v-btn>
@@ -180,7 +185,6 @@
           {name: 'D. Penal', sigla: 'DP'},
         ],
         listTags:[],
-        listFav:[],
         lawFavFilter: false
       }
     },
@@ -188,9 +192,9 @@
       lawList(){
             let listLaws = this.$store.getters.readLawsList
             if(this.isLogin.login){
-              if(this.listFav.length > 0){
+              if(this.listFavLawsUser.length > 0){
                 listLaws.forEach(i => {
-                  this.listFav.forEach(id => {
+                  this.listFavLawsUser.forEach(id => {
                     if(i.id == id){
                       i.fav = true
                     }
@@ -258,8 +262,8 @@
         const user = this.$store.getters.readUser
         return {uid: user.uid, login: !!user.uid}
       },
-      userPreferences(){
-        return this.$store.getters.readPreferencesUser
+      listFavLawsUser(){
+        return this.$store.getters.readFavLaw
       },
     },
     methods:{
@@ -277,26 +281,21 @@
         //retirar caracteres especiais
         let exp = search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, "").replace('.', "").replace(' ', "")
       },
-      cargaFav(){
-        this.listFav = this.userPreferences || []
-      },
       listFavExist(item){
         if(this.isLogin.login){
-          let result = this.listFav.find(i => i == item) || false
+          let result = this.listFavLawsUser.find(i => i == item) || false
           return !!result
         }
       },
       favLaw(item){
         if(this.isLogin.login){
           if(this.listFavExist(item.id)){
-               this.listFav = this.listFav.filter(i => i != item.id)
                this.$store.dispatch("snackbars/setSnackbars", {text:'Lei removida dos seus favoritos!', color:'error lighten-1'})
-               let dataUser = [this.isLogin.uid, this.listFav]
-               this.addFavLaw(dataUser)
+               let dataUser = [this.isLogin.uid, item.id]
+               this.removeFavLaw(dataUser)
           } else {
-              this.listFav.push(item.id)
               this.$store.dispatch("snackbars/setSnackbars", {text:'Lei adicionada aos seus favoritos!', color:'primary lighten-1'})
-              let dataUser = [this.isLogin.uid, this.listFav]
+              let dataUser = [this.isLogin.uid, item.id]
               this.addFavLaw(dataUser)
           }
         }else{
@@ -312,9 +311,6 @@
     created(){
       this.$store.commit("setTextLaw", '')
       this.$store.commit("setNameLaw", '')
-      setTimeout(() => {
-        this.cargaFav()
-      }, 2500)
     }
   }
 </script>

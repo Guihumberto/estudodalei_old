@@ -42,6 +42,19 @@
                     busca por disciplina 
                     <v-icon small> {{disciplinaVue ? 'mdi-menu-down' : 'mdi-menu-right'}} </v-icon>
                 </v-btn>
+                <v-btn
+                    v-if="isLogin"
+                    x-small
+                    text
+                    :outlined="justBookFilter"
+                    :color="justBookFilter ? 'warning':'secondary'"
+                    @click="justBookFilter = !justBookFilter"
+                    >
+                    Meus Favoritos
+                    <v-icon 
+                        v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
+                        small>mdi-book-heart</v-icon>
+                </v-btn>
                 <v-expand-transition>
                     <div v-if="disciplinaVue" class="mt-5">
                         <v-autocomplete
@@ -135,26 +148,14 @@
                         @click:close="nroInformativo = ''"
                         v-if="nroInformativo">INFORMATIVO {{nroInformativo}} - <span v-show="filtroOrgao != 'Todos'">{{filtroOrgao}}</span>
                     </v-chip>  
-                    <v-btn
-                        v-if="isLogin"
-                        small
-                        text
-                        :outlined="justBookFilter"
-                        :color="justBookFilter ? 'warning':'secondary'"
-                        @click="justBookFilter = !justBookFilter"
-                        >
-                        Meus Favoritos
-                        <v-icon 
-                            v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
-                            small>mdi-book-heart</v-icon>
-                    </v-btn>
+                    
                     <v-spacer></v-spacer>
                     Quantidade: {{jurisList.length}}
                 </v-subheader>
                 <v-list>
                     <template v-for=" item, index in jurisList.slice(0, showMore)">
-                        <v-divider></v-divider>
-                        <v-list-item :key="index">
+                        <v-divider ></v-divider>
+                        <v-list-item :key="index" class="mt-5">
                             <v-list-item-content>
                                 <v-subheader class="ml-n4">
                                     <v-chip-group column class="mb-2">

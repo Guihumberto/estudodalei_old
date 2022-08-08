@@ -37,6 +37,7 @@
                 color="purple"
                 small
                 to="/user"
+                @click="menu = false"
               >
                 PERFIL
                 <v-icon small class="ml-1">mdi-account</v-icon>
