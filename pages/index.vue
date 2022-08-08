@@ -36,7 +36,10 @@
           <!-- total de lei e view -->
           <v-card-title>
                 <span class="caption">Total de Leis : {{lawList.length}}</span>
-                <v-btn @click="lawFavFilter = !lawFavFilter" class="ml-2" v-if="isLogin.login" small text>MEUS FAVORITOS <v-icon class="ml-1" small>mdi-star-outline</v-icon></v-btn>
+                <v-btn @click="lawFavFilter = !lawFavFilter" class="ml-2" v-if="isLogin.login" small :outlined="lawFavFilter" text>
+                  MEUS FAVORITOS 
+                  <v-icon class="ml-1" small v-text="lawFavFilter ?'mdi-star': 'mdi-star-outline'"></v-icon>
+                </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="secondary" @click="dashboard = !dashboard" class="mt-n6" icon><v-icon>{{viewDashboard.icon}}</v-icon></v-btn>
           </v-card-title>

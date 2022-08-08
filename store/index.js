@@ -12,6 +12,8 @@ export const state = () => ({
     user: {},
     dataUser:[],
     favLaw:[],
+    favJuris:[],
+    favSumulas:[],
     disciplinas: [
         {name: 'D. Constitucional', sigla: 'DC'},
         {name: 'D. Tributário', sigla: 'DT'},
@@ -55,6 +57,12 @@ export const getters = {
     },
     readFavLaw(state){
         return state.favLaw
+    },
+    readFavJuris(state){
+        return state.favJuris
+    },
+    readFavSumulas(state){
+        return state.favSumulas
     },
     readPreferencesUser(state){
         return state.dataUser
@@ -128,6 +136,18 @@ export const mutations = {
     },
     setconcursoList(state, payload){
         state.concursos = payload
+    },
+    setFavJuris(state, payload){
+        state.favJuris.push(payload)
+    },
+    setFavSumulas(state, payload){
+        state.favSumulas.push(payload)
+    },
+    deleteBookJuris(state, payload) {
+        state.favJuris = state.favJuris.filter( item => item != payload)
+    },
+    setCargaFavJuris(state, payload){
+        state.favJuris = payload
     }
 }
 
@@ -315,7 +335,6 @@ export const actions = {
         } 
     },
     async deleteSumulaFB({ commit }, id){
-        console.log("apagado");
         try {
             await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/sumulas/${id}.json`, {
                 method: 'DELETE',
@@ -474,6 +493,63 @@ export const actions = {
                 concursoList.push(dataDB[id])
             }
             commit('setconcursoList', concursoList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async addBookJuris({ commit }, data){
+        console.log(data);
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favJuris/${data[1]}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data[1])
+            })
+
+            const dataDB = await res.json()
+            commit('setFavJuris', data[1])
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async removeBookJuris({ commit }, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favJuris/${data[1]}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteBookJuris', data[1])
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async addBookSumulas({ commit }, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favSumulas.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data[1])
+            })
+
+            const dataDB = await res.json()
+            commit('setFavSumulas', data[1])
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaUsersFavLists({ commit }, uid){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${uid}/favJuris.json`)
+            const dataDB = await res.json()
+            const usersFavsLists = []
+
+            for (let id in dataDB){
+                usersFavsLists.push(dataDB[id])
+            }
+            commit('setCargaFavJuris', usersFavsLists)     
         } catch (error) {
             console.log(error)
         }

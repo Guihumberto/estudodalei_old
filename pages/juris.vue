@@ -124,7 +124,6 @@
 
             </v-card-text>
         </v-card>
-
         <!-- lista das jurisprudencias -->
         <v-card outlined>
             <v-card-text>
@@ -136,8 +135,20 @@
                         @click:close="nroInformativo = ''"
                         v-if="nroInformativo">INFORMATIVO {{nroInformativo}} - <span v-show="filtroOrgao != 'Todos'">{{filtroOrgao}}</span>
                     </v-chip>  
+                    <v-btn
+                        small
+                        text
+                        :outlined="justBookFilter"
+                        :color="justBookFilter ? 'warning':'secondary'"
+                        @click="justBookFilter = !justBookFilter"
+                        >
+                        Meus Favoritos
+                        <v-icon 
+                            v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
+                            small>mdi-book-heart</v-icon>
+                    </v-btn>
                     <v-spacer></v-spacer>
-                    qtd: {{jurisList.length}}
+                    Quantidade: {{jurisList.length}}
                 </v-subheader>
                 <v-list>
                     <template v-for=" item, index in jurisList.slice(0, showMore)">
@@ -174,14 +185,22 @@
                                         :color="isJurisExist(item) ? 'success': 'error'"> 
                                         {{isJurisExist(item) ? '+' : '-' }}                                        
                                     </v-btn>
-                                    <v-btn class="ml-5 mr-n4" title="Favoritar" small icon><v-icon>mdi-star-outline</v-icon></v-btn>
+                                    <v-btn 
+                                        class="ml-5 mr-n4" 
+                                        title="Guardar" small icon
+                                        @click="addBook(item)"
+                                        :color="itemBookExist(item) ? 'warning lighten-2': 'secondary'"
+                                        >
+                                        <v-icon
+                                        >{{itemBookExist(item) ? 'mdi-book-heart': 'mdi-book-outline'}}</v-icon>
+                                    </v-btn>
                                 </v-subheader>
                             </v-list-item-content> 
                         </v-list-item>
                     </template>
                 </v-list>
             </v-card-text>
-            <v-card-actions v-if="showMore < jurisList.length">
+            <v-card-actions v-if="showMore < jurisList.length && !justBookFilter">
                 <v-btn 
                     @click="showMore += 5"
                     block outlined color="primary"> 
@@ -211,6 +230,7 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     export default {
         data(){
             return{
@@ -250,12 +270,25 @@
                     // {name: 'Trânsito', sigla: 'CTB'},
                 ],
                 nroInformativo: '',
-                reverse: false
+                reverse: false,
+                justBookFilter: false
             }
         },
         computed:{
             jurisList(){
                 let listComplete = this.$store.getters.readJuris
+
+                if(this.justBookFilter){
+                    let listFav = []
+                    this.jurisCompleteList.forEach(i => {
+                        this.listFavJuris.forEach(x => {
+                            if(x == i.id){
+                                listFav.push(i)
+                            }
+                        })
+                    })
+                    listComplete = listFav
+                }
                 
                 if(this.filtroOrgao != 'Todos'){
                     listComplete = listComplete.filter(list => list.orgao == this.filtroOrgao)
@@ -315,9 +348,22 @@
 
                 list = [...new Set(list)]
                 return list.sort(this.order)
-            }
+            },
+            isLogin(){
+                return !!this.$store.getters.readUser
+            },
+            loginUid(){
+                if(this.isLogin){
+                    const userUid = this.$store.getters.readUser
+                    return userUid.uid
+                }
+            },
+            listFavJuris(){
+                return this.$store.getters.readFavJuris || []
+            },
         },
         methods:{
+            ...mapActions(['addBookJuris', 'removeBookJuris', 'cargaUsersFavLists']),
             isJurisExist(item){
                 let result = this.jurisFilterList.findIndex(juris => juris.id == item.id)
                 return result       
@@ -344,11 +390,35 @@
                 this.nroInformativo = item.info
                 window.scrollTo( 0, 0 );
             },
+            itemBookExist(item){
+                 let result = this.listFavJuris.find(i => i == item.id)
+                 return !!result
+            },
+            addBook(item){
+                if(this.isLogin){
+                    if(!this.itemBookExist(item)){      
+                        this.addBookJuris([this.loginUid, item.id])
+                        this.$store.dispatch("snackbars/setSnackbars", {text:'O item foi incluído no seu livro de favoritos.', color:'success'})
+                        
+                    }else{
+                        this.removeBookJuris([this.loginUid, item.id])
+                        this.$store.dispatch("snackbars/setSnackbars", {text:'O item foi excluído do livro de favoritos.', color:'error'})
+                        
+                    }
+                }else {
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'O login é necessário para guardar as súmulas.', color:'error'})
+                }
+            },
             order(a, b){
                 return this.reverse
                 ? a -  b
                 : b -  a
             },
+        },
+        created(){
+            setTimeout(() => {
+                this.cargaUsersFavLists(this.loginUid)
+            }, 2000)
         }
     }
 </script>
