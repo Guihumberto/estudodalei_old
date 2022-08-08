@@ -78,8 +78,8 @@
                   </v-autocomplete>
               </v-card-text>
             </v-expand-transition>
-            <!-- seleção de assunto -->
-            <v-card-text v-if="filterDisciplinas.length">
+            <!-- seleção de assunto v-if="filterDisciplinas.length -->
+            <v-card-text v-if="false">
                 <v-subheader>
                   <v-spacer></v-spacer>
                   <v-btn x-small text @click="subjectVue = !subjectVue">
@@ -311,11 +311,9 @@
       listSumulas(){
         let tagsFilter = []
         let sumulas = this.$store.getters.readSumulas.filter(i=> i.cancel != true)
-
         if(this.cancelInclui){
           sumulas = this.$store.getters.readSumulas
         }
-
         if(this.justBookFilter){
             let listFav = []
             this.listIntegraSumula.forEach(i => {
@@ -327,80 +325,41 @@
             })
             sumulas = listFav
   
+        }   
+        if(this.filtroOrgao != 'Todos'){
+          sumulas = sumulas.filter (i => i.orgao == this.filtroOrgao)
         }
-                
+        if(this.filtroOrgao == 'STF' && this.filtroVinculante){
+            sumulas = sumulas.filter (i => i.vinculante)
+        }
+
         if(this.search){
-              let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-              //retirar caracteres especiais
-              let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
-
-              if(this.filtroOrgao != 'Todos') {
-                sumulas = sumulas.filter (i => i.orgao == this.filtroOrgao)
-              }
-              if(this.filtroVinculante){
-                sumulas = sumulas.filter (i => i.vinculante)
-              }
-              //fazer o filtro
-              let filtro = sumulas.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.nro ) || exp.test( item.text ))
-              
-              if(this.filterDisciplinas.length){
-                this.filterDisciplinas.forEach(tag => {
-                  filtro.forEach(i => {
-                      if(i.tag == tag){
-                        tagsFilter.push(i)
-                      }
-                  })
-                })
-                filtro = tagsFilter
-              }
-
-              return filtro.length
-                    ? filtro.sort(this.order)
-                    : 99
-        } else {
-            if(this.filtroVinculante){
-              sumulas = sumulas.filter (i => i.vinculante)
-            }
-            if(this.filtroOrgao != 'Todos') {
-              if(this.filtroOrgao == 'STJ'){
-                if(this.cancelInclui){
-                  sumulas = this.$store.getters.readSumulas
-                }else {
-                  sumulas = this.$store.getters.readSumulas.filter(i=> i.cancel != true)
-                }
-
-              }
-                  sumulas = sumulas.filter (i => i.orgao == this.filtroOrgao)
-            }
-            if(this.filtroOrgao == 'Todos') {
-                  if(this.cancelInclui){
-                    sumulas = this.$store.getters.readSumulas
-                  }
-                  else if(this.justBookFilter){
-          
-                  }else {
-                    sumulas = this.$store.getters.readSumulas.filter(i=> i.cancel != true)
-                  }
-            }
-            if(this.filterDisciplinas.length){
-              this.filterDisciplinas.forEach(tag => {
-                sumulas.forEach(i => {
-                    if(Array.isArray(i.tag)) {
-                      i.tag.forEach(sigla => {
-                        if(sigla == tag) {
-                          tagsFilter.push(i)
-                        }
-                      })
-                    }
-                })
-              })
-              sumulas = tagsFilter
-            }
-            
-          return sumulas
-          ? sumulas.sort(this.order)
-          : 99
+            let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+            let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+            let filtro = sumulas.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.nro ) || exp.test( item.text ))
+            sumulas = filtro
         }
+
+  
+        if(this.filterDisciplinas.length){
+          this.filterDisciplinas.forEach(tag => {
+            sumulas.forEach(i => {
+                if(Array.isArray(i.tag)) {
+                  i.tag.forEach(sigla => {
+                    if(sigla == tag) {
+                      tagsFilter.push(i)
+                    }
+                  })
+                }
+            })
+          })   
+          sumulas = tagsFilter
+        }
+             
+        return sumulas.length
+        ? sumulas.sort(this.order)   
+        : 99
+
       },
       listIntegraSumula(){
         return this.$store.getters.readSumulas
