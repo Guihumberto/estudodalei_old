@@ -169,6 +169,18 @@
             <v-card-text>
               <v-list>
                   <v-subheader>
+                    <v-btn
+                        small
+                        text
+                        :outlined="justBookFilter"
+                        :color="justBookFilter ? 'warning':'secondary'"
+                        @click="justBookFilter = !justBookFilter"
+                        >
+                        Meus Favoritos
+                        <v-icon 
+                            v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
+                            small>mdi-book-heart</v-icon>
+                    </v-btn>
                     <v-spacer></v-spacer>
                     Total: {{listSubject ? listSubject.length : listSumulas.length}}
                     <v-btn icon @click="reverse = !reverse">
@@ -196,7 +208,15 @@
                     </v-list-item>
                     <v-subheader class="mt-n6 mb-n3">
                       <v-spacer></v-spacer>
-                      <v-btn title="Favoritar" x-small icon><v-icon>mdi-star-outline</v-icon></v-btn>
+                      <v-btn 
+                          class="ml-5 mr-n4" 
+                          title="Guardar" small icon
+                          @click="addBook(item)"
+                          :color="itemBookExist(item) ? 'warning lighten-2': 'secondary'"
+                          >
+                          <v-icon
+                          >{{itemBookExist(item) ? 'mdi-book-heart': 'mdi-book-outline'}}</v-icon>
+                      </v-btn>
                     </v-subheader>
                   </template>
               </v-list>
@@ -227,6 +247,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     data () {
       return {
@@ -269,6 +291,7 @@
         sumulasFilterList: [],
         msgError: '',
         showMoreSUmulas: 5,
+        justBookFilter: false
       }
     },
     head() {
@@ -291,8 +314,20 @@
         if(this.cancelInclui){
           sumulas = this.$store.getters.readSumulas
         }
-   
-        
+
+        if(this.justBookFilter){
+            let listFav = []
+            this.listIntegraSumula.forEach(i => {
+                this.favSumulasList.forEach(x => {
+                    if(x == i.id){
+                        listFav.push(i)
+                    }
+                })
+            })
+            sumulas = listFav
+  
+        }
+                
         if(this.search){
               let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
               //retirar caracteres especiais
@@ -308,15 +343,15 @@
               let filtro = sumulas.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.nro ) || exp.test( item.text ))
               
               if(this.filterDisciplinas.length){
-              this.filterDisciplinas.forEach(tag => {
-                filtro.forEach(i => {
-                    if(i.tag == tag){
-                      tagsFilter.push(i)
-                    }
+                this.filterDisciplinas.forEach(tag => {
+                  filtro.forEach(i => {
+                      if(i.tag == tag){
+                        tagsFilter.push(i)
+                      }
+                  })
                 })
-              })
-              filtro = tagsFilter
-            }
+                filtro = tagsFilter
+              }
 
               return filtro.length
                     ? filtro.sort(this.order)
@@ -339,6 +374,9 @@
             if(this.filtroOrgao == 'Todos') {
                   if(this.cancelInclui){
                     sumulas = this.$store.getters.readSumulas
+                  }
+                  else if(this.justBookFilter){
+          
                   }else {
                     sumulas = this.$store.getters.readSumulas.filter(i=> i.cancel != true)
                   }
@@ -422,9 +460,22 @@
               : this.listSumulas.sort(this.order)
 
             }
+      },
+      isLogin(){
+          return !!this.$store.getters.readUser
+      },
+      loginUid(){
+          if(this.isLogin){
+              const userUid = this.$store.getters.readUser
+              return userUid.uid
+          }
+      },
+      favSumulasList(){
+        return this.$store.getters.readFavSumulas || []
       }
     },
     methods:{
+        ...mapActions(['addBookSumulas','removeBookSumulas','cargaSumulasFavLists']),
         sumulasFilterExist(nro){
           let sumula = ""
           if (this.filtroVinculante && this.filtroOrgao == 'STF'){
@@ -490,10 +541,35 @@
           if(nome){
             return nome.name;
           }
-        }
+        },
+        itemBookExist(item){
+              let result = this.favSumulasList.find(i => i == item.id)
+              return !!result
+        },
+        addBook(item){
+            if(this.isLogin){
+                if(!this.itemBookExist(item)){      
+                    this.addBookSumulas([this.loginUid, item.id])
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'O item foi incluído no seu livro de favoritos.', color:'success'})
+                    
+                }else{
+                    this.removeBookSumulas([this.loginUid, item.id])
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'O item foi excluído do livro de favoritos.', color:'error'})
+                    
+                }
+            }else {
+                this.$store.dispatch("snackbars/setSnackbars", {text:'O login é necessário para guardar as súmulas.', color:'error'})
+            }
+        },
+    },
+    created(){
+        setTimeout(() => {
+            this.cargaSumulasFavLists(this.loginUid)
+        }, 2000)
     }
   }
 </script>
+
 <style scoped>
 .formatText{
     text-align: justify;

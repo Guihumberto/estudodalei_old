@@ -146,9 +146,15 @@ export const mutations = {
     deleteBookJuris(state, payload) {
         state.favJuris = state.favJuris.filter( item => item != payload)
     },
+    deleteBookSumulas(state, payload) {
+        state.favSumulas = state.favSumulas.filter( item => item != payload)
+    },
     setCargaFavJuris(state, payload){
         state.favJuris = payload
-    }
+    },
+    setCargaFavSumulas(state, payload){
+        state.favSumulas = payload
+    },
 }
 
 export const actions = {
@@ -526,7 +532,7 @@ export const actions = {
     },
     async addBookSumulas({ commit }, data){
         try {
-            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favSumulas.json`, {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favSumulas/${data[1]}.json`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -540,6 +546,16 @@ export const actions = {
             console.log(error)
         } 
     },
+    async removeBookSumulas({ commit }, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favSumulas/${data[1]}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteBookSumulas', data[1])
+        } catch (error) {
+            console.log(error)
+        }
+    },
     async cargaUsersFavLists({ commit }, uid){
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${uid}/favJuris.json`)
@@ -550,6 +566,20 @@ export const actions = {
                 usersFavsLists.push(dataDB[id])
             }
             commit('setCargaFavJuris', usersFavsLists)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async cargaSumulasFavLists({ commit }, uid){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${uid}/favSumulas.json`)
+            const dataDB = await res.json()
+            const usersFavsLists = []
+
+            for (let id in dataDB){
+                usersFavsLists.push(dataDB[id])
+            }
+            commit('setCargaFavSumulas', usersFavsLists)     
         } catch (error) {
             console.log(error)
         }
