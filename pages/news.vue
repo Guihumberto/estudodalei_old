@@ -83,7 +83,7 @@
         data(){
             return{
                 news:[
-                        {title: "Questões de Concurso", text:"Não é questões de concurso da forma tradicional... talves sim :), de todo modo, são questões de concurso relacionado com os dispositivos da lei, no qual você pode acessar com um clique."},
+                        {title: "Questões de Concurso", text:"Não é questões de concurso da forma tradicional... talvez sim :), de todo modo, são questões de concurso relacionadas com os dispositivos da lei, no qual você pode acessar com um clique."},
                         {title: "Dispositivos da lei mais cobrados", text:"Em decorrência das questões vinculadas, será possível ter acesso a estatísticas da lei, mostrando os pontos relevantes cobrados em prova."},
                         {title: "Súmulas vinculadas aos dispositivos da lei", text:"você já pode conferir uma breve amostra dessa funcionalidade na CF/88 e no CTN"},
                         {title: "Jurisprudência vinculada aos dispositivos da lei", text:"Estamos trabalhando nesse momento nessa funcionalidade para entregar a melhor experiência em sites de estudo da lei."},

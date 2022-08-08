@@ -18,7 +18,7 @@
                             {{item.name}} <br> Vagas: {{item.vagas}}
                         </p>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col cols="12" sm="4" v-show="false">
                         Disciplinas <br>
                         CONHECIMENTOS GERAIS <br>
                         ... <br>

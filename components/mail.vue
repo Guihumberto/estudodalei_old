@@ -15,10 +15,24 @@
                                             <v-icon>{{item.icon}}</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
-                                            <v-list-item-title>{{item.text}}</v-list-item-title>
+                                            <v-list-item-title>
+                                                {{item.text}}
+                                            </v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </template>
+                                    <v-list-item >   
+                                        <v-list-item-icon>
+                                            <v-icon>mdi-instagram</v-icon>
+                                        </v-list-item-icon>
+                                        <v-list-item-content>
+                                            <v-list-item-title>
+                                                <a class="linkInsta" target="blank" href="https://www.instagram.com/estudodalei.com.br/">
+                                                    @estudodalei.com.br
+                                                </a>
+                                            </v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
                             </v-list>
                             <v-divider></v-divider>
                             <v-card-actions>
@@ -94,7 +108,6 @@
                 contact:[
                     {icon: 'mdi-email-outline', text: 'leges.estudo@gmail.com'},
                     {icon: 'mdi-whatsapp', text: '(98) 98465-0786'},
-                    {icon: 'mdi-instagram', text: '@estudodalei.com.br'},
                 ]
             }
         },
@@ -133,5 +146,16 @@
 </script>
 
 <style lang="scss" scoped>
-
+.linkInsta{
+    color: rgb(31, 64, 31);
+    text-decoration: underline;
+    transition: all .6s ;
+}
+.linkInsta:hover {
+        font-size:1.1em;
+        color: white;
+        text-decoration: none;
+        -webkit-text-stroke: 1.3px darkgreen; 
+        transition-timing-function: ease-in-out;
+}
 </style>

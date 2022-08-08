@@ -41,7 +41,7 @@
       class="grey lighten-1 white--text text-center"
       width="100%" center
     >
-      <v-card-text>
+      <v-card-text v-show="false">
         <v-btn
           v-for="icon in icons"
           :key="icon"

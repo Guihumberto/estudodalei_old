@@ -195,7 +195,7 @@
                           <v-subheader class="ml-n4">
                             <v-chip-group>
                               <v-chip label small dark :color=" item.orgao == 'STF' ? 'indigo' : 'error'">{{item.orgao}}</v-chip>
-                              <v-chip label small v-for="(tag, index) in item.tag" :key="index">{{tag}}</v-chip>
+                              <v-chip label small v-for="(tag, index) in item.tag" :key="index">{{nomeSigla(tag) || tag}}</v-chip>
                             </v-chip-group>
                           </v-subheader>                           
                           <div> 
@@ -500,7 +500,7 @@
         nomeSigla(sigla){
           let nome = this.disciplinas.find(i => i.sigla == sigla)
           if(nome){
-            return nome.name;
+            return nome.name.toUpperCase();
           }
         },
         itemBookExist(item){
