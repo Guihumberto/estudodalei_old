@@ -163,8 +163,8 @@
                                             :color="item.orgao == 'STF' ? 'primary' : 'error'">
                                             {{item.orgao}}
                                         </v-chip>
-                                        <v-chip small label outlined color="purple">{{nomeDisciplina(item.disciplina)}}</v-chip>
-                                        <v-chip small label outlined color="purple">{{item.subject}}</v-chip>
+                                        <v-chip small label outlined color="primary">{{nomeDisciplina(item.disciplina)}}</v-chip>
+                                        <v-chip small label outlined color="primary">{{item.subject}}</v-chip>
                                     </v-chip-group>
                                 </v-subheader>
                                 <div>

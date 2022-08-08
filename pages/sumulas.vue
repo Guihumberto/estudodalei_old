@@ -195,7 +195,7 @@
                           <v-subheader class="ml-n4">
                             <v-chip-group>
                               <v-chip label small dark :color=" item.orgao == 'STF' ? 'indigo' : 'error'">{{item.orgao}}</v-chip>
-                              <v-chip label small v-for="(tag, index) in item.tag" :key="index">{{nomeSigla(tag) || tag}}</v-chip>
+                              <v-chip label small outlined color="primary" v-for="(tag, index) in item.tag" :key="index">{{nomeSigla(tag) || tag.toLowerCase()}}</v-chip>
                             </v-chip-group>
                           </v-subheader>                           
                           <div> 
