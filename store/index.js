@@ -125,8 +125,10 @@ export const mutations = {
     },
     setLogout(state){
         state.user = ""
-        state.favLaw = ""
-        state.dataUser = ""
+        state.favLaw = []
+        state.dataUser = []
+        state.favJuris = []
+        state.favSumulas = []
     },
     setFavLaw(state, payload){
         state.favLaw = payload
@@ -504,7 +506,6 @@ export const actions = {
         }
     },
     async addBookJuris({ commit }, data){
-        console.log(data);
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data[0]}/favJuris/${data[1]}.json`, {
                 method: 'PUT',

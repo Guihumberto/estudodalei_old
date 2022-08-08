@@ -170,6 +170,7 @@
               <v-list>
                   <v-subheader>
                     <v-btn
+                        v-if="isLogin"
                         small
                         text
                         :outlined="justBookFilter"
@@ -462,7 +463,8 @@
             }
       },
       isLogin(){
-          return !!this.$store.getters.readUser
+          let login = this.$store.getters.readUser
+          return !!login.uid
       },
       loginUid(){
           if(this.isLogin){
@@ -472,7 +474,7 @@
       },
       favSumulasList(){
         return this.$store.getters.readFavSumulas || []
-      }
+      },
     },
     methods:{
         ...mapActions(['addBookSumulas','removeBookSumulas','cargaSumulasFavLists']),
@@ -561,11 +563,16 @@
                 this.$store.dispatch("snackbars/setSnackbars", {text:'O login é necessário para guardar as súmulas.', color:'error'})
             }
         },
+        carregar(){
+          if(this.isLogin){
+            setTimeout(() => {
+              this.cargaSumulasFavLists(this.loginUid)
+          }, 2000)
+        }
+      }
     },
     created(){
-        setTimeout(() => {
-            this.cargaSumulasFavLists(this.loginUid)
-        }, 2000)
+        this.carregar()
     }
   }
 </script>

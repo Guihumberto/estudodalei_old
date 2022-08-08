@@ -136,6 +136,7 @@
                         v-if="nroInformativo">INFORMATIVO {{nroInformativo}} - <span v-show="filtroOrgao != 'Todos'">{{filtroOrgao}}</span>
                     </v-chip>  
                     <v-btn
+                        v-if="isLogin"
                         small
                         text
                         :outlined="justBookFilter"
@@ -350,7 +351,8 @@
                 return list.sort(this.order)
             },
             isLogin(){
-                return !!this.$store.getters.readUser
+                let login = this.$store.getters.readUser
+                return !!login.uid
             },
             loginUid(){
                 if(this.isLogin){
@@ -414,11 +416,16 @@
                 ? a -  b
                 : b -  a
             },
+            carregar(){
+                if(this.isLogin){
+                    setTimeout(() => {
+                        this.cargaUsersFavLists(this.loginUid)
+                    }, 2000)
+                }
+            }
         },
         created(){
-            setTimeout(() => {
-                this.cargaUsersFavLists(this.loginUid)
-            }, 2000)
+            this.carregar()
         }
     }
 </script>
