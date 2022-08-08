@@ -5,7 +5,7 @@
             <v-card-text>
                 <h5 class="text-h5 mb-5">Informações Gerais</h5>
                 <v-row>
-                    <!-- <v-col cols="6" sm="4">
+                    <v-col cols="6" sm="4">
                         {{findConcurso.name}} <br>
                         Banca: {{findConcurso.banca}} <br>
                         Situação: <v-chip small outlined color="success">{{nameStatus(findConcurso.status)}}</v-chip> <br>
@@ -18,14 +18,14 @@
                             {{item.name}} <br> Vagas: {{item.vagas}}
                         </p>
                     </v-col>
-                    <v-col cols="12" sm="4">
+                    <v-col cols="12" sm="4" v-if="false">
                         Disciplinas <br>
                         CONHECIMENTOS GERAIS <br>
                         ... <br>
                         CONHECIMENTOS ESPECÍFICOS <br>
                         ...
 
-                    </v-col> -->
+                    </v-col>
                 </v-row>
             </v-card-text>
         </v-card>
@@ -88,7 +88,7 @@
             },
             findConcurso(){
                 const lawConcurso = this.lawListConcurso.find(i => i.id == this.id)
-                return lawConcurso
+                return lawConcurso || {name: '', banca: '', status: '', dateStartIns: '', dateLastIns:'', dateProva:'', cargos:[]}
             },
             idListConcurso(){
                 const siglasDisciplinas = this.findConcurso.disciplinas
@@ -103,13 +103,16 @@
             },
             listLawConcurso(){
                 let laws = []
-                this.lawList.forEach( law => {
-                    this.idListConcurso.forEach(id => {
-                        if(id == law.id){
-                            laws.push(law)
-                        }
+                if(Array.isArray(this.lawList) && Array.isArray(this.idListConcurso)){
+                    Array.from(this.lawList)
+                    this.lawList.forEach( law => {
+                        this.idListConcurso.forEach(id => {
+                            if(id == law.id){
+                                laws.push(law)
+                            }
+                        })
                     })
-                })
+                }
                 return laws
             },
             listDiciplinasConcursos(){
@@ -119,7 +122,7 @@
                     disciplinasSigla.push(i[0])
                 })
                 disciplinasSigla = [...new Set(disciplinasSigla)]
-                return disciplinasSigla
+                return disciplinasSigla || []
             }
         },
         methods:{

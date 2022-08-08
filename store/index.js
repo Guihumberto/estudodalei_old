@@ -132,7 +132,6 @@ export const mutations = {
     },
     cargaFavLaw(state, payload){
         state.favLaw = payload
-        console.log("deu certo");
     },
     setFavLaw(state, payload){
         state.favLaw.push(payload)

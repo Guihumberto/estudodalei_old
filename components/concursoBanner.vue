@@ -19,9 +19,9 @@
                                 dark
                                 height="200"
                                 :to="{
-                                    name: 'concurso',
-                                    params:{concurso: item.name},
-                                    query:{id:item.id}  
+                                    name: 'concurso-concurso',
+                                    params:{concurso: item.id},
+                                    // query:{id:item.id}  
                                 }"
                                 >
                                 <v-scroll-y-transition>
