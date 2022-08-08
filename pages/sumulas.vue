@@ -155,7 +155,7 @@
         </v-card>
         
         <!-- nao encontrado -->
-        <v-card outlined min-height="10vw" v-if="listSumulas == 99">
+        <v-card outlined min-height="10vw" v-if="search && listSumulas == 99">
           <v-card-text>
               <v-alert
                 outlined dense
@@ -236,7 +236,7 @@
             </v-card-text>
         </v-card>
         <!-- barra de loading -->
-        <v-card outlined v-else>
+        <v-card outlined v-show="!search && !listSumulas.length">
           <v-card-text>
             <v-skeleton-loader
               v-bind="attrs"
