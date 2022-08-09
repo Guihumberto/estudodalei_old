@@ -1,6 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer
+      v-show="loading"
       v-model="drawer"
       app
       color="#f2f5f9"
@@ -8,7 +9,7 @@
     <layoutSite-sideBar />
     </v-navigation-drawer>
 
-    <v-app-bar app flat color="grey lighten-2">
+    <v-app-bar app flat color="grey lighten-2" v-show="loading">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -17,7 +18,8 @@
     </v-app-bar>
 
     <v-main>
-       <nuxt />
+       <layoutSite-loadingInit v-if="!loading" />
+       <nuxt v-else />
        <v-snackbar 
           v-for="(snack, i) in snacks.filter((s)=> s.showing)" :key="i + Math.random()"
           v-model="snack.showing"
@@ -122,6 +124,10 @@
         return user
         ? user
         : false
+      },
+      loading(){
+        const load = this.$store.getters.readJuris
+        return !!load.length
       }
     },
     methods:{

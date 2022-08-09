@@ -184,7 +184,7 @@
         <v-card outlined min-height="80vh" v-else-if="listSumulas.length">         
             <v-card-text>
               <v-list>
-                  <v-subheader>
+                  <v-subheader class="my-5">
                     <v-chip-group column>
                         <v-chip 
                             label outlined
