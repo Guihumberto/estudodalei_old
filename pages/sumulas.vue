@@ -188,7 +188,7 @@
                       <v-icon>{{reverse ? 'mdi-order-alphabetical-ascending' : 'mdi-order-alphabetical-descending'}}</v-icon>
                     </v-btn>
                   </v-subheader>
-                  <template v-for="(item, index) in listSubject.slice(0, showMoreSUmulas) || listSumulas.slice(0, showMoreSUmulas)">
+                  <template v-for="(item, index) in listSubject ? listSubject.slice(0, showMoreSUmulas) : listSumulas.slice(0, showMoreSUmulas)">
                     <v-divider class="my-1"></v-divider>
                     <v-list-item :key="index">
                       <v-list-item-content>
@@ -418,7 +418,7 @@
                 })
               })
               return subjectItem.length
-              ? subjectItem || []
+              ? subjectItem
               : this.listSumulas.sort(this.order)
 
             }
