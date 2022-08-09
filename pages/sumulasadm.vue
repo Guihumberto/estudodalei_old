@@ -1,5 +1,5 @@
 <template>
-   <v-container class="mt-5" style="max-width: 1080px">
+   <v-container class="mt-5" style="max-width: 1080px" v-if="false">
         <h1 class="text-h4">Súmulas</h1>
         <v-card class="mb-2">
             <!-- barra de buscas -->
@@ -178,7 +178,7 @@
         </v-card>
 
         <!-- sumulas list -->
-        <v-card outlined min-height="80vh" v-else-if="listSumulas.length">         
+        <v-card outlined min-height="10vh" v-else-if="listSumulas.length">         
             <v-card-text>
               <v-list>
                   <v-subheader>
@@ -188,7 +188,7 @@
                       <v-icon>{{reverse ? 'mdi-order-alphabetical-ascending' : 'mdi-order-alphabetical-descending'}}</v-icon>
                     </v-btn>
                   </v-subheader>
-                  <template v-for="(item, index) in listSubject.slice(0, showMoreSUmulas) || listSumulas.slice(0, showMoreSUmulas)">
+                  <template v-for="(item, index) in listSubject || listSumulas.slice(0, showMoreSUmulas)">
                     <v-divider class="my-1"></v-divider>
                     <v-list-item :key="index">
                       <v-list-item-content>
@@ -222,7 +222,7 @@
                   </template>
               </v-list>
               <!-- btn ver mais -->
-              <div class="text-center" v-if="showMoreSUmulas < listSumulas.length">
+              <div class="text-center" v-if="showMoreSUmulas < listSumulas.length" v-show="!listSubject">
                 <v-btn
                   class="ma-2"
                   :block="sizeScreen"
@@ -242,6 +242,19 @@
               v-bind="attrs"
               type="list-item-avatar, divider, list-item-three-line, card-heading, image, actions"
             ></v-skeleton-loader>
+          </v-card-text>
+        </v-card>
+        <v-card outlined class="mt-5">
+          <v-card-title>
+            <v-spacer></v-spacer>
+            <v-btn class="mr-2" @click="alter()">modificar</v-btn>
+            <v-btn color="success" @click="saveAlter()">salvar</v-btn>
+          </v-card-title>
+          <v-card-text>
+            <v-alert v-for="item, index in listModify || listSubject" :key="index">
+                {{item}}
+            </v-alert>
+      
           </v-card-text>
         </v-card>
     </v-container>
@@ -292,7 +305,8 @@
         sumulasFilterList: [],
         msgError: '',
         showMoreSUmulas: 5,
-        justBookFilter: false
+        justBookFilter: false,
+        listModify: []
       }
     },
     head() {
@@ -380,7 +394,6 @@
         || document.body.clientHeight;
       },
       sizeScreen(){
-        console.log(this.altura, this.largura);
         if (this.largura < 640 || this.altura < 480) {
             return  true
         } else {
@@ -390,15 +403,13 @@
       subjectDisciplinaList(){
         let subjects = []
         if(this.filterDisciplinas.length){
-          if(Array.isArray(this.listSumulas)){
-            this.listSumulas.forEach(i =>{
-              if(i.tag){
-                i.tag.forEach(tag => {
-                  subjects.push(tag)
-                })
-              }
-            })
-          }
+          this.listSumulas.forEach(i =>{
+            if(i.tag){
+              i.tag.forEach(tag => {
+                subjects.push(tag)
+              })
+            }
+          })
         }
 
         subjects = [...new Set(subjects)]
@@ -408,20 +419,20 @@
       listSubject(){
         let subjectItem = []
         if(this.subjectDisciplina.length && this.filterDisciplinas.length){
-              this.subjectDisciplina.forEach( subject => {
-                this.listSumulas.forEach(sml => {
-                  sml.tag.forEach(tag => {
-                    if(tag == subject){
-                      subjectItem.push(sml)
-                    }
-                  })
-                })
+          this.subjectDisciplina.forEach( subject => {
+            this.listSumulas.forEach(sml => {
+              sml.tag.forEach(tag => {
+                if(tag == subject){
+                  subjectItem.push(sml)
+                }
               })
-              return subjectItem.length
-              ? subjectItem || []
-              : this.listSumulas.sort(this.order)
+            })
+          })
+          return subjectItem.length
+          ? subjectItem
+          : this.listSumulas.sort(this.order)
 
-            }
+        }
       },
       isLogin(){
           let login = this.$store.getters.readUser
@@ -438,7 +449,7 @@
       },
     },
     methods:{
-        ...mapActions(['addBookSumulas','removeBookSumulas','cargaSumulasFavLists']),
+        ...mapActions(['addBookSumulas','removeBookSumulas','cargaSumulasFavLists', 'editSumulaFB']),
         sumulasFilterExist(nro){
           let sumula = ""
           if (this.filtroVinculante && this.filtroOrgao == 'STF'){
@@ -526,11 +537,30 @@
         },
         carregar(){
           if(this.isLogin){
-            setTimeout(() => {
-              this.cargaSumulasFavLists(this.loginUid)
-          }, 2000)
+              setTimeout(() => {
+                this.cargaSumulasFavLists(this.loginUid)
+            }, 2000)
+          }
+        },
+        alter(){
+          this.listSubject.forEach(i => {
+            let tagN = []
+            i.tag.forEach(tag =>{
+              tag = tag.trim()
+              tagN.push(tag.toUpperCase())
+            })
+            i.tag = tagN
+            this.listModify.push(i)
+          })
+          console.log(this.listModify)
+        },
+        saveAlter(){
+          this.listModify.forEach(i =>{
+            this.editSumulaFB(i)
+            console.log("deu certo")
+          })
+          this.listModify = []
         }
-      }
     },
     created(){
         this.carregar()
