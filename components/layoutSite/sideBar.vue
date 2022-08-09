@@ -2,7 +2,8 @@
   <v-card
     class="mx-auto"
     width="256"
-    flat
+    outlined
+    color="#f2f5f9"
   >
       
         <div class="text-center pt-5 pb-2 colorTitle white--text">

@@ -3,6 +3,7 @@
     <v-navigation-drawer
       v-model="drawer"
       app
+      color="#f2f5f9"
     >
     <layoutSite-sideBar />
     </v-navigation-drawer>
