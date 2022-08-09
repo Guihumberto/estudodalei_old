@@ -104,7 +104,7 @@
                             
                             >
                                 <v-chip
-                                    v-for="item, index in subjectDisciplinaList.sort()"
+                                    v-for="item, index in subjectDisciplinaList.sort().slice(0, showSubjects)"
                                     :key="index"
                                     :value="item"
                                     filter
@@ -115,6 +115,11 @@
                                     {{item.toUpperCase()}}
                                 </v-chip>
                             </v-chip-group>
+                            <v-subheader>
+                                <v-spacer></v-spacer>
+                                <v-btn v-if="showSubjects < subjectDisciplinaList.length" text color="success lighten-2" @click="showSubjects += subjectDisciplinaList.length">mostrar todos</v-btn>
+                                <v-btn v-else @click="showSubjects = 5" text color="error lighten-2">Mostrar menos</v-btn>
+                            </v-subheader>
                         </div>
                     </v-expand-transition>
                 </v-card-text>
@@ -338,6 +343,7 @@
                 reverse: false,
                 justBookFilter: false,
                 subjectVue: true,
+                showSubjects: 5
             }
         },
         computed:{
