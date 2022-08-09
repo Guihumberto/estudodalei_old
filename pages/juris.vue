@@ -83,6 +83,41 @@
                         </v-autocomplete>
                     </div> 
                 </v-expand-transition>
+                <!-- seleção de assunto v-if="filterDisciplinas.length -->
+                <v-card-text v-if="filterDisciplinas.length">
+                    <v-subheader>
+                        <v-spacer></v-spacer>
+                        <v-btn x-small text @click="subjectVue = !subjectVue">
+                            {{subjectVue ? 'Ocultar os assuntos' : 'Mostrar os assuntos'}}
+                        </v-btn>
+                    </v-subheader>
+                    <v-expand-transition>
+                        <div v-if="subjectVue">
+                            <h2 class="text-h6 mb-2">
+                            Escolha o Assunto
+                            </h2>
+                            <v-chip-group
+                                v-model="subjectDisciplina"
+                                column
+                                multiple
+                                active-class="primary"
+                            
+                            >
+                                <v-chip
+                                    v-for="item, index in subjectDisciplinaList.sort()"
+                                    :key="index"
+                                    :value="item"
+                                    filter
+                                    outlined
+                                    color="secondary"
+                                    :title="item"
+                                >
+                                    {{item.toUpperCase()}}
+                                </v-chip>
+                            </v-chip-group>
+                        </div>
+                    </v-expand-transition>
+                </v-card-text>
                 <!-- <v-checkbox
                     class="mt-n2"
                     v-model="cancelInclui"
@@ -150,10 +185,10 @@
                     </v-chip>  
                     
                     <v-spacer></v-spacer>
-                    Quantidade: {{jurisList.length}}
+                    Total<span v-if="jurisList.length < jurisCompleteList.length">&nbspdo filtro</span>: {{listSubject ? listSubject.length : jurisList.length}}
                 </v-subheader>
                 <v-list>
-                    <template v-for=" item, index in jurisList.slice(0, showMore)">
+                    <template v-for=" item, index in listSubject ? listSubject.slice(0, showMore) : jurisList.slice(0, showMore)">
                         <v-divider ></v-divider>
                         <v-list-item :key="index" class="mt-5">
                             <v-list-item-content>
@@ -202,7 +237,8 @@
                     </template>
                 </v-list>
             </v-card-text>
-            <v-card-actions v-if="showMore < jurisList.length && !justBookFilter">
+            <v-card-actions 
+                v-if="listSubject ? showMore < listSubject.length && !justBookFilter : showMore < jurisList.length && !justBookFilter">
                 <v-btn 
                     @click="showMore += 5"
                     block outlined color="primary"> 
@@ -249,7 +285,6 @@
                     elevation: 2,
                 },
                 showMore: 5,
-                filterDisciplinas:[],
                 subjectDisciplina: [],
                 disciplinas:[
                     {name: 'Direito Tributário', sigla: 'DT'},
@@ -273,7 +308,8 @@
                 ],
                 nroInformativo: '',
                 reverse: false,
-                justBookFilter: false
+                justBookFilter: false,
+                subjectVue: true,
             }
         },
         computed:{
@@ -327,14 +363,19 @@
             },
             subjectDisciplinaList(){
                 let subjects = []
-                
-                this.filterDisciplinas.forEach( i => {
-                    this.jurisCompleteList.forEach(juris => {
-                        if(juris.disciplina == i){
-                            subjects.push(juris.subject)
-                        }
-                    })
-                })
+                 if(this.filterDisciplinas.length){
+                    if(Array.isArray(this.jurisList)){
+                        this.filterDisciplinas.forEach( i => {
+                            this.jurisList.forEach(juris => {
+                                if(juris.disciplina == i){
+                                    subjects.push(juris.subject)
+                                }
+                            })
+                        })
+                    }
+                 }
+
+                subjects = [...new Set(subjects)]
 
                 return subjects
             },
@@ -363,6 +404,22 @@
             },
             listFavJuris(){
                 return this.$store.getters.readFavJuris || []
+            },
+            listSubject(){
+                let subjectItem = []
+                if(this.subjectDisciplina.length && this.filterDisciplinas.length){
+                    this.subjectDisciplina.forEach( subject => {
+                        this.jurisList.forEach(sml => {
+                                if(sml.subject == subject){
+                                subjectItem.push(sml)
+                                }
+                        })
+                    })
+                    return subjectItem.length
+                    ? subjectItem
+                    : this.jurisList.sort(this.order)
+
+                    }
             },
         },
         methods:{
@@ -423,7 +480,7 @@
                         this.cargaUsersFavLists(this.loginUid)
                     }, 2000)
                 }
-            }
+            },
         },
         created(){
             this.carregar()
