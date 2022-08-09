@@ -62,6 +62,9 @@
                       v-text="justBookFilter ? 'mdi-book-heart':'mdi-book-outline'"
                       small>mdi-book-heart</v-icon>
               </v-btn>
+              <v-btn icon @click="reverse = !reverse">
+                <v-icon>{{reverse ? 'mdi-order-alphabetical-ascending' : 'mdi-order-alphabetical-descending'}}</v-icon>
+              </v-btn>
             </v-card-text>
             <v-expand-transition>
               <v-card-text v-if="disciplinaVue">
@@ -182,11 +185,28 @@
             <v-card-text>
               <v-list>
                   <v-subheader>
+                    <v-chip-group column>
+                        <v-chip 
+                            label outlined
+                            v-for="item, index in subjectDisciplina" :key="index"
+                            close
+                            @click:close="subjectDisciplina.splice(index, 1)"
+                            >
+                            {{item}}
+                        </v-chip>
+                        <v-chip
+                            v-if="1 < subjectDisciplina.length"
+                           close
+                           outlined
+                           color="error"
+                           @click="subjectDisciplina = []"
+                        >limpar tudo</v-chip>
+                    </v-chip-group>
                     <v-spacer></v-spacer>
-                    Total<span v-if="listSumulas.length < listIntegraSumula.length">&nbspdo filtro</span>: {{listSubject ? listSubject.length : listSumulas.length}}
-                    <v-btn icon @click="reverse = !reverse">
-                      <v-icon>{{reverse ? 'mdi-order-alphabetical-ascending' : 'mdi-order-alphabetical-descending'}}</v-icon>
-                    </v-btn>
+                    <div style="min-width: 60px">         
+                      Total<span v-if="listSumulas.length < listIntegraSumula.length">&nbspdo filtro</span>: {{listSubject ? listSubject.length : listSumulas.length}}
+                    </div>
+                    
                   </v-subheader>
                   <template v-for="(item, index) in listSubject ? listSubject.slice(0, showMoreSUmulas) : listSumulas.slice(0, showMoreSUmulas)">
                     <v-divider class="my-1"></v-divider>
