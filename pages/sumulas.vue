@@ -183,31 +183,33 @@
         <!-- sumulas list -->
         <v-card outlined min-height="80vh" v-else-if="listSumulas.length">         
             <v-card-text>
+              <v-row>
+                <v-col class="grow">
+                  <v-chip-group column>
+                      <v-chip 
+                          label outlined
+                          v-for="item, index in subjectDisciplina" :key="index"
+                          close
+                          @click:close="subjectDisciplina.splice(index, 1)"
+                          >
+                          {{item}}
+                      </v-chip>
+                      <v-chip
+                          v-if="1 < subjectDisciplina.length"
+                         close
+                         outlined
+                         color="error"
+                         @click:close="subjectDisciplina = []"
+                         @click="subjectDisciplina = []"
+                      >limpar tudo</v-chip>
+                  </v-chip-group>
+                </v-col>
+                <v-col cols="12" sm="2" class="shrink">
+                  Total<span v-if="listSumulas.length < listIntegraSumula.length">&nbspdo filtro</span>: {{listSubject ? listSubject.length : listSumulas.length}}
+                </v-col>
+              </v-row>
+                         
               <v-list>
-                  <v-subheader class="my-5">
-                    <v-chip-group column>
-                        <v-chip 
-                            label outlined
-                            v-for="item, index in subjectDisciplina" :key="index"
-                            close
-                            @click:close="subjectDisciplina.splice(index, 1)"
-                            >
-                            {{item}}
-                        </v-chip>
-                        <v-chip
-                            v-if="1 < subjectDisciplina.length"
-                           close
-                           outlined
-                           color="error"
-                           @click="subjectDisciplina = []"
-                        >limpar tudo</v-chip>
-                    </v-chip-group>
-                    <v-spacer></v-spacer>
-                    <div style="min-width: 60px">         
-                      Total<span v-if="listSumulas.length < listIntegraSumula.length">&nbspdo filtro</span>: {{listSubject ? listSubject.length : listSumulas.length}}
-                    </div>
-                    
-                  </v-subheader>
                   <template v-for="(item, index) in listSubject ? listSubject.slice(0, showMoreSUmulas) : listSumulas.slice(0, showMoreSUmulas)">
                     <v-divider class="my-1"></v-divider>
                     <v-list-item :key="index">
