@@ -56,10 +56,10 @@
 </script>
 <style scoped>
 .colorTitle{
-  background: rgb(239,231,246);
-  background: -moz-linear-gradient(115deg, rgba(239,231,246,1) 0%, rgba(206,211,219,1) 48%, rgba(15,67,156,1) 100%);
-  background: -webkit-linear-gradient(115deg, rgba(239,231,246,1) 0%, rgba(206,211,219,1) 48%, rgba(15,67,156,1) 100%);
-  background: linear-gradient(115deg, rgba(239,231,246,1) 0%, rgba(206,211,219,1) 48%, rgba(15,67,156,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#efe7f6",endColorstr="#0f439c",GradientType=1);
+  background: rgb(110,108,107);
+  background: -moz-linear-gradient(115deg, rgba(110,108,107,1) 0%, rgba(179,185,194,1) 48%, rgba(89,94,101,1) 100%);
+  background: -webkit-linear-gradient(115deg, rgba(110,108,107,1) 0%, rgba(179,185,194,1) 48%, rgba(89,94,101,1) 100%);
+  background: linear-gradient(115deg, rgba(110,108,107,1) 0%, rgba(179,185,194,1) 48%, rgba(89,94,101,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6e6c6b",endColorstr="#595e65",GradientType=1);
 }
 </style>
