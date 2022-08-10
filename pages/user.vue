@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1>Área do Usuário</h1>
+        <h1 class="text-h4">Área do Usuário</h1>
         <v-card class="mt-1" outlined>
             <v-card-text>
                 <v-alert type="error" outlined prominent>
@@ -13,13 +13,14 @@
         </v-card>
         <v-card outlined class="mt-5">
             <v-toolbar
-            color="cyan"
+            color="primary lighten-1"
             dark
             flat
             >
             <v-toolbar-title>Favoritos e Pasta de Revisão</v-toolbar-title>
 
                 <v-spacer></v-spacer>
+                {{testUser.name}}
                 <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
@@ -40,22 +41,31 @@
                     </v-tabs>
                 </template>
             </v-toolbar>
-
             <v-tabs-items v-model="tab">
-            <v-tab-item
-                v-for="item in items"
-                :key="item"
-            >
-                <v-card flat>
-                <v-card-text v-text="text"></v-card-text>
-                </v-card>
-            </v-tab-item>
+                <v-tab-item>
+                    <stageuser-sumulasUser :user="testUser" />
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
+                            em construção...
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
+                            em construção...
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
             </v-tabs-items>
         </v-card>
     </v-container>
 </template>
 
 <script>
+
   export default {
     data () {
       return {
@@ -63,10 +73,18 @@
         items: [
           'Súmulas', 'Jurisprudências', 'Pastas',
         ],
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       }
     },
      middleware: "auth",
+     asyncData({store}) {
+        const user = store.getters.readUser
+        return {
+            testUser: {
+                name: user.name,
+                uid: user.uid
+            } 
+        }
+     },
   }
 </script>
 

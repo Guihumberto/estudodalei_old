@@ -148,17 +148,14 @@
                 }
             },
             userLoginIn(){
-                this.userLogin = true
-                let userON = false || !!this.$store.getters.readUser
-                if(userON){
+                let userON = this.$store.getters.readUser
+                if(userON.uid){
                     this.$router.push( '/' )
-                } else {
-                    this.userLogin = false
                 }
             }
         },
         created(){
-            // this.userLoginIn()
+           this.userLoginIn()
         }
     }
 </script>

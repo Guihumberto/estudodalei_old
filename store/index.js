@@ -23,6 +23,8 @@ export const state = () => ({
         {name: 'D. Civil', sigla: 'CC'},
         {name: 'D. Penal', sigla: 'DP'},
         {name: 'D. Financeiro', sigla: 'DF'},
+        {name: 'D. Ambiental', sigla: 'AMB'},
+        {name: 'D. Trabalho', sigla: 'TRAB'},
       ],
     concursos: []
 })

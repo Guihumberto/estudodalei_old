@@ -86,6 +86,10 @@
                     dense outlined
                     required
                 ></v-select>
+                <v-checkbox
+                    label="Mostrar"
+                    v-model="concurso.show"
+                ></v-checkbox>
         </v-card-text>
         <v-card-text>
             <h5 class="text-h5">Disciplinas</h5>
@@ -139,7 +143,8 @@
                     dateProva: '',
                     cargos: [],
                     status: 0,
-                    disciplinas: []
+                    disciplinas: [],
+                    show: true
                 },
                 cargo: {name: '', vagas: 0},
                 status:[

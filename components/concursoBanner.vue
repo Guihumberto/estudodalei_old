@@ -7,7 +7,7 @@
                     <v-container>
                         <v-row>
                             <v-col
-                            v-for="item, index in concursosList"
+                            v-for="item, index in concursosList.slice(0, 4)"
                             :key="index"
                             cols="12"
                             md="3"

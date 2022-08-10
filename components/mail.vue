@@ -147,15 +147,14 @@
 
 <style lang="scss" scoped>
 .linkInsta{
-    color: rgb(31, 64, 31);
-    text-decoration: underline;
+    position: relative;
+    font-size: 1rem;
+    text-decoration: none;
+    color: grey;
     transition: all .6s ;
 }
 .linkInsta:hover {
-        font-size:1.1em;
-        color: white;
-        text-decoration: none;
-        -webkit-text-stroke: 1.3px darkgreen; 
+        text-decoration: underline;
         transition-timing-function: ease-in-out;
 }
 </style>
