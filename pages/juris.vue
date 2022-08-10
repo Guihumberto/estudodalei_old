@@ -215,17 +215,13 @@
                         Total<span v-if="jurisList.length < jurisCompleteList.length">&nbspdo filtro</span>: {{listSubject ? listSubject.length : jurisList.length}}
                     </v-col>
                 </v-row>
-              
-                  
-                   
-                    
-               
+                      
                 <v-list>
                     <template v-for=" item, index in listSubject ? listSubject.slice(0, showMore) : jurisList.slice(0, showMore)">
                         <v-divider ></v-divider>
-                        <v-list-item :key="index" class="mt-5">
+                        <v-list-item :key="index" class="mt-3">
                             <v-list-item-content>
-                                <v-subheader class="ml-n4">
+                                <div>
                                     <v-chip-group column class="mb-2">
                                         <v-chip small label dark 
                                             :color="item.orgao == 'STF' ? 'primary' : 'error'">
@@ -234,7 +230,7 @@
                                         <v-chip small label outlined color="primary">{{nomeDisciplina(item.disciplina)}}</v-chip>
                                         <v-chip small label outlined color="primary">{{item.subject}}</v-chip>
                                     </v-chip-group>
-                                </v-subheader>
+                                </div>
                                 <div>
                                     <p class="caption formatText">{{item.texto}}</p>
                                     <p class="mt-1 font-italic font-weight-light">{{item.julgado}}</p>

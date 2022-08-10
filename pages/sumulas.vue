@@ -219,12 +219,12 @@
                     <v-divider class="my-1"></v-divider>
                     <v-list-item :key="index">
                       <v-list-item-content>
-                          <v-subheader class="ml-n4">
-                            <v-chip-group column class="mb-2">
+                          <div>
+                            <v-chip-group column class="mt-2">
                               <v-chip label small dark :color=" item.orgao == 'STF' ? 'indigo' : 'error'">{{item.orgao}}</v-chip>
                               <v-chip label small outlined color="primary" v-for="(tag, index) in item.tag" :key="index">{{nomeSigla(tag) || tag.toLowerCase()}}</v-chip>
                             </v-chip-group>
-                          </v-subheader>                           
+                          </div>                           
                           <div> 
                             <p class="caption formatText"> <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: {{item.text}}</p>
                           </div>
