@@ -3,6 +3,8 @@
     <v-navigation-drawer
       v-show="loading"
       v-model="drawer"
+      temporary
+      fixed
       app
       color="#f2f5f9"
     >
