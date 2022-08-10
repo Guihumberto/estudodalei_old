@@ -35,6 +35,7 @@
     </v-main>
 
     <v-footer
+    v-show="loading"
     dark
     padless
   >
