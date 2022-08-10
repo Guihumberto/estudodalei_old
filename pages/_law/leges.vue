@@ -359,5 +359,6 @@ import boxAdd from '../../components/leges/box/boxAdd.vue';
 .formatText{
     text-align: justify;
     hyphens: auto;
+    font-family: 'Inter', sans-serif;
 }
 </style>

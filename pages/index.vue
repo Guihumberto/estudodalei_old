@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-5" style="max-width: 1080px">
+  <v-container class="mt-5 formatText" style="max-width: 1080px">
         <div class="mb-2 text-h4 Heading 1">O que vamos estudar hoje?</div>
         <!-- barra de busca -->
         <v-text-field
@@ -46,7 +46,11 @@
                   <v-icon class="ml-1" small v-text="lawFavFilter ?'mdi-star': 'mdi-star-outline'"></v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" @click="dashboard = !dashboard" class="mt-n6" icon><v-icon>{{viewDashboard.icon}}</v-icon></v-btn>
+                <v-btn 
+                  color="secondary" @click="dashboard = !dashboard" 
+                  class="mt-n6 d-none d-sm-flex" icon>
+                  <v-icon>{{viewDashboard.icon}}</v-icon>
+                </v-btn>
           </v-card-title>
           <!-- tags disciplinas -->
           <v-card-text v-if="!search">
@@ -316,5 +320,7 @@
 </script>
 
 <style scoped>
-
+.formatText{
+    font-family: 'Inter', sans-serif;
+}
 </style>

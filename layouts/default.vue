@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" class="formatText">
     <v-navigation-drawer
       v-show="loading"
       v-model="drawer"
@@ -8,11 +8,11 @@
       app
       color="#f2f5f9"
     >
-    <layoutSite-sideBar />
+      <layoutSite-sideBar />
     </v-navigation-drawer>
 
-    <v-app-bar app flat color="grey lighten-2" v-show="loading" dense>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar app flat color="grey lighten-2" v-show="loading" dense class="formatText">
+      <v-app-bar-nav-icon class="d-none d-sm-flex" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="mr-1 d-none d-sm-flex">
@@ -22,7 +22,15 @@
       </v-toolbar-items>
         <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="closeLogin()" />
         <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
-        <v-menu
+        <v-btn
+          icon
+          class="ml-1 d-flex d-sm-none"
+          @click.stop="rightDrawer = !rightDrawer"
+        >
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+        
+        <!-- <v-menu
           left
           origin="center center"
           transition="scale-transition"
@@ -51,7 +59,7 @@
             </v-list-item>
           </template>
         </v-list>
-      </v-menu>
+      </v-menu> -->
         
     </v-app-bar>
 
@@ -71,6 +79,17 @@
         {{snack.text}}
       </v-snackbar>
     </v-main>
+    <v-navigation-drawer
+      v-show="loading"
+      v-model="rightDrawer"
+      :right="right"
+      temporary
+      fixed
+      app
+      color="#f2f5f9"
+    >
+      <layoutSite-sideBar />
+    </v-navigation-drawer>
 
     <v-footer
     v-show="loading"
@@ -146,6 +165,8 @@
     data(){
       return {
         drawer: false,
+        rightDrawer: false,
+        right: true,
         titleWebSite: "Estudo da Lei (beta)",
         snack: false,
         items: [
@@ -197,12 +218,7 @@
 </script>
 
 <style>
-html {
-  font-family: 'Source Sans Pro', 
-  -applle-system, 
-  BlinkMacSystemFont, 
-  'Segoe UI', 
-  Roboto, 
-  'Helvetica Neue', Arial;
+.formatText{
+    font-family: 'Inter', sans-serif;
 }
 </style>
