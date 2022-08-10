@@ -226,7 +226,7 @@
                             </v-chip-group>
                           </div>                           
                           <div> 
-                            <p class="caption formatText"> <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: {{item.text}}</p>
+                            <p class="formatText"> <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: {{item.text}}</p>
                           </div>
                       </v-list-item-content>
                       <v-list-item-action v-if="item.cancel">
@@ -572,5 +572,6 @@
 .formatText{
     text-align: justify;
     hyphens: auto;
+    line-height: 2;
 }
 </style>

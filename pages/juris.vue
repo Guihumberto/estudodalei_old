@@ -232,7 +232,7 @@
                                     </v-chip-group>
                                 </div>
                                 <div>
-                                    <p class="caption formatText">{{item.texto}}</p>
+                                    <p class="formatText">{{item.texto}}</p>
                                     <p class="mt-1 font-italic font-weight-light">{{item.julgado}}</p>
                                 </div>
                                 <v-subheader class="ml-n4">
@@ -522,5 +522,6 @@
 .formatText{
     text-align: justify;
     hyphens: auto;
+    line-height: 2;
 }
 </style>
