@@ -11,12 +11,48 @@
     <layoutSite-sideBar />
     </v-navigation-drawer>
 
-    <v-app-bar app flat color="grey lighten-2" v-show="loading">
+    <v-app-bar app flat color="grey lighten-2" v-show="loading" dense>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="closeLogin()" />
-      <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
+      <v-toolbar-items class="mr-1 d-none d-sm-flex">
+        <v-btn text to="/">Home</v-btn>
+        <v-btn to="/sumulas" text>Súmulas</v-btn>
+        <v-btn to="/juris" text>Jurisprudências</v-btn>
+      </v-toolbar-items>
+        <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="closeLogin()" />
+        <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
+        <v-menu
+          left
+          origin="center center"
+          transition="scale-transition"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              small icon
+              v-bind="attrs"
+              v-on="on"
+              class="ml-1 d-flex d-sm-none"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
+        <v-list>
+          <template v-for="(item, i) in items">
+            <v-divider v-if="i != 0"></v-divider>
+            <v-list-item      
+              :key="i"
+              :to="item.url"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-menu>
+        
     </v-app-bar>
 
     <v-main>
@@ -112,6 +148,12 @@
         drawer: false,
         titleWebSite: "Estudo da Lei (beta)",
         snack: false,
+        items: [
+          {icon:'mdi-home', title: 'Home', url:'/'},
+          {icon:'',  title: 'Súmulas', url:'/sumulas'},
+          {icon:'',  title: 'Jurisprudência', url:'/juris'},
+          {icon:'',  title: 'Novidades', url:'/news'},
+        ],
         icons: [
           'mdi-facebook',
           'mdi-twitter',
