@@ -83,8 +83,9 @@
 </template>
 
 <script>
-    import { cargaUserPreferences, mapActions } from 'vuex'
+    import { mapActions } from 'vuex'
     import { firebase, auth, db} from '@/plugins/firebase.js'
+
     export default {
         data(){
             return{
@@ -100,6 +101,7 @@
                 userLogin: false
             }
         },
+        middleware: "loginTrue",
         computed:{
             loginCreate(){
                 return this.isLogin

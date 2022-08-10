@@ -4,8 +4,8 @@
         <v-card class="mt-1" outlined>
             <v-card-text>
                 <v-alert type="error" outlined prominent>
-                    <p>Esta seção está em fase experimental e de construção. Não se preocupe caso ocorra algum erro, 
-                        estamos trabalhandona no recurso mais produtivo para seus estudos.</p>
+                    <p>Esta seção está em fase de construção. Não se preocupe caso ocorra algum erro, 
+                        estamos trabalhando no recurso mais produtivo para seus estudos.</p>
                      <v-icon color="error" v-for="item in 20" :key="item">mdi-hammer</v-icon>
                 </v-alert>
                 <v-btn outlined to="/">home</v-btn>
@@ -66,6 +66,7 @@
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       }
     },
+     middleware: "auth",
   }
 </script>
 
