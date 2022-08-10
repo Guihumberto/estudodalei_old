@@ -4,7 +4,6 @@
             :size="120"
             :width="10"
             color="purple"
-            style="margin-right: 256px"
             indeterminate
             ></v-progress-circular>
     </v-container>
