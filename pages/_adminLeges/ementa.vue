@@ -17,7 +17,7 @@
                     :items="selectedConcurso.cargos"
                     item-text="name"
                     item-value="name"
-                    :disabled="!nameConcurso"
+                    v-if="nameConcurso"
                 ></v-select>
                 <v-textarea
                     label="Texto"
