@@ -173,6 +173,9 @@ export const mutations = {
     setEmenta(state, payload){
         state.ementa = payload
     },
+    clearEmenta(state){
+        state.ementa = []
+    }
 }
 
 export const actions = {
@@ -609,7 +612,7 @@ export const actions = {
             console.log(error)
         }
     },
-    async saveEmenta({ commit}, id){
+    async saveEmenta({ commit }, id){
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/ementa/${id[0]}/${id[1]}/${id[2].id}.json`, {
                 method: 'PUT',
@@ -626,9 +629,10 @@ export const actions = {
             console.log(error)
         } 
     },
-    async cargaEmenta({ commit }){
+    async cargaEmenta({ commit }, data){
+        console.log(data)
         try {
-            const res = await fetch('https://leges-estudo-default-rtdb.firebaseio.com/ementa/7dmUCz8H8/cxUfZcorQ.json')
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/ementa/${data[0]}/${data[1]}.json`)
             const dataDB = await res.json()
             const concursoList = []
 

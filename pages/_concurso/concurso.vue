@@ -12,48 +12,21 @@
                         Inscrição:  {{findConcurso.dateStartIns}} <span v-show="findConcurso.dateStartIns">a</span> {{findConcurso.dateLastIns}}<br>
                         Data da prova:  {{findConcurso.dateProva}}<br>
                     </v-col>
-                    <v-col cols="6" sm="4">
+                    <v-col cols="6" sm="8">
                         Cargos <br>
                         <p v-for="item, index in findConcurso.cargos" :key="index">
-                            {{item.name}} <br> Vagas: {{item.vagas}}
+                            <v-row>
+                                <v-col cols="12" sm="6">{{item.name}} </v-col>
+                                <v-col cols="12" sm="2">Vagas: {{item.vagas}}</v-col>
+                                <v-col cols="12" sm="2"><concurso-ementaCargos :idCargo="item.id" /></v-col>
+                            </v-row>
+                             
                         </p>
-                    </v-col>
-                    <v-col cols="12" sm="4" v-if="false">
-                        Disciplinas <br>
-                        CONHECIMENTOS GERAIS <br>
-                        ... <br>
-                        CONHECIMENTOS ESPECÍFICOS <br>
-                        ...
-
                     </v-col>
                 </v-row>
             </v-card-text>
         </v-card>
-        <v-card outlined class="my-3">
-            <v-card-text>
-               <v-list>
-                <v-list-item v-for="disciplina, index in ementa" :key="index">
-                    <v-list-item-content>
-                        <v-list-item-title>{{disciplina.disciplina}}</v-list-item-title>
-                        <v-list>
-                            <v-list-item v-for="topic, i in disciplina.content" :key="i">
-                                <v-list-item-content>
-                                    <v-list-item-subtitle> <v-icon>mdi-chevron-right</v-icon> {{topic.topic}}</v-list-item-subtitle>
-                                    <v-list>
-                                        <v-list-item v-for="subject, i in topic.subject" :key="i"> 
-                                            <v-list-item-content>
-                                                <v-list-item-subtitle>- {{subject.name}}</v-list-item-subtitle>
-                                            </v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-list>
-                    </v-list-item-content>
-                </v-list-item>
-               </v-list>
-            </v-card-text>
-        </v-card>
+        
         <v-card outlined>
             <v-card-title>Leis disponíveis no Leges Estudo</v-card-title>
             <v-card-text>
@@ -93,7 +66,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    
     export default {
         data(){
             return{
@@ -150,12 +123,8 @@
                 disciplinasSigla = [...new Set(disciplinasSigla)]
                 return disciplinasSigla || []
             },
-            ementa(){
-                return this.$store.getters.readEmenta
-            }
         },
         methods:{
-            ...mapActions(['cargaEmenta']),
             nameStatus(item){
                 let name = ''
                 name = this.status.find(i => i.id == item)
@@ -166,9 +135,6 @@
                 return name.name
             },
         },
-        created(){
-            this.cargaEmenta()
-        }
     }
 </script>
 
