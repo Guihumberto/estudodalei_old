@@ -16,7 +16,8 @@
                     dense outlined
                     :items="selectedConcurso.cargos"
                     item-text="name"
-                    item-value="name"
+                    item-value="id"
+                    v-model="nameCargo"
                     v-if="nameConcurso"
                 ></v-select>
                 <v-textarea
@@ -24,7 +25,7 @@
                     dense outlined
                     v-model="text"
                 ></v-textarea>
-                <v-radio-group v-model="radioGroup" row>
+                <v-radio-group v-model="typeSelect" row>
                     <v-radio
                         v-for="item, index in type"
                         :key="index"
@@ -34,63 +35,48 @@
                 </v-radio-group>
                 <v-card-actions>
                     <v-spacer></v-spacer>
+                    <v-btn text @click="listContent = '', listGeral = []">limpar</v-btn>
                     <v-btn 
                         @click="importText()"
                         outlined color="success">Importar</v-btn>
                 </v-card-actions>
             </v-card-text>
         </v-card>
-        <v-expand-transition>
-            <v-row>
-                <v-col cols="12">
-                    <v-card outlined class="mt-5" v-if="listContent">
-                        <v-card-text>
-                            <v-expansion-panels
-                                v-model="panel"
-                                :disabled="disabled"
-                                multiple
-                                >
-                                <v-expansion-panel v-for="item, index in listGeral" :key="index">
-                                    <v-expansion-panel-header class="text-h5"> {{item.disciplina}} - {{item.content.length}}</v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-list>
-                                                <template v-for="subject, i in item.content">
-                                                    <v-divider></v-divider>
-                                                    <v-list-item :key="i">
-                                                        <v-list-item-content class="pb-0">
-                                                            <v-list-item-title class="formatText" >
-                                                                {{subject.topic}} - {{subject.subject.length}}
-                                                            </v-list-item-title>
-                                                            <v-list>
-                                                                <v-list-item v-for="sub, x in subject.subject" :key="x">
-                                                                    <v-list-item-icon>
-                                                                        <v-checkbox></v-checkbox>
-                                                                    </v-list-item-icon>
-                                                                    <v-list-item-content>
-                                                                        {{sub}}
-                                                                    </v-list-item-content>
-                                                                </v-list-item>
-                                                            </v-list>
-                                                        </v-list-item-content>
-                                                    </v-list-item>
-                                                </template>
-                                            </v-list>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
-                            </v-expansion-panels>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col>
-                    
-                </v-col>
-            </v-row>
-        </v-expand-transition>
-
+            <v-card outlined class="mt-5" v-if="listContent">
+            <v-subheader>
+                <v-spacer></v-spacer>
+                <v-btn @click="salvar">Salvar</v-btn>
+            </v-subheader>
+                <v-card-text>
+                    <v-expand-transition>
+                        <v-expansion-panels
+                            v-model="panel"
+                            :disabled="disabled"
+                            multiple
+                            >
+                            <v-expansion-panel v-for="item, index in listGeral" :key="index">
+                                <v-expansion-panel-header> {{item.disciplina}} - {{item.content.length}}</v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                    <div v-for="subject, i in item.content" :key="i" class="mb-2">
+                                        <div class="text--bold">{{i+1}} - {{subject.topic}}</div>
+                                        <div v-for="item, index in  subject.subject" :key="index">
+                                            <v-icon>mdi-chevron-right</v-icon>
+                                            {{item.name}}
+                                            
+                                        </div>
+                                    </div>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-expand-transition>
+                </v-card-text>
+            </v-card>
     </v-container>
 </template>
 
 <script>
+    import { mapActions } from 'vuex';
+    const shortid = require('shortid');
 
     export default {
         data(){
@@ -100,26 +86,33 @@
                 listGeral: [],
                 panel: [0, 1],
                 disabled: false,
-                radioGroup: '',
+                typeSelect: '',
                 type:[
                     {id: 1, name: "Conhecimentos Gerais"},
                     {id: 2, name: "Conhecimentos Específico"}
                 ],
-                nameConcurso: ''
+                nameConcurso: '',
+                nameCargo: '',
+    
             }
         },
         methods:{
+            ...mapActions(['saveEmenta']),
             importText(){
-                if(this.text){
+                if(this.text && this.typeSelect){
                     let temp = []
                     temp.push(this.text.split(':')[0])
                     temp.push(this.text.substring( temp[0].length +1 ))
                     this.listContent = {
+                        id: shortid.generate(),
                         disciplina: temp[0],
+                        type: this.typeSelect,
                     }
-                    let content = temp[1].replace('/\n*/', ' ').split(". ")
+                    let content = temp[1].replace('/\n/gm', ' ').split(". ")
                     content = content.map(i => i.trim())
-                    content = content.map(i => i.replace('/\n*/', ' '))
+                    content = content.map(i => i.replace('\n', ' '))
+                    content = content.map(i => i.replace('\n', ' '))
+                    content = content.map(i => i.split('\n').join(' '))
                     content = content.filter(i => i)
                     
                     let listTemp = []
@@ -127,20 +120,26 @@
                         let temp = []
                         if(topic.indexOf(':') != -1){
                              temp.push(topic.split(':')[0])
-                             temp.push(topic.substring( temp[0].length +1 ).replace('/\n/', ' '))
+                             temp.push(topic.substring( temp[0].length +1 ).replace('\n', ' '))
                         }else{
                             temp.push(topic)
                         }
                         
                         let agregador = temp[0].replace('\n', ' ')
                         let subjects = ''
+                        let subListx = []
                         if(temp[1]){
+                            let xtemp = ''
                             subjects = temp[1].split(';').map(i => i.replace('/\n/', ' '))
+                            subjects.forEach(i => {
+                               xtemp = {id: shortid.generate(), name: i}
+                               subListx.push(xtemp)
+                            })
                         }
 
                         // funcao para apagar todas apagar todas as ocorrencias \n
         
-                        let org = {topic: agregador, subject: subjects }
+                        let org = {id: shortid.generate(), topic: agregador, subject: subListx }
                         listTemp.push(org)  
                     })
 
@@ -149,6 +148,15 @@
                     this.listGeral.push(this.listContent)
                     this.text = ''
                     this.listContent = {}
+                }
+            },
+            salvar(){
+                if(this.nameConcurso && this.nameCargo){
+
+                    this.listGeral.forEach( i => {
+                        let data = [this.nameConcurso, this.nameCargo, i]
+                        this.saveEmenta(data)
+                    })   
                 }
             }
         },
@@ -164,7 +172,6 @@
             }
         }
     }
-import { CompatSource } from 'webpack-sources'
 </script>
 
 <style lang="scss" scoped>

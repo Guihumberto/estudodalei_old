@@ -29,6 +29,31 @@
                 </v-row>
             </v-card-text>
         </v-card>
+        <v-card outlined class="my-3">
+            <v-card-text>
+               <v-list>
+                <v-list-item v-for="disciplina, index in ementa" :key="index">
+                    <v-list-item-content>
+                        <v-list-item-title>{{disciplina.disciplina}}</v-list-item-title>
+                        <v-list>
+                            <v-list-item v-for="topic, i in disciplina.content" :key="i">
+                                <v-list-item-content>
+                                    <v-list-item-subtitle> <v-icon>mdi-chevron-right</v-icon> {{topic.topic}}</v-list-item-subtitle>
+                                    <v-list>
+                                        <v-list-item v-for="subject, i in topic.subject" :key="i"> 
+                                            <v-list-item-content>
+                                                <v-list-item-subtitle>- {{subject.name}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-list-item-content>
+                </v-list-item>
+               </v-list>
+            </v-card-text>
+        </v-card>
         <v-card outlined>
             <v-card-title>Leis disponíveis no Leges Estudo</v-card-title>
             <v-card-text>
@@ -68,6 +93,7 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     export default {
         data(){
             return{
@@ -123,9 +149,13 @@
                 })
                 disciplinasSigla = [...new Set(disciplinasSigla)]
                 return disciplinasSigla || []
+            },
+            ementa(){
+                return this.$store.getters.readEmenta
             }
         },
         methods:{
+            ...mapActions(['cargaEmenta']),
             nameStatus(item){
                 let name = ''
                 name = this.status.find(i => i.id == item)
@@ -134,8 +164,11 @@
             disciplinName(item){
                 let name = this.discplinaList.find(i => i.sigla == item)
                 return name.name
-            }
+            },
         },
+        created(){
+            this.cargaEmenta()
+        }
     }
 </script>
 

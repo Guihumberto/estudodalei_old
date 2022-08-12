@@ -1,5 +1,5 @@
 <template>
-   <v-container class="mt-5" style="max-width: 1080px" v-if="false">
+   <v-container class="mt-5" style="max-width: 1080px" v-if="true">
         <v-card flat outlined min-height="80vh">
             <v-tabs  v-model="tab">
                 <v-tab>Leis</v-tab>

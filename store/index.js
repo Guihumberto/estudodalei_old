@@ -26,7 +26,8 @@ export const state = () => ({
         {name: 'D. Ambiental', sigla: 'AMB'},
         {name: 'D. Trabalho', sigla: 'TRAB'},
       ],
-    concursos: []
+    concursos: [],
+    ementa: []
 })
 
 export const getters = {
@@ -71,6 +72,9 @@ export const getters = {
     },
     readConcursosList(state){
         return state.concursos
+    },
+    readEmenta(state){
+        return state.ementa
     },
 }
 
@@ -164,6 +168,9 @@ export const mutations = {
     },
     setCargaFavSumulas(state, payload){
         state.favSumulas = payload
+    },
+    setEmenta(state, payload){
+        state.ementa = payload
     },
 }
 
@@ -597,6 +604,37 @@ export const actions = {
                 usersFavsLists.push(dataDB[id])
             }
             commit('setCargaFavSumulas', usersFavsLists)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async saveEmenta({ commit}, id){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/ementa/${id[0]}/${id[1]}/${id[2].id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(id[2])
+            })
+
+            const dataDB = await res.json()
+            // commit('setCreateconcurso', concurso)
+            console.log("ementa salvo");
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaEmenta({ commit }){
+        try {
+            const res = await fetch('https://leges-estudo-default-rtdb.firebaseio.com/ementa/7dmUCz8H8/cxUfZcorQ.json')
+            const dataDB = await res.json()
+            const concursoList = []
+
+            for (let id in dataDB){
+                concursoList.push(dataDB[id])
+            }
+            commit('setEmenta', concursoList)     
         } catch (error) {
             console.log(error)
         }

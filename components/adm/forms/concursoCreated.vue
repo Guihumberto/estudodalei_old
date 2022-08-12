@@ -146,7 +146,7 @@
                     disciplinas: [],
                     show: true
                 },
-                cargo: {name: '', vagas: 0},
+                cargo: {id: shortid.generate(), name: '', vagas: 0},
                 status:[
                     {name: 'em breve', id: 0},
                     {name: 'Autorizado', id: 1},
@@ -190,7 +190,7 @@
                 this.setConcurso(this.concurso)
                 this.clearAll()
                 this.$store.dispatch("snackbars/setSnackbars", {text:'Concurso criado com sucesso', color:'success'})
-                this.cargo = {name: '', vagas: 0}
+                this.cargo = {id: shortid.generate(), name: '', vagas: 0}
             }
         }
     }

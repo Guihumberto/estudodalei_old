@@ -147,8 +147,9 @@
           ></v-skeleton-loader>
         </v-card>
 
-        <sumulaBanner />
+        <start-bannerWhat />
         <concursoBanner />
+        <sumulaBanner />
         <funcionalidades />
         <mail />
   </v-container>
