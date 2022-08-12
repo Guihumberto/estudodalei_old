@@ -1,5 +1,5 @@
 <template>
-    <v-container style="max-width: 1080px">
+    <v-container style="max-width: 1080px" v-if="$store.state.adm">
         <h1 class="my-5 text-h5">Importar Ementas</h1>
         <v-card outlined>
             <v-card-text>

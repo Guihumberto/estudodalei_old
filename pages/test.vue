@@ -1,5 +1,5 @@
 <template>
-    <div v-if="false">
+    <div v-if="$store.state.adm">
         <h1>testes</h1>
         <v-btn @click="save()">Salvar</v-btn>
         <v-btn @click="gravar()">Gravar</v-btn>

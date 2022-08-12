@@ -237,7 +237,9 @@
 
             } else {
 
-              return listLaws
+              return listLaws.length
+              ? listLaws
+              : 99
 
             }    
       },

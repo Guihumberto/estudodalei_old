@@ -1,5 +1,5 @@
 <template>
-   <v-container class="mt-5" style="max-width: 1080px" v-if="false">
+   <v-container class="mt-5" style="max-width: 1080px" v-if="$store.state.adm">
         <h1 class="text-h4">Súmulas</h1>
         <v-card class="mb-2">
             <!-- barra de buscas -->
