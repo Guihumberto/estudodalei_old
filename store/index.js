@@ -2,7 +2,7 @@ import { auth } from "@/plugins/firebase.js"
 export const strict = false
 
 export const state = () => ({
-    adm: true,
+    adm: false,
     lawsList: [],
     textLaw: [],
     otherTextLaw: [],
