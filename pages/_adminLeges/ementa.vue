@@ -117,7 +117,7 @@
                         name: temp[0],
                         type: this.typeSelect,
                     }
-                    let content = temp[1].replace('/\n/gm', ' ').split(". ")
+                    let content = temp[1].replace('\n', ' ').split(". ")
                     content = content.map(i => i.trim())
                     content = content.map(i => i.replace('\n', ' '))
                     content = content.map(i => i.replace('\n', ' '))

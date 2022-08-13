@@ -1,5 +1,6 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
+    <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
     <v-card class="mb-5" outlined v-if="nameLaw[0]">
         <v-card-text>
             <v-row>

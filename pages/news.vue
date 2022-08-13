@@ -1,6 +1,7 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
-        <h1 class="text-h4">Novidades</h1>
+        <h1 class="text-h4 mb-5">Novidades</h1>
+        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <v-card class="mt-5" outlined>
             <v-card-text>
                 <p>Dê uma conferida no que vem por ai</p>

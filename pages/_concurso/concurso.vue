@@ -1,6 +1,7 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
         <h1 class="text-h4 mb-2">{{findConcurso.name}}</h1>
+        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <v-card class="mb-2" outlined> 
             <v-card-text>
                 <h5 class="text-h5 mb-5">Informações Gerais</h5>

@@ -1,6 +1,7 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
-        <h1 class="text-h4">Jurisprudência</h1>
+        <h1 class="text-h4 mb-5">Jurisprudência</h1>
+        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <!-- barra de busca e filtros -->
         <v-card class="my-2">
             <v-card-text>

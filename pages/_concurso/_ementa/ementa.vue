@@ -1,6 +1,7 @@
 <template>
     <v-container style="max-width: 1080px">
         <h1 class="text-h5  mb-5">Conteúdo</h1>
+        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <v-card outlined class="mb-5 ">
             <v-card-title class="white--text primary lighten-2 mb-5 py-2">Importar Conteúdo</v-card-title>
             <v-card-text>
