@@ -42,35 +42,44 @@
                 </v-card-actions>
             </v-card-text>
         </v-card>
-            <v-card outlined class="mt-5" v-if="listContent">
+        <!-- <v-card outlined class="mt-5" v-if="listContent">
+        <v-subheader>
+            <v-spacer></v-spacer>
+            <v-btn @click="salvar">Salvar</v-btn>
+        </v-subheader>
+            <v-card-text>
+                <v-expand-transition>
+                    <v-expansion-panels
+                        v-model="panel"
+                        :disabled="disabled"
+                        multiple
+                        >
+                        <v-expansion-panel v-for="item, index in listGeral" :key="index">
+                            <v-expansion-panel-header> {{item.disciplina}} - {{item.content.length}}</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                                <div v-for="subject, i in item.content" :key="i" class="mb-2">
+                                    <div class="text--bold">{{i+1}} - {{subject.topic}}</div>
+                                    <div v-for="item, index in  subject.subject" :key="index">
+                                        <v-icon>mdi-chevron-right</v-icon>
+                                        {{item.name}}
+                                        
+                                    </div>
+                                </div>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+                </v-expand-transition>
+            </v-card-text>
+        </v-card> -->
+        <v-card class="mt-5" outlined>
             <v-subheader>
                 <v-spacer></v-spacer>
                 <v-btn @click="salvar">Salvar</v-btn>
             </v-subheader>
-                <v-card-text>
-                    <v-expand-transition>
-                        <v-expansion-panels
-                            v-model="panel"
-                            :disabled="disabled"
-                            multiple
-                            >
-                            <v-expansion-panel v-for="item, index in listGeral" :key="index">
-                                <v-expansion-panel-header> {{item.disciplina}} - {{item.content.length}}</v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                    <div v-for="subject, i in item.content" :key="i" class="mb-2">
-                                        <div class="text--bold">{{i+1}} - {{subject.topic}}</div>
-                                        <div v-for="item, index in  subject.subject" :key="index">
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                            {{item.name}}
-                                            
-                                        </div>
-                                    </div>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
-                    </v-expand-transition>
-                </v-card-text>
-            </v-card>
+            <v-card-text>
+                <v-treeview :items="listGeral"></v-treeview>
+            </v-card-text>
+        </v-card>
     </v-container>
 </template>
 
@@ -105,7 +114,7 @@
                     temp.push(this.text.substring( temp[0].length +1 ))
                     this.listContent = {
                         id: shortid.generate(),
-                        disciplina: temp[0],
+                        name: temp[0],
                         type: this.typeSelect,
                     }
                     let content = temp[1].replace('/\n/gm', ' ').split(". ")
@@ -130,7 +139,7 @@
                         let subListx = []
                         if(temp[1]){
                             let xtemp = ''
-                            subjects = temp[1].split(';').map(i => i.replace('/\n/', ' '))
+                            subjects = temp[1].split(';').map(i => i.replace('\n', ' '))
                             subjects.forEach(i => {
                                xtemp = {id: shortid.generate(), name: i}
                                subListx.push(xtemp)
@@ -139,11 +148,11 @@
 
                         // funcao para apagar todas apagar todas as ocorrencias \n
         
-                        let org = {id: shortid.generate(), topic: agregador, subject: subListx }
+                        let org = {id: shortid.generate(), name: agregador, children: subListx }
                         listTemp.push(org)  
                     })
 
-                    this.listContent.content = listTemp
+                    this.listContent.children = listTemp
 
                     this.listGeral.push(this.listContent)
                     this.text = ''

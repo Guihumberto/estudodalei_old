@@ -18,7 +18,17 @@
                             <v-row>
                                 <v-col cols="12" sm="6">{{item.name}} </v-col>
                                 <v-col cols="12" sm="2">Vagas: {{item.vagas}}</v-col>
-                                <v-col cols="12" sm="2"><concurso-ementaCargos :idCargo="item.id" /></v-col>
+                                <v-col cols="12" sm="2">
+                                    <v-btn 
+                                        v-if="item.id"
+                                        :to="{
+                                            name: 'concurso-ementa-ementa',
+                                            params:{ementa: item.id},
+                                            // query:{id:item.id}  
+                                        }"
+                                        dark small outlined 
+                                        class="primary lighten-2">ver conteúdo</v-btn>
+                                </v-col>
                             </v-row>
                              
                         </p>
