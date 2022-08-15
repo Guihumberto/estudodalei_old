@@ -52,7 +52,8 @@ export default {
   ],
   googleFonts: {
     families: {
-      Inter: [300, 500, 700]
+      Inter: [300, 500, 700],
+      Roboto: [300, 500, 700]
     }
   },
 

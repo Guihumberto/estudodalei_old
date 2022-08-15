@@ -28,7 +28,9 @@ export const state = () => ({
         {name: 'D. Trabalho', sigla: 'TRAB'},
       ],
     concursos: [],
-    ementa: []
+    ementa: [],
+    plan: [],
+    planComplete: []
 })
 
 export const getters = {
@@ -76,6 +78,12 @@ export const getters = {
     },
     readEmenta(state){
         return state.ementa
+    },
+    readPlan(state){
+        return state.plan
+    },
+    readPlanComplete(state){
+        return state.planComplete
     },
 }
 
@@ -175,7 +183,13 @@ export const mutations = {
     },
     clearEmenta(state){
         state.ementa = []
-    }
+    },
+    setPlan(state, payload){
+        state.plan = payload
+    },
+    setPlanComplete(state, payload){
+        state.planComplete = payload
+    },
 }
 
 export const actions = {
@@ -630,7 +644,6 @@ export const actions = {
         } 
     },
     async cargaEmenta({ commit }, data){
-        console.log(data)
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/ementa/${data[0]}/${data[1]}.json`)
             const dataDB = await res.json()
@@ -640,6 +653,51 @@ export const actions = {
                 concursoList.push(dataDB[id])
             }
             commit('setEmenta', concursoList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async setPrioritys({ commit }, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data.uid}/plan/${data.concurso}/${data.cargo}/priority.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data.priority)
+            })
+
+            const dataDB = await res.json()
+            // commit('setCreateconcurso', concurso)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaPrioritys({ commit }, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${data.uid}/plan/${data.concurso}/${data.cargo}.json`)
+            const dataDB = await res.json()
+            const concursoList = []
+
+            for (let id in dataDB){
+                concursoList.push(dataDB[id])
+            }
+            commit('setPlan', concursoList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async cargaPlan({ commit }, uid){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${uid}/plan.json`)
+            const dataDB = await res.json()
+            const concursoList = []
+
+            for (let id in dataDB){
+                concursoList.push(dataDB[id])
+            }
+            commit('setPlanComplete', concursoList)     
         } catch (error) {
             console.log(error)
         }

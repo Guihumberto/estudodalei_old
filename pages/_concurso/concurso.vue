@@ -1,7 +1,10 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
         <h1 class="text-h4 mb-2">{{findConcurso.name}}</h1>
-        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
+        <v-btn small text class="px-0 mb-5" text @click="$router.go(-1)">
+            <v-icon small>mdi-arrow-left</v-icon>
+            voltar
+        </v-btn>
         <v-card class="mb-2" outlined> 
             <v-card-text>
                 <h5 class="text-h5 mb-5">Informações Gerais</h5>
@@ -25,7 +28,7 @@
                                         :to="{
                                             name: 'concurso-ementa-ementa',
                                             params:{ementa: item.id},
-                                            // query:{id:item.id}  
+                                            query:{id:item.name}  
                                         }"
                                         dark small outlined 
                                         class="primary lighten-2">ver conteúdo</v-btn>

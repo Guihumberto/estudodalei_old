@@ -21,9 +21,25 @@
 
                 <v-spacer></v-spacer>
                 {{testUser.name}}
-                <v-btn icon>
-                    <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
+                <v-menu
+                    left
+                    offset-x
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                        >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                    </template>
+                        <v-list>
+                            <v-list-item to="/plan">
+                                <v-list-item-title>Planejamento</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                 <template v-slot:extension>
                     <v-tabs
                     v-model="tab"

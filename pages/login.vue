@@ -138,7 +138,7 @@
                     // carregar preferencias do usuario
                     this.cargaUserPreferences(usuario.uid)
 
-                    this.$router.push( '/' )
+                    this.$router.push( this.$route.query.redirect || '/' )
                     this.loading = false
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Seja bem-vindo!', color:'primary lighten-1'})
 
