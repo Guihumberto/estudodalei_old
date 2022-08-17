@@ -12,7 +12,7 @@
     </v-navigation-drawer>
 
     <v-app-bar app flat color="grey lighten-2" v-show="loading" dense class="formatText">
-      <v-app-bar-nav-icon class="d-none d-sm-flex" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="mr-1 d-none d-sm-flex">
@@ -24,7 +24,7 @@
         <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
         <v-btn
           icon
-          class="ml-1 d-flex d-sm-none"
+          class="ml-1 d-none d-sm-flex"
           @click.stop="rightDrawer = !rightDrawer"
         >
           <v-icon>mdi-menu</v-icon>
@@ -83,12 +83,12 @@
       v-show="loading"
       v-model="rightDrawer"
       :right="right"
-      temporary
       fixed
       app
       color="#f2f5f9"
+      width="450"
     >
-      <layoutSite-sideBar />
+      <layoutSite-sideBarRight />
     </v-navigation-drawer>
 
     <v-footer

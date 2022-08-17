@@ -30,7 +30,8 @@ export const state = () => ({
     concursos: [],
     ementa: [],
     plan: [],
-    planComplete: []
+    planComplete: [],
+    lawComplement: []
 })
 
 export const getters = {
@@ -45,6 +46,9 @@ export const getters = {
     },
     readOtherTextLaw(state){
         return state.otherTextLaw
+    },
+    readLawComplement(state){
+        return state.lawComplement
     },
     readNameLaw(state){
         return state.nameLaw
@@ -114,6 +118,9 @@ export const mutations = {
     },
     setOtherTextLaw(state, payload){
         state.otherTextLaw = payload
+    },
+    setLawComplement(state, payload){
+        state.lawComplement = payload
     },
     setSumulas(state, payload){
         state.sumulas = payload
@@ -702,4 +709,18 @@ export const actions = {
             console.log(error)
         }
     },
+    async cargaLawComplement({ commit}, id){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/textLaws/${id}.json`)
+            const dataDB = await res.json()
+            const textLaw = []
+
+            for (let id in dataDB){
+                textLaw.push(dataDB[id])
+            }
+            commit('setLawComplement', textLaw)     
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

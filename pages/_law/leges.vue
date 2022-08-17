@@ -301,7 +301,7 @@ import boxAdd from '../../components/leges/box/boxAdd.vue';
                     this.search = ''
                     let findArt = this.artsFilter.find( x => x == art ) 
                     if(!findArt){
-                        art > 0 ? this.artsFilter.push(art) : ''
+                        art > 0 ? this.artsFilter.push(art) : this.$store.dispatch("snackbars/setSnackbars", {text:'artigo inválido', color:'error'})
                     }
                     
                     if(this.artsFilter.length > 0) {
@@ -309,6 +309,8 @@ import boxAdd from '../../components/leges/box/boxAdd.vue';
                     } else {
                         this.artsFilterActive = false
                     } 
+                } else {
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'artigo não existe', color:'error'})
                 }
             },  
             pageFilter(item){

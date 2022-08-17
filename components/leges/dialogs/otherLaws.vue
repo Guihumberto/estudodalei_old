@@ -31,7 +31,6 @@
                   dense
                   outlined
                   v-model="law"
-                  :rules="[]"
                 ></v-autocomplete>
         </v-card-text>
         <v-card-text v-else>
@@ -158,8 +157,7 @@
     computed:{
       listLaws(){
         return this.$store.getters.readLawsList
-      },
-      
+      },    
       cargaArt(){
         return this.textLaw.filter( item => item.art == this.findArt && !item.estrutura) || []
       },
@@ -170,7 +168,6 @@
       },
       cargaOtherTextLawComputede(){
         if(this.law){
-           console.log('carga');
            this.cargaOtherTextLaw(this.law)
            return "!"
         }
