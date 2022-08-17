@@ -83,7 +83,7 @@
 
                 this.ementa.geral.forEach( em => {
                     this.plan.geral.forEach( plan =>{
-                        if(plan.idDisciplina1 == em.id){
+                        if(plan.idDisciplina == em.id){
                             list1.push({disciplina: em.name, id: em.id, assunto: plan.name})
                         }
                     })
@@ -91,7 +91,7 @@
 
                 this.ementa.especifica.forEach( em => {
                     this.plan.especifica.forEach( plan =>{
-                        if(plan.idDisciplina1 == em.id){
+                        if(plan.idDisciplina == em.id){
                             list2.push({disciplina: em.name, id: em.id, assunto: plan.name})
                         }
                     })
