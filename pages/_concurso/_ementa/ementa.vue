@@ -123,7 +123,7 @@
                                         hoverable
                                         v-model="priority.geral"
                                         selection-type="leaf"
-                                        selectable
+                                        selectable return-object
                                         :items="ementa.geral">
                                     </v-treeview>
                                 </v-card-text>
@@ -133,7 +133,7 @@
                                         hoverable
                                         v-model="priority.especifica"
                                         selection-type="leaf"
-                                        selectable
+                                        selectable return-object
                                         :items="ementa.especifica">
                                     </v-treeview>
                                 </v-card-text>
@@ -190,6 +190,7 @@
                 priority: {geral: [], especifica: []},
                 importC: true,
                 e1: 1,
+                allParentNodes : false,
             }
         },
         computed:{
@@ -204,7 +205,7 @@
             },
             plan(){
                 return this.$store.getters.readPlan
-            }
+            },
         },
         methods:{
             ...mapActions(['cargaEmenta', 'setPrioritys', 'cargaPrioritys']),
