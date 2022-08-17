@@ -11,7 +11,7 @@
       x-small
       icon
       v-if="law"
-      @click="law = ''"
+      @click="clearLaw()"
     ><v-icon>mdi-close</v-icon></v-btn>
   </v-system-bar>
 
@@ -39,7 +39,7 @@
       v-if="!law"
     ></v-autocomplete>
     <v-btn v-else text class="px-0"
-      @click="law = ''"
+      @click="clearLaw()"
     > {{nameLaw}} <v-icon class="ml-1">mdi-close-circle</v-icon></v-btn>
     
     <v-card-title class="text-center primary white--text py-1">
@@ -201,6 +201,11 @@
           this.filterArtActive = false
         }
       },
+      clearLaw(){
+        this.law = ''
+        this.listFilterArt = []
+        this.filterArtActive = false
+      }
     },
     created(){
       this.cargaLawComplement(this.lawDefault)
