@@ -24,7 +24,7 @@
         <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
         <v-btn
           icon
-          class="ml-1 d-none d-sm-flex"
+          class="ml-1"
           @click.stop="rightDrawer = !rightDrawer"
         >
           <v-icon>mdi-menu</v-icon>

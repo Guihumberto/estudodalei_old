@@ -15,7 +15,7 @@
           small elevation="0"
           fab
         >
-          <v-icon>mdi-account</v-icon>
+          <span class="text-h6">{{startsName.sigla}}</span>
         </v-btn>
       </template>
 
@@ -23,7 +23,7 @@
         <v-list>
           <v-list-item>
             <v-list-item-avatar color="purple">
-              <span class="white--text text-h5">{{startsName.sigla}}</span>
+              <span class="white--text text-h6">{{startsName.sigla}}</span>
             </v-list-item-avatar>
 
             <v-list-item-content>
