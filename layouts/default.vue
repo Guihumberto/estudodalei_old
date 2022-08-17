@@ -13,7 +13,10 @@
 
     <v-app-bar app flat color="grey lighten-2" v-show="loading" dense class="formatText">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>{{titleWebSite}}</v-toolbar-title>
+      <div>
+        <h4 class="text-h6">Estudo da Lei</h4>
+        <p class="caption mb-0 mt-n2">Leges (Beta)</p>
+      </div>
       <v-spacer></v-spacer>
       <v-toolbar-items class="mr-1 d-none d-sm-flex">
         <v-btn text to="/">Home</v-btn>
