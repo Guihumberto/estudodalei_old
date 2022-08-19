@@ -2,7 +2,7 @@ import { auth } from "@/plugins/firebase.js"
 export const strict = false
 
 export const state = () => ({
-    adm: false,
+    adm: true,
     lawsList: [],
     textLaw: [],
     otherTextLaw: [],
@@ -16,22 +16,23 @@ export const state = () => ({
     favJuris:[],
     favSumulas:[],
     disciplinas: [
-        {name: 'D. Constitucional', sigla: 'DC'},
-        {name: 'D. Tributário', sigla: 'DT'},
-        {name: 'D. Administrativo', sigla: 'DA'},
-        {name: 'D. Previdenciário', sigla: 'PREV'},
-        {name: 'D. Empresarial', sigla: 'DE'},
-        {name: 'D. Civil', sigla: 'CC'},
-        {name: 'D. Penal', sigla: 'DP'},
-        {name: 'D. Financeiro', sigla: 'DF'},
-        {name: 'D. Ambiental', sigla: 'AMB'},
-        {name: 'D. Trabalho', sigla: 'TRAB'},
+        {id: 2, name: 'D. Constitucional', sigla: 'DC'},
+        {id: 3, name: 'D. Tributário', sigla: 'DT'},
+        {id: 1, name: 'D. Administrativo', sigla: 'DA'},
+        {id: 4, name: 'D. Previdenciário', sigla: 'PREV'},
+        {id: 5, name: 'D. Empresarial', sigla: 'DE'},
+        {id: 6, name: 'D. Civil', sigla: 'CC'},
+        {id: 7, name: 'D. Penal', sigla: 'DP'},
+        {id: 8, name: 'D. Financeiro', sigla: 'DF'},
+        {id: 9, name: 'D. Ambiental', sigla: 'AMB'},
+        {id: 10, name: 'D. Trabalho', sigla: 'TRAB'},
       ],
     concursos: [],
     ementa: [],
     plan: [],
     planComplete: [],
-    lawComplement: []
+    lawComplement: [],
+    questions:[]
 })
 
 export const getters = {
@@ -88,6 +89,9 @@ export const getters = {
     },
     readPlanComplete(state){
         return state.planComplete
+    },
+    readQuestions(state){
+        return state.questions
     },
 }
 
@@ -196,6 +200,9 @@ export const mutations = {
     },
     setPlanComplete(state, payload){
         state.planComplete = payload
+    },
+    setQuestions(state, payload){
+        state.questions = payload
     },
 }
 
@@ -722,5 +729,53 @@ export const actions = {
         } catch (error) {
             console.log(error)
         }
+    },
+    async cargaQuestions({ commit }){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/questions.json`)
+            const dataDB = await res.json()
+            const textLaw = []
+
+            for (let id in dataDB){
+                textLaw.push(dataDB[id])
+            }
+            commit('setQuestions', textLaw)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async setQuestions({ commit }, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/questions/${data.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const dataDB = await res.json()
+            // commit('setCreateconcurso', concurso)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async linkQuestionDispositive({ commit }, disp){
+        console.log("salvo com sucesso")
+        console.log(disp)
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/textLaws/${disp.idLaw}/${disp.idDispositivo}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(disp.dispositive)
+            })
+
+            const dataDB = await res.json()
+        } catch(error){
+            console.log(error)
+        } 
     }
 }

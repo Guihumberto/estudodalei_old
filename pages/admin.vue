@@ -6,6 +6,7 @@
                 <v-tab>Súmulas</v-tab>
                 <v-tab>Jurisprudência</v-tab>
                 <v-tab>Concursos</v-tab>
+                <v-tab>Questões</v-tab>
             </v-tabs>
             <v-tabs-items v-model="tab">
                 <v-tab-item>
@@ -142,6 +143,12 @@
                         Concurso
                     </v-card-title>
                     <adm-forms-concursoCreated />
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card-title  class="grey lighten-2">
+                        Questões
+                    </v-card-title>
+                    <concurso-questoes-cadQuestoes />
                 </v-tab-item>
             </v-tabs-items>
        </v-card>

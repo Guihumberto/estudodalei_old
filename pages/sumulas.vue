@@ -573,6 +573,10 @@
 .formatText{
     text-align: justify;
     hyphens: auto;
-    line-height: 2;
+    line-height: 32px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #36344D;
+    letter-spacing: .3px;
 }
 </style>

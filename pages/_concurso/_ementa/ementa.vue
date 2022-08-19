@@ -1,7 +1,7 @@
 <template>
     <v-container style="max-width: 1080px">
         <h1 class="text-h5  mb-5">Conteúdo</h1>
-        <v-btn small text class="px-0 mb-5" text @click="$router.go(-1)">
+        <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
             <v-icon small>mdi-arrow-left</v-icon>
             voltar
         </v-btn>

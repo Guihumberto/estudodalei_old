@@ -1,12 +1,15 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
-    <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
+    <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
+        <v-icon small>mdi-arrow-left</v-icon>
+        voltar
+    </v-btn>
     <v-card class="mb-5" outlined v-if="nameLaw[0]">
         <v-card-text>
             <v-row>
                 <v-col cols="12" sm="6">
                      <v-card-title>
-                        {{nameLaw[3]}}
+                        <p class="formatText mb-n3">{{nameLaw[3]}}</p>
                     </v-card-title>
                     <div class="pl-4">
                         Normativo: {{nameLaw[4]}} <br>
@@ -214,8 +217,8 @@ import boxAdd from '../../components/leges/box/boxAdd.vue';
                     perPage: 15,
                 },
                 font:{
-                    fontSize: 14,
-                    spacement: 1.5,
+                    fontSize: 18,
+                    spacement: 2.0,
                     fontStyle: '',
                 },
                 boxAdd: false,
@@ -363,5 +366,9 @@ import boxAdd from '../../components/leges/box/boxAdd.vue';
     text-align: justify;
     hyphens: auto;
     font-family: 'Inter', sans-serif;
+    line-height: 32px;
+    font-weight: 400;
+    color: #36344D;
+    letter-spacing: .3px;
 }
 </style>
