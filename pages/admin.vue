@@ -1,5 +1,6 @@
 <template>
    <v-container class="mt-5" style="max-width: 1080px" v-if="$store.state.adm">
+        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <v-card flat outlined min-height="80vh">
             <v-tabs  v-model="tab">
                 <v-tab>Leis</v-tab>
@@ -44,9 +45,9 @@
                                             <div d-flex>
                                                 <v-btn 
                                                     :to="{
-                                                        name: 'adminLeges',
-                                                        params:{adminLeges: item.nro},
-                                                        query:{id:item.id}  
+                                                        name: 'adminLeges-leges',
+                                                        params:{adminLeges: item.id},
+                                                        // query:{id:item.id}  
                                                     }" 
                                                     small icon>
                                                     <v-icon>mdi-script-text</v-icon>

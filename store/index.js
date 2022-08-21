@@ -2,7 +2,7 @@ import { auth } from "@/plugins/firebase.js"
 export const strict = false
 
 export const state = () => ({
-    adm: false,
+    adm: true,
     lawsList: [],
     textLaw: [],
     otherTextLaw: [],
@@ -26,7 +26,23 @@ export const state = () => ({
         {id: 8, name: 'D. Financeiro', sigla: 'DF'},
         {id: 9, name: 'D. Ambiental', sigla: 'AMB'},
         {id: 10, name: 'D. Trabalho', sigla: 'TRAB'},
-      ],
+    ],
+    provas:[
+        {
+            id: 1, 
+            orgao: 'OAB', 
+            cargo: 'XXXIV Exame',
+            year: 2022,
+            banca: 1, 
+        },
+        {
+            id: 2, 
+            orgao: 'OAB', 
+            cargo: 'XXXV Exame',
+            year: 2022,
+            banca: 1, 
+        }
+    ],
     concursos: [],
     ementa: [],
     plan: [],
@@ -38,6 +54,9 @@ export const state = () => ({
 export const getters = {
     readDisciplinas(state){
         return state.disciplinas
+    },
+    readProvas(state){
+        return state.provas
     },
     readLawsList(state){
         return state.lawsList
@@ -202,7 +221,18 @@ export const mutations = {
         state.planComplete = payload
     },
     setQuestions(state, payload){
-        state.questions = payload
+        let newText = []
+        const text = Array.from(payload)
+         text.forEach(i =>{
+            i.resp = null
+            i.msg = null
+            newText.push(i)
+        })
+         state.questions = newText
+    },
+    editQuestao(state, payload){
+        const x = state.questions.map(item => item.id == payload.id ? payload : item)
+        state.questions = x
     },
 }
 
@@ -777,5 +807,19 @@ export const actions = {
         } catch(error){
             console.log(error)
         } 
-    }
+    },
+    async editSetQuestao({commit}, questao){
+        console.log('questao editada')
+        console.log(questao)
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/questions/${questao.id}.json`, {
+                method: 'PATCH',
+                body: JSON.stringify(questao)
+            })
+            const dataDB = await res.json()
+            commit('editQuestao', questao)
+        } catch (error) {
+            console.log(error)
+        }
+    },
 }

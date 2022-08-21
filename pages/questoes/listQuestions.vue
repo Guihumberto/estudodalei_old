@@ -10,37 +10,70 @@
                         <v-select
                             label="Disciplina"
                             outlined dense
+                            :items="listDisciplinas"
+                            item-text="name"
+                            item-value="id"
+                            v-model="disciplina"
+                            clearable
                         ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-select
                             label="Prova"
-                            outlined dense
+                            outlined dense 
+                            :items="listProvas"
+                            item-text="cargo"
+                            item-value="id"
+                            v-model="prova"
+                            clearable
                         ></v-select>
                     </v-col>
                     <v-col cols="12" class="mt-0 pt-0">
                         <v-checkbox
                             label="apenas as questões não vinculadas"
+                            v-model="vincs"
                         ></v-checkbox>
                     </v-col>
                 </v-row>
+                <v-text-field
+                    dense
+                    class="mx-2"
+                    outlined
+                    append-icon="mdi-magnify"
+                    label="Busca"
+                    placeholder="Digite o texto ou assertiva da questao..."
+                    v-model="search"
+                    required
+                ></v-text-field>
             </v-card-text>
         </v-card>
         <!-- questoes -->
         <v-card outlined>
+            <v-card-title>
+                <v-spacer></v-spacer>
+                Qtd: {{listQuestions.length}}
+            </v-card-title>
             <v-card-text>
                 <template v-for="item, index, in listQuestions.slice(0, showMore)">
                     <div class="mb-5" :key="index">
-                        <p>{{item.prove}} / {{item.subject}}</p>
-                        <p>{{item.answer}}</p>
-                        <p>{{item.alternative}}</p>
+                        <p class="font-weight-black black--text" style="font-size: 18px">
+                            <span v-if="item.prove > 0">
+                            {{(findRef2(item.prove)).orgao}} / {{(findRef2(item.prove)).cargo}} / {{(findRef2(item.prove)).year}}
+                            </span> 
+                            <span v-else class="error--text">Não há registro da prova</span>/ 
+                            {{(findRef1(item.subject)).name}}
+                        </p>
+                        
+                        <p class="formatText">{{item.answer}}</p>
+                        <p class="formatText">{{item.alternative}}</p>
                         <concurso-questoes-menuLink :questao="item"/>
                     </div>
                     <v-divider class="my-5"></v-divider>
                 </template>
                 <v-btn 
                     v-if="listQuestions.length > showMore"
-                    outlined color="primary" block @click="showMore +=10">ver mais</v-btn>
+                    outlined color="primary" block @click="showMore +=10">ver mais
+                </v-btn>
             </v-card-text>
         </v-card>
     </v-container>
@@ -54,16 +87,55 @@
         data(){
             return{
                 showMore: 10,
-                reverse: false
+                reverse: false,
+                disciplina: 0,
+                prova: 0,
+                search: '',
+                vincs: false
             }
         },
         computed:{
             listQuestions(){
-                const list = this.$store.getters.readQuestions
+                let list = this.$store.getters.readQuestions
+
+               if(this.disciplina){
+                list = list.filter( i => i.subject == this.disciplina)
+               }
+
+               if(this.prova){
+                list = list.filter( i => i.prove == this.prova)
+               }
+
+               if(this.vincs){
+                list = list.filter( i => !i.vinc)
+                list = list.filter( i => !i.doutrina)
+               }
+
+               if(this.search){
+                //retirar acentuação
+                let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                //retirar caracteres especiais
+                let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+                //fazer o filtro
+                let filtro = list.filter(project => exp.test(project.answer.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( project.alternative ))
+                
+                list = filtro
+
+                } 
+
                 return list.sort(this.order)
             },
             listDisciplinas(){
                 return this.$store.getters.readDisciplinas
+            },
+            listProvas(){
+                return this.$store.getters.readProvas
+            },
+            findRef1(){
+                return (item) => this.listDisciplinas.find( i => i.id == item)
+            },
+            findRef2(){
+                return (item) => this.listProvas.find( i => i.id == item)
             }
         },
         methods:{
@@ -85,5 +157,14 @@
 </script>
 
 <style lang="scss" scoped>
+.formatText{
+    text-align: justify;
+    hyphens: auto;
+    line-height: 32px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #36344D;
+    letter-spacing: .3px;
+}
 
 </style>

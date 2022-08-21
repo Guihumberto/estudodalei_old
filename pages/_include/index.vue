@@ -1,5 +1,6 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px;">
+    <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <v-card outlined flat min-height="40vh">
             <v-alert
                 color="primary"

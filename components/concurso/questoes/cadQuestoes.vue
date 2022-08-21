@@ -145,7 +145,7 @@
                 let result = this.provas.filter(i => i.cargo == name)
                 return result.length
                 ? result[0].id
-                : 'Não há prova cadastrada'
+                : 0
             },
             importSave(){      
                 let prove = this.provaSearch(this._questions.name)
@@ -154,8 +154,8 @@
                     let question = {}
                     question = {
                         id: shortid.generate(), 
-                        answer: this._questions.answer, 
-                        alternative: i, 
+                        answer: this._questions.answer.replace('\n', ''), 
+                        alternative: i.replace('\n', ''), 
                         value: 0, 
                         subject: this.subject, 
                         prove: prove

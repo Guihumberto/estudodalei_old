@@ -27,12 +27,13 @@
 
         <v-card-text class="mt-5">
           <v-alert outlined text type="success">
-            Art. {{dispositivo.art}}º <br>
-            {{dispositivo.textLaw}}
+            Art. 
+            {{dispositivo.item.art}}º <br>
+            {{dispositivo.item.textLaw}}
           </v-alert>
           <v-card-text>
             <p>Sumulas Vinculadas <v-btn @click="sumulasVinculadas = !sumulasVinculadas" x-small icon> <v-icon>{{sumulasVinculadas ? 'mdi-eye' : 'mdi-eye-off'}}</v-icon> </v-btn></p>
-            <p>{{index}}</p> 
+            <p>{{dispositivo.index}}</p> 
             <v-expand-transition>
               <div v-if="sumulasVinculadas">
                 <v-alert v-for="item, index in sumulasVincsDispositivos" :key="index"
@@ -73,7 +74,7 @@
           </v-card-title>
           <v-expand-transition>
               <v-list v-show="sumulasView">
-                <template v-for="item, index in sumulas">
+                <template v-for="item, index in sumulas.slice(0, 5)">
                   <v-divider v-if="index != 0"></v-divider>
                   <v-list-item :key="index">
                     <v-list-item-avatar>
@@ -150,42 +151,29 @@
       }
     },
     props:{
-        dispositivo: true,
-        law: true,
-        index: false
+        dispositivo: Object,
     },
     computed:{
       sumulas(){
         let sumulas = this.$store.getters.readSumulas
-        let sumulasAll = sumulas
 
         if(this.search){
              let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
              let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
-             if(this.orgao != 'Tudo'){
-              sumulas = sumulas.filter (i => i.orgao == this.orgao)
-             }
              let filtro = sumulas.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.nro ))
+             sumulas = filtro
+        } 
 
-             if(this.orgao == 'STF' && this.vinculante) {
-                  filtro = filtro.filter (i => i.vinculante)
-              }
-             
-             return filtro.sort(this.order)
-
-        } else {
-            if(this.orgao != 'Tudo'){
-                sumulas = sumulas.filter (i => i.orgao == this.orgao)
-
-                if(this.orgao == 'STF' && this.vinculante) {
-                  sumulas = sumulas.filter (i => i.vinculante)
-                }
-
-                return sumulas.sort(this.order)
-            } else {
-                return sumulasAll
-            }     
+        if(this.orgao != 'Tudo'){
+            sumulas = sumulas.filter (i => i.orgao == this.orgao)
         }
+
+        if(this.orgao == 'STF' && this.vinculante) {
+          sumulas = sumulas.filter (i => i.vinculante)
+        }
+            
+        return sumulas
+         
       },
       sumulasVincsDispositivos(){
         let sumulas = this.$store.getters.readSumulas
@@ -220,14 +208,14 @@
       },
       vincular(){
         let data = []
-        data.push(this.law[2])
-        data.push(this.index)
+        data.push(this.dispositivo.law[2])
+        data.push(this.dispositivo.index)
 
-        !Array.isArray(this.dispositivo.sumulas) ? this.dispositivo.sumulas = [] : ''
+        !Array.isArray(this.dispositivo.item.sumulas) ? this.dispositivo.item.sumulas = [] : ''
 
-        this.listSumulasVincular.forEach( i => this.dispositivo.sumulas.push(i.id))
+        this.listSumulasVincular.forEach( i => this.dispositivo.item.sumulas.push(i.id))
 
-        data.push(this.dispositivo)
+        data.push(this.dispositivo.item)
         
 
         //salvar
@@ -240,7 +228,7 @@
           return this.reverse
           ? a.nro -  b.nro
           : b.nro -  a.nro
-        }
+      }
     }
   }
 </script>

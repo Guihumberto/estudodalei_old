@@ -102,7 +102,7 @@
     <div class="text-right">
         <v-btn class="mr-0 pr-0" small color="error" v-show="artIndice" text @click="clearSearchIndice">fechar buscar por índice</v-btn>
     </div>
-    <div class="text-center mb-2" v-if="!search && !artsFilterActive">
+    <div class="text-center mb-2 py-5" v-if="!search && !artsFilterActive">
         <v-pagination
         v-model="pagination.page"
         :length="totalPages"
@@ -123,6 +123,7 @@
     </v-card>
     <!-- text law -->
     <v-card outlined v-else-if="textLaw.text.length">
+        <!-- other law -->
         <v-card-text v-if="listOhterLaw" class="primary lighten-5">
             <v-card-title class="mb-2 py-1 primary text-button white--text">{{nameOtherLaw.nickname}} - {{nameOtherLaw.nro}}
                 <v-spacer></v-spacer>
@@ -141,6 +142,7 @@
             </v-expand-transition>
         </v-card-text>
         <v-divider v-show="listOhterLaw"></v-divider>
+        <!-- law page -->
         <v-card-title v-show="listOhterLaw" class="py-1 grey lighten-2 text-button">{{nameLaw[3]}} - {{nameLaw[4]}}</v-card-title>
         <v-card-text class="mt-5">
             <div>
@@ -149,10 +151,23 @@
                         <p v-show="!artsFilterActive || artIndice" class="font-weight-medium text-center" v-text="item.textLaw"></p>
                     </div>
                     <div v-else class="mb-2">
-                        <!-- menu -->
-                        <div v-if="item.sumulas" >
-                        <v-btn @click="item.show = !item.show" x-small icon><v-icon color="success" small>{{item.show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon></v-btn></div>
-                        <!-- texto da lei -->
+                        <!-- MENU jurisprudencia e questoes -->
+                        <div v-if="item.sumulas || item.idQuestions" >
+                            <v-btn 
+                                v-if="Array.isArray(item.idQuestions) " 
+                                title="Qtd de Questões" @click="item.show = !item.show" 
+                                x-small outlined color="success">{{item.idQuestions.length}}
+                            </v-btn>
+                            <v-btn 
+                                v-if="Array.isArray(item.sumulas)" 
+                                title="Qtd de Jurisprudência" @click="item.show = !item.show" 
+                                x-small outlined color="warning">{{item.sumulas.length}}
+                            </v-btn>
+                            <v-btn @click="item.show = !item.show" x-small icon>
+                                <v-icon title="expandir" color="secondary" small>{{item.show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon>
+                            </v-btn>
+                        </div>    
+                       <!-- texto da lei -->
                         <p :style="{lineHeight: font.spacement }"  class="formatText" 
                             :title="`art. ${item.art}`"
                             v-html="item.textLaw.startsWith('Art') ?  `<b>${item.textLaw.substr(0, 4)}</b> ${item.textLaw.substr(4)}` : item.textLaw">
@@ -160,7 +175,7 @@
                         <!-- materias congregados -->
                         <v-expand-transition>
                             <v-card outlined v-if="item.show">
-                               <box-add :sumulasId="item.sumulas" />
+                               <box-add :questoesId="item.idQuestions" :sumulasId="item.sumulas" @fechar="item.show = false" />
                             </v-card>
                         </v-expand-transition>
                     </div>
@@ -183,23 +198,22 @@
         ></v-skeleton-loader>
     </v-card>
     <!-- Pagination Botton -->
-    <div class="text-center mt-2" v-if="!search && !artsFilterActive">
+    <div class="text-center mt-2 mb-16 py-5" v-if="!search && !artsFilterActive">
         <v-pagination
         v-model="pagination.page"
         :length="totalPages"
         :total-visible="7"
         ></v-pagination>
     </div>
-    <div class="my-16 py-16"></div>
     </v-container>
 </template>
 
 <script>
     import { mapActions } from 'vuex';
-import boxAdd from '../../components/leges/box/boxAdd.vue';
+    import boxAdd from '../../components/leges/box/boxAdd.vue';
 
     export default {
-  components: { boxAdd },
+        components: { boxAdd },
         data(){
             return{
                 dispositiveBtn: false,

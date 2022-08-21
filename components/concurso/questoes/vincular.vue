@@ -17,10 +17,13 @@
       <v-card>
         <v-card-title class="text-h5 grey lighten-2 mb-5">
           Vincular
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false"> <v-icon>mdi-close</v-icon></v-btn>
         </v-card-title>
         <!-- questao -->
         <v-card-text>
           <v-alert color="primary" outlined>
+            <p>{{questao.id}}</p>
             <p>{{questao.answer}}</p>
             <p>{{questao.alternative}}</p>
           </v-alert>
@@ -65,7 +68,7 @@
             <div v-if="lawText.length > showMore">
                 <v-btn 
                 block outlined color="success lighten-1"
-                @click="showMore +=10"
+                @click="showMore +=100"
                 >ver mais</v-btn>
             </div>
         </v-card-text>
@@ -145,7 +148,7 @@
       }
     },
     methods:{
-        ...mapActions(['cargaLawComplement', 'linkQuestionDispositive']),
+        ...mapActions(['cargaLawComplement', 'linkQuestionDispositive', 'editSetQuestao']),
         vincular(item, index){
           let data = {}
           data = {
@@ -169,10 +172,16 @@
           if(data.idLaw && data.idDispositivo && data.dispositive){
             console.log(data)
             this.linkQuestionDispositive(data)
+            this.editQuestao()
             this.$store.dispatch("snackbars/setSnackbars", {text:'salvo com sucesso', color:'success'})
           } else {
             this.$store.dispatch("snackbars/setSnackbars", {text:'há propriedades vazias', color:'error'})
           }
+        },
+        editQuestao(){
+            this.questao.vinc = true
+            this.editSetQuestao(this.questao)
+            this.$store.dispatch("snackbars/setSnackbars", {text:'Vinculado com sucesso', color:'success'})
         },
         clearLaw(){
             this.law = ''

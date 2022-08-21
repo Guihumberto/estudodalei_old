@@ -1,9 +1,10 @@
 <template>
     <div>
         <v-btn-toggle mandatory dense>
-            <concurso-questoes-vincular :questao="questao"/>
+             <concurso-questoes-vincular :questao="questao"/>
+            <concurso-questoes-doutrina :questao="questao"/>
+            <concurso-questoes-editar :questao="questao"/>
             <v-btn>apagar</v-btn>
-            <v-btn>editar</v-btn>
         </v-btn-toggle>
     </div>
 </template>
