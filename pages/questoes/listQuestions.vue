@@ -62,6 +62,7 @@
                             </span> 
                             <span v-else class="error--text">Não há registro da prova</span>/ 
                             {{(findRef1(item.subject)).name}}
+                            <v-icon color="success" v-if="item.vinc || item.doutrina">mdi-check-circle</v-icon>
                         </p>
                         
                         <p class="formatText">{{item.answer}}</p>
