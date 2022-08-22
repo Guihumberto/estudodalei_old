@@ -153,16 +153,30 @@
                     <div v-else class="mb-2">
                         <!-- MENU jurisprudencia e questoes -->
                         <div v-if="item.sumulas || item.idQuestions" >
-                            <v-btn 
-                                v-if="Array.isArray(item.idQuestions) " 
-                                title="Qtd de Questões" @click="item.show = !item.show" 
-                                x-small outlined color="success">{{item.idQuestions.length}}
-                            </v-btn>
-                            <v-btn 
-                                v-if="Array.isArray(item.sumulas)" 
-                                title="Qtd de Jurisprudência" @click="item.show = !item.show" 
-                                x-small outlined color="warning">{{item.sumulas.length}}
-                            </v-btn>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn 
+                                        v-if="Array.isArray(item.idQuestions)"
+                                        v-bind="attrs"
+                                        v-on="on" 
+                                        title="Qtd de Questões" @click="item.show = !item.show" 
+                                        x-small outlined color="success">{{item.idQuestions.length}}
+                                    </v-btn>
+                                </template>
+                                <span>Questões</span>
+                            </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn 
+                                        v-if="Array.isArray(item.sumulas)" 
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        title="Qtd de Jurisprudência" @click="item.show = !item.show" 
+                                        x-small outlined color="warning">{{item.sumulas.length}}
+                                    </v-btn>
+                                </template>
+                                <span>Jurisprudência</span>
+                            </v-tooltip>
                             <v-btn @click="item.show = !item.show" x-small icon>
                                 <v-icon title="expandir" color="secondary" small>{{item.show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon>
                             </v-btn>

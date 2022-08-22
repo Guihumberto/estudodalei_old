@@ -18,10 +18,10 @@
                     <template v-for="item, index in questoes">
                         <div :key="index">
                             <p style="text-transform: uppercase; font-size: 18px;" class="font-weight-bold">
-                               {{index + 1 }}) {{prova(item.prove).cargo}}/{{prova(item.prove).orgao}}/FGV/{{prova(item.prove).year}}
+                               {{prova(item.prove).cargo}}/{{prova(item.prove).orgao}}/FGV/{{prova(item.prove).year}}
                             </p>
-                            <p>{{item.answer}}</p>
-                            <p>{{item.alternative}}</p>
+                            <p class="formatText">{{item.answer}}</p>
+                            <p class="formatText">{{item.alternative}}</p>
                             <div class="my-8">
                                 <v-btn @click="item.resp = 1" small outlined :color="item.resp == 1? 'primary':'grey'">Certo</v-btn>
                                 <v-btn @click="item.resp = 0" small outlined :color="item.resp == 0? 'error':'grey'">Errado</v-btn>
@@ -40,7 +40,7 @@
                                 <p>{{item.msg}}</p>
                             </v-alert>
                         </div>
-                        <div class="text-center mb-5">
+                        <div class="text-center my-5">
                             <v-pagination
                                 v-model="pagination.page"
                                 :length="totalPages"
@@ -58,9 +58,11 @@
                             <v-list-item :key="index">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        <v-chip dark :color="item.orgao == 'STF' ? 'indigo' : 'error'" x-small>{{item.orgao}}</v-chip> Súmula <span v-if="item.vinculante">Vinculante</span> {{item.nro}} </v-list-item-title>
+                                        <v-chip label dark :color="item.orgao == 'STF' ? 'indigo' : 'error'" x-small>{{item.orgao}}</v-chip> Súmula <span v-if="item.vinculante">Vinculante</span> {{item.nro}} </v-list-item-title>
                                     <v-list-item-subtitle></v-list-item-subtitle>
-                                    <div class="pl-1 mt-1"> <p class="caption">{{item.text}}</p></div>
+                                    <div class="pl-1 mt-1"> 
+                                        <p class="formatText">{{item.text}}</p>
+                                    </div>
                                 </v-list-item-content>
                             </v-list-item>
                         </template>
@@ -173,5 +175,14 @@
 </script>
 
 <style lang="scss" scoped>
-
+.formatText{
+    text-align: justify;
+    hyphens: auto;
+    font-family: 'Inter', sans-serif;
+    line-height: 32px;
+    font-weight: 400;
+    color: #36344D;
+    letter-spacing: .3px;
+    font-size: 16px;
+}
 </style>

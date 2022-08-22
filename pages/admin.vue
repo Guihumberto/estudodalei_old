@@ -45,7 +45,7 @@
                                             <div d-flex>
                                                 <v-btn 
                                                     :to="{
-                                                        name: 'adminLeges-leges',
+                                                        name: 'adminLeges-legesAdmin',
                                                         params:{adminLeges: item.id},
                                                         // query:{id:item.id}  
                                                     }" 
