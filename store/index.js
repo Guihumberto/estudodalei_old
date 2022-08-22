@@ -52,6 +52,9 @@ export const state = () => ({
 })
 
 export const getters = {
+    readAdmin(state){
+        return state.adm
+    },
     readDisciplinas(state){
         return state.disciplinas
     },
@@ -115,6 +118,9 @@ export const getters = {
 }
 
 export const mutations = {
+    setAdm(state){
+        state.adm = true
+    },
     setCreateLaw(state, payload) {
         state.lawsList.push(payload)
     },
@@ -505,6 +511,9 @@ export const actions = {
                         uid: user.uid,
                         photo: user.photoURL
                     }
+                  if(user.email == 'juninho.joao28@gmail.com'){
+                    commit('setAdm')
+                  }
                   commit('newUser', userLogin)
                 }
             })
