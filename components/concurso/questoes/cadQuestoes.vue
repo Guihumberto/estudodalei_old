@@ -86,6 +86,13 @@
                     {id: 1, name:'Direito Administrativo', sigla: 'DA'},
                     {id: 2, name:'Direito Constitucional', sigla: 'DC'},
                     {id: 3, name:'Direito Tributário', sigla: 'DT'},
+                    {id: 4, name: 'D. Previdenciário', sigla: 'PREV'},
+                    {id: 5, name: 'D. Empresarial', sigla: 'DE'},
+                    {id: 6, name: 'D. Civil', sigla: 'CC'},
+                    {id: 7, name: 'D. Penal', sigla: 'DP'},
+                    {id: 8, name: 'D. Financeiro', sigla: 'DF'},
+                    {id: 9, name: 'D. Ambiental', sigla: 'AMB'},
+                    {id: 10, name: 'D. Trabalho', sigla: 'TRAB'},
                 ],
                 questionsProve: [
                     {id: 1, answer: '', alternative: '', value: 0, subject:1, prove: 1}

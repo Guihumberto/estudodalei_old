@@ -68,7 +68,7 @@
             <div v-if="lawText.length > showMore">
                 <v-btn 
                 block outlined color="success lighten-1"
-                @click="showMore +=100"
+                @click="showMore +=250"
                 >ver mais</v-btn>
             </div>
         </v-card-text>
