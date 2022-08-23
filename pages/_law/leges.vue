@@ -175,7 +175,19 @@
                                         x-small outlined color="warning">{{item.sumulas.length}}
                                     </v-btn>
                                 </template>
-                                <span>Jurisprudência</span>
+                                <span>Súmulas</span>
+                            </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn 
+                                        v-if="Array.isArray(item.idJuris)" 
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        title="Qtd de Julgados" @click="item.show = !item.show" 
+                                        x-small outlined color="orange">{{item.idJuris.length}}
+                                    </v-btn>
+                                </template>
+                                <span>Julgados</span>
                             </v-tooltip>
                             <v-btn @click="item.show = !item.show" x-small icon>
                                 <v-icon title="expandir" color="secondary" small>{{item.show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon>
@@ -189,7 +201,11 @@
                         <!-- materias congregados -->
                         <v-expand-transition>
                             <v-card outlined v-if="item.show">
-                               <box-add :questoesId="item.idQuestions" :sumulasId="item.sumulas" @fechar="item.show = false" />
+                               <box-add 
+                                :questoesId="item.idQuestions" 
+                                :sumulasId="item.sumulas" 
+                                :jurisId="item.idJuris" 
+                                @fechar="item.show = false" />
                             </v-card>
                         </v-expand-transition>
                     </div>

@@ -1,123 +1,77 @@
 <template>
-  <div class="text-center">
+  <div>
     <v-dialog
       v-model="dialog"
       width="1080"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="primary lighten-2"
-          dark
+          color="success"
           v-bind="attrs"
           v-on="on"
-          x-small
-          outlined
+          tile
         >
-        <v-icon small>mdi-gavel</v-icon>
-       
+        vincular
         </v-btn>
       </template>
-
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Criar vínculo - Jurisprudência
+            <v-card>
+        <v-card-title class="text-h5 grey lighten-2 mb-5">
+          Vincular
           <v-spacer></v-spacer>
-          <v-btn @click="dialog = !dialog" icon> <v-icon>mdi-close</v-icon> </v-btn>
+          <v-btn icon @click="dialog = false"> <v-icon>mdi-close</v-icon></v-btn>
         </v-card-title>
-
-        <v-card-text class="mt-5">
-          <!-- dispositivo filtrado -->
-          <v-alert outlined text type="success">
-            Art. {{dispositivo.art}}º <br>
-            {{dispositivo.textLaw}}
-          </v-alert>
-          <!-- mostra as sumulas vinculadas -->
-          <v-card-text>
-            <p>Sumulas Vinculadas <v-btn @click="sumulasVinculadas = !sumulasVinculadas" x-small icon> <v-icon>{{sumulasVinculadas ? 'mdi-eye' : 'mdi-eye-off'}}</v-icon> </v-btn></p>
-            <p>Index: {{index}}</p> 
-            <v-expand-transition>
-              <div v-if="sumulasVinculadas">
-                <v-alert v-for="item, index in sumulasVincsDispositivos" :key="index"
-                        dense outlined text
-                >
-                    {{item.orgao}} - Sumula <span v-if="item.vinculante">Vinculante</span> {{item.nro}}
-                    {{item.text}}
-                </v-alert>
-              </div>
-            </v-expand-transition>
-          </v-card-text>
-          <!-- barra de busca -->
-          <v-text-field
-            label="Súmulas"
-            v-model="search"
-            placeholder="Busca...."
-            outlined dense
-            clearable
-          ></v-text-field>
-          <v-radio-group v-model="orgao" row>
-            <v-radio class="mt-n6"
-              v-for="n in orgaos"
-              :key="n"
-              :label="n"
-              :value="n"
-            ></v-radio>
-          </v-radio-group>
-        </v-card-text>
-        <!-- jurispurdencia listada -->
+        <!-- questao -->
         <v-card-text>
-          <v-card-title>
-            <v-spacer></v-spacer>
-            <v-btn @click="sumulasView = !sumulasView" small text>{{sumulasView ? 'ocultar' : 'mostrar'}}</v-btn>
-          </v-card-title>
-          <v-expand-transition>
-              <v-list v-show="sumulasView">
-                <template v-for="item, index in sumulas.slice(0, 5)">
-                  <v-divider v-if="index != 0"></v-divider>
-                  <v-list-item :key="index">
-                    <v-list-item-avatar>
-                      <v-avatar>{{item.orgao}}</v-avatar>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title>Informativo {{item.info}} - {{item.disciplina}} - {{item.subject}}</v-list-item-title>
-                      {{item.texto}}
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-btn icon :color="item.add ? 'error' :'primary'" @click="sendSumula(item)">
-                        <v-icon>{{ item.add ? 'mdi-delete' : 'mdi-link'}}</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                    
-                  </v-list-item>
-                </template>
-              </v-list>
-          </v-expand-transition>
-          
+          <v-alert color="primary" outlined>
+            <p>{{questao.id}}</p>
+            <p>{{questao.tese}}</p>
+            <p>{{questao.texto}}</p>
+          </v-alert>
         </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-text v-if="this.listSumulasVincular.length">
-          <v-card-title>
-            <v-spacer></v-spacer>
-            <v-btn small @click="vincular()" color="success">Vincular</v-btn>
-          </v-card-title>
-          <v-list>
-            <template v-for="item, index in listSumulasVincular">
-              <v-list-item :key="index">
-                <v-list-item-content>
-                  <v-list-item-title>{{item.orgao}} - Informativo {{item.info}}</v-list-item-title>
-                  <v-list-item-subtitle>{{item.texto}}</v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <v-btn small color="error" @click="sendSumula(item)" icon> <v-icon>mdi-delete</v-icon></v-btn>
-                </v-list-item-action>
-              </v-list-item>
-            </template>
-          </v-list>
+        <!-- busca -->
+        <v-card-text>
+            <v-autocomplete
+                label="Busca"
+                placeholder="Escolha a Lei"
+                solo
+                dense outlined
+                :items="listLaws"
+                item-text="nickname"
+                item-value="id"
+                v-model="law"
+                clearable
+            ></v-autocomplete>
+            <v-btn 
+             text class="px-0"
+             @click="clearLaw()"
+            > Limpar </v-btn>
+            <v-btn  v-if="law" @click="cargaLawComplement(law)" class="ml-2" color="primary">Carregar</v-btn>
         </v-card-text>
-
-        <v-divider></v-divider>
-
+        <!-- texto da lei -->
+        <v-card-text>
+            <div v-for="(item, index) in lawText.slice(0, showMore)" :key="index">
+              <div class="d-flex jus justify-space-between">
+                <div>
+                  <div v-if="item.estrutura">
+                  <p class="font-weight-medium text-center" v-text="item.textLaw"></p>
+                  </div>
+                  <div v-else>
+                  <p class="formatText" v-text="item.textLaw"></p>
+                  </div>
+                </div>
+                <v-btn 
+                  @click="vincular(item, index)"
+                  v-if="!item.estrutura" small color="primary" outlined>vincular
+                </v-btn>
+              </div>
+            </div>
+            <div v-if="lawText.length > showMore">
+                <v-btn 
+                block outlined color="success lighten-1"
+                @click="showMore +=100"
+                >ver mais</v-btn>
+            </div>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -125,113 +79,112 @@
             text
             @click="dialog = false"
           >
-           Fechar
+            Fechar
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
 </template>
+
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions } from 'vuex';
+
   export default {
     data () {
       return {
         dialog: false,
+        law:'',
+        lawDefault: 'qrSLeELU-',
         search: '',
-        orgao: 'Tudo',
-        orgaos: ['Tudo','STF', 'STJ'],
-        sumulasView: true,
-        sumulasVinculadas: true,
-        listSumulasVincular: [],
-        vinculante: false
-      }
+        listFilterArt: [],
+        filterArtActive: false,
+        showMore: 20
+        }
     },
     props:{
-        dispositivo: true,
-        law: true,
-        index: false
+            questao: Object
     },
     computed:{
-      sumulas(){
-        let sumulas = this.$store.getters.readJuris
-        let sumulasAll = sumulas
+        listLaws(){
+            return this.$store.getters.readLawsList
+        }, 
+        lawTextComplete(){
+          return this.$store.getters.readLawComplement
+        },
+        lawText(){
+            let textLaw = this.lawTextComplete
 
-        if(this.search){
-             let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-             let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
-             if(this.orgao != 'Tudo'){
-              sumulas = sumulas.filter (i => i.orgao == this.orgao)
-             }
-             let filtro = sumulas.filter(item => exp.test(item.texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.info ))
-             
-             return filtro.sort(this.order)
-
-        } else {
-            if(this.orgao != 'Tudo'){
-
-                sumulas = sumulas.filter (i => i.orgao == this.orgao)
-
-                return sumulas.sort(this.order)
-            } else {
-                return sumulasAll
-            }     
-        }
-      },
-      sumulasVincsDispositivos(){
-        let sumulas = this.$store.getters.readJuris
-        let sumulasDispo = []
-        if(Array.isArray(this.dispositivo.sumulas)){
-          this.dispositivo.sumulas.forEach( disp => {
-            sumulas.forEach(sumul => {
-              if(sumul.id == disp){
-                sumulasDispo.push(sumul)
-              }
+            if(this.filterArtActive){
+            let list = []
+            this.listFilterArt.forEach( art => {
+                this.lawTextComplete.forEach ( i => {
+                if(art == i.art){
+                    list.push(i)
+                }
+                })
             })
-          })
+            textLaw = list
+            }
+
+            if(this.search){
+                let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                //retirar caracteres especiais
+                let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+                //fazer o filtro
+                let filtro =  textLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
+                textLaw = filtro
+            }
+
+            return textLaw
+        },
+        cargaLaw(){
+        if(this.law){
+          this.cargaLawComplement(this.law)
+        } else {
+          this.cargaLawComplement(this.lawDefault)
         }
-        return sumulasDispo
+        return '!'
       }
     },
     methods:{
-      ...mapActions(['saveSumulaDispositivo']),
-      sendSumula(sumula){
-        let index = this.listSumulasVincular.findIndex( i => i.id == sumula.id)
+        ...mapActions(['cargaLawComplement', 'saveJurisDispositivo']),
+        vincular(item, index){
+          let data = {}
+          data = {
+            idLaw: this.law,
+            idDispositivo: index,
+            dispositive: item
+          }
+          if(!data.dispositive.idJuris){
+            data.dispositive.idJuris = []
+          }
+          let validador = data.dispositive.idJuris.find(i => i == this.questao.id)
 
-        if(index == -1){
-          sumula.add = true
-          this.listSumulasVincular.push(sumula)          
-        } else {
-          sumula.add = false
-          this.listSumulasVincular.splice(index, 1)       
-        }
+          if(validador){
+            this.$store.dispatch("snackbars/setSnackbars", {text:'questao ja cadastrada neste dispositivo', color:'error'})
+            return
 
-        console.log(this.listSumulasVincular);
-        
-      },
-      vincular(){
-        let data = []
-        data.push(this.law[2])
-        data.push(this.index)
+          }
 
-        !Array.isArray(this.dispositivo.sumulas) ? this.dispositivo.sumulas = [] : ''
+          data.dispositive.idJuris.push(this.questao.id)
 
-        this.listSumulasVincular.forEach( i => this.dispositivo.sumulas.push(i.id))
-
-        data.push(this.dispositivo)
-        
-
-        //salvar
-        this.saveSumulaDispositivo(data)
-        this.listSumulasVincular = []
-        this.search = ''
-        this.dialog = false
-      },
-      order(a, b){ 
-          return this.reverse
-          ? a.info -  b.info
-          : b.info -  a.info
-        }
+          if(data.idLaw && data.idDispositivo && data.dispositive){
+            this.saveJurisDispositivo(data)
+            this.$store.dispatch("snackbars/setSnackbars", {text:'salvo com sucesso', color:'success'})
+          } else {
+            this.$store.dispatch("snackbars/setSnackbars", {text:'há propriedades vazias', color:'error'})
+          }
+        },
+        clearLaw(){
+            this.law = ''
+            this.listFilterArt = []
+            this.filterArtActive = false
+        },
     }
   }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

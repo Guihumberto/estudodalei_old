@@ -8,8 +8,9 @@
             <v-tabs
             v-model="tab"
             >
-            <v-tab v-if="questoesId">Questões</v-tab>
-            <v-tab v-if="sumulasId">Súmulas</v-tab>
+                <v-tab v-if="questoesId">Questões</v-tab>
+                <v-tab v-if="sumulasId">Súmulas</v-tab>
+                <v-tab v-if="jurisId">Julgados</v-tab>
             </v-tabs>
         </v-card-title>
         <v-tabs-items v-model="tab">
@@ -69,7 +70,31 @@
                         
                     </v-list>
                 </v-card-text>
-            </v-tab-item>        
+            </v-tab-item>  
+            <v-tab-item v-if="jurisId">
+                <v-card-text>
+                    <v-list>
+                        <template v-for="(item, index) in juris" >
+                            <v-divider v-if="index != 0"></v-divider>
+                            <v-list-item :key="index">
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        <v-chip label dark :color="item.orgao == 'STF' ? 'indigo' : 'error'" small>{{item.orgao}}</v-chip>
+                                        <span class="ml-2">{{item.subject.toUpperCase()}}</span>
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle></v-list-item-subtitle>
+                                    <div class="pl-1 mt-1"> 
+                                        <p class="formatText">{{item.tese}}</p>
+                                        <p class="formatText">{{item.texto}}</p>
+                                        <p class="font-italic">{{item.julgado}}</p>
+                                    </div>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                        
+                    </v-list>
+                </v-card-text>
+            </v-tab-item>       
         </v-tabs-items>
         <v-divider></v-divider>
         <v-card-actions>
@@ -93,7 +118,8 @@
         },
         props:{
             sumulasId: Array,
-            questoesId: Array
+            questoesId: Array, 
+            jurisId: Array
         },
         computed:{
             sumulas(){
@@ -103,6 +129,26 @@
                 if (Array.isArray(this.sumulasId)){
 
                        this.sumulasId.forEach (i => 
+                        sumulas.forEach(sumula => {
+                            if(sumula.id == i)
+                            newSumulas.push(sumula)
+                        })
+                    )
+
+                    return newSumulas
+
+                } else {
+                    return newSumulas
+                }
+                
+            },
+            juris(){
+                const sumulas = this.$store.getters.readJuris
+                let newSumulas = []
+
+                if (Array.isArray(this.jurisId)){
+
+                       this.jurisId.forEach (i => 
                         sumulas.forEach(sumula => {
                             if(sumula.id == i)
                             newSumulas.push(sumula)

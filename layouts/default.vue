@@ -21,7 +21,7 @@
       <v-toolbar-items class="mr-1 d-none d-sm-flex">
         <v-btn text to="/">Home</v-btn>
         <v-btn to="/sumulas" text>Súmulas</v-btn>
-        <v-btn to="/juris" text>Jurisprudências</v-btn>
+        <v-btn to="/juris" text>Julgados</v-btn>
       </v-toolbar-items>
         <layoutSite-menuPopOver v-if="user.name" :user="user" @logout="closeLogin()" />
         <v-btn v-else to="/login" small color="primary" outlined> <v-icon small class="mr-1">mdi-account</v-icon> Login</v-btn>
@@ -175,7 +175,7 @@
         items: [
           {icon:'mdi-home', title: 'Home', url:'/'},
           {icon:'',  title: 'Súmulas', url:'/sumulas'},
-          {icon:'',  title: 'Jurisprudência', url:'/juris'},
+          {icon:'',  title: 'Julgados', url:'/juris'},
           {icon:'',  title: 'Novidades', url:'/news'},
         ],
         icons: [

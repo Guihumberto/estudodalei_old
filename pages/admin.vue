@@ -5,7 +5,7 @@
             <v-tabs  v-model="tab">
                 <v-tab>Leis</v-tab>
                 <v-tab>Súmulas</v-tab>
-                <v-tab>Jurisprudência</v-tab>
+                <v-tab>Julgados</v-tab>
                 <v-tab>Concursos</v-tab>
                 <v-tab>Questões</v-tab>
             </v-tabs>
@@ -135,7 +135,9 @@
                 </v-tab-item>
                 <v-tab-item>
                     <v-card-title  class="grey lighten-2">
-                        Jurisprudência
+                        Julgados
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" to="/adminLeges/jurisAdm">lista julgados</v-btn>
                     </v-card-title>
                     <adm-forms-jurisForms />
                 </v-tab-item>

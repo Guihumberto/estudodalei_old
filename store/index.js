@@ -801,8 +801,6 @@ export const actions = {
         } 
     },
     async linkQuestionDispositive({ commit }, disp){
-        console.log("salvo com sucesso")
-        console.log(disp)
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/textLaws/${disp.idLaw}/${disp.idDispositivo}.json`, {
                 method: 'PUT',
@@ -830,5 +828,21 @@ export const actions = {
         } catch (error) {
             console.log(error)
         }
+    },
+    async saveJurisDispositivo({ commit }, disp){
+        console.log(disp)
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/textLaws/${disp.idLaw}/${disp.idDispositivo}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(disp.dispositive)
+            })
+
+            const dataDB = await res.json()
+        } catch(error){
+            console.log(error)
+        } 
     },
 }

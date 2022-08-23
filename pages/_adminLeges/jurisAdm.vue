@@ -1,6 +1,7 @@
 <template>
-    <v-container class="mt-5" style="max-width: 1080px" v-if="$store.state.adm">
-        <h1 class="text-h4">Jurisprudência</h1>
+    <v-container class="mt-5" style="max-width: 1080px">
+        <h1 class="text-h4 mb-5">Julgados</h1>
+        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <!-- barra de busca e filtros -->
         <v-card class="my-2">
             <v-card-text>
@@ -134,23 +135,6 @@
                 <!-- {{subjectDisciplinaList}} -->
             </v-card-text>
         </v-card>
-
-        <v-card outlined class="my-5">
-            <v-card-text>
-                <v-subheader>
-                    <v-text-field
-                        dense outlined
-                        class="mt-2"
-                        label="assunto"
-                        v-model="subjectAlterar"
-                    ></v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-btn outlined color="primary" @click="editar">Editar</v-btn>
-                </v-subheader>
-                <p v-for="item, index in listSubject" :key="index"> {{item}} </p>
-            </v-card-text>
-        </v-card>
-    
         <!-- lista das juris filtradas -->
         <v-card outlined class="my-2" v-show="jurisFilterList.length">
             <v-card-text>
@@ -168,6 +152,7 @@
                         <v-alert outlined v-for="item, index in jurisFilterList" :key="index">
                             <v-row>
                                 <v-col class="grow">
+                                    <adm-forms-linkJuris :questao="item" />
                                     <v-chip-group class="ml-0" column>
                                         <v-chip label x-small outlined>{{item.orgao}} - {{item.info}}</v-chip>
                                         <v-chip label x-small outlined>{{item.disciplina}}</v-chip>
@@ -309,6 +294,7 @@
             ></v-skeleton-loader>
           </v-card-text>
         </v-card>
+
     </v-container>
 </template>
 
@@ -317,7 +303,6 @@
     export default {
         data(){
             return{
-                subjectAlterar: '',
                 search: '',
                 orgao:['Todos', 'STF', 'STJ'],
                 filtroOrgao: 'Todos',
@@ -470,7 +455,7 @@
             },
         },
         methods:{
-            ...mapActions(['addBookJuris', 'removeBookJuris', 'cargaUsersFavLists', 'editJuris']),
+            ...mapActions(['addBookJuris', 'removeBookJuris', 'cargaUsersFavLists']),
             isJurisExist(item){
                 let result = this.jurisFilterList.findIndex(juris => juris.id == item.id)
                 return result       
@@ -528,14 +513,6 @@
                     }, 2000)
                 }
             },
-            editar(){
-                if(this.subjectAlterar){
-                    this.listSubject.forEach( i => {
-                        i.subject = this.subjectAlterar
-                        this.editJuris(i)
-                    })
-                }
-            }
         },
         created(){
             this.carregar()
@@ -547,6 +524,10 @@
 .formatText{
     text-align: justify;
     hyphens: auto;
-    line-height: 2;
+    line-height: 32px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #36344D;
+    letter-spacing: .3px;
 }
 </style>
