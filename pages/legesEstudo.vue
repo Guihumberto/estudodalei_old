@@ -16,7 +16,7 @@
                 <v-col cols="12" sm="6" class="my-auto">
                     <h1 class="text-h3 title">Estudo da Lei</h1>
                     <p class="mt-5 text-h5 description">Estude a legislação integrada a questões e jurisprudência de forma única.</p>
-                    <v-btn class="px-14" dark x-large color="indigo">ACESSAR</v-btn>
+                    <v-btn to="/" class="px-14" dark x-large color="indigo">ACESSAR</v-btn>
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-img src="/landingPage/hero-illustration.svg"></v-img>
