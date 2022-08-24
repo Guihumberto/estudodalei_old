@@ -1,6 +1,6 @@
 <template>
     <v-container style="max-width: 1080px" class="font-face">
-            <v-app-bar flat color="transparent">
+            <v-app-bar flat color="transparent" class="mx-n5">
                 <div class="d-flex">
                     <v-icon color="indigo" large class="mr-1">mdi-sun-compass</v-icon>
                     <h5 to="/" class="text-h5 leges">Estudo da Lei</h5>
@@ -9,7 +9,7 @@
                 <v-btn to="/" text>Início</v-btn>
                 <v-btn to="/sumulas" text class="mx-2">Súmulas</v-btn>
                 <v-btn to="/juris" text>Julgados</v-btn>
-                <v-btn to="/login" text class="ml-2" rounded color="indigo" outlined>Login</v-btn>
+                <v-btn to="/login" text class="ml-2 mr-0" rounded color="indigo" outlined>Login</v-btn>
             </v-app-bar>
         <v-card flat class="my-16 pt-16">
             <v-row class="mt-16">
@@ -27,7 +27,7 @@
             <v-card-text>
                 <v-img
                     contain
-                    lazy-src="/landingPage/telaLeges.png"
+                    src="/landingPage/telaLeges.png"
                     max-height="500"
                 ></v-img>
             </v-card-text>
