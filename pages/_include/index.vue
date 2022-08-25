@@ -147,10 +147,19 @@
                         let order = 0
 
                         //pegar o número do artigo
-                        if(item.toLowerCase().startsWith('art.')){
-                            art = item.trim().substr(4, 5).replace(/[^0-9]/g,'');
-                            this.art = parseInt(art)
-                            this.order = 10
+                        if(item.toLowerCase().startsWith('art.')){                   
+                            let test = item.substr(5, 5)                            
+                            let nTest = test.replace(/[^0-9]/g,'').length
+
+                            if(nTest >= 4 ){
+                                art = item.trim().substr(5, 5).replace(/[^0-9]/g,'');
+                                this.art = parseInt(art)
+                                this.order = 10
+                            } else {
+                                art = item.trim().substr(4, 5).replace(/[^0-9]/g,'');
+                                this.art = parseInt(art)
+                                this.order = 10
+                            }
                         }
 
                         //estabelecer a ordem para texto da lei que nao for artigo

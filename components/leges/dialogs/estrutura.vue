@@ -84,6 +84,7 @@
         estruturaList(){
           let newEstrutura = []
           let nameEstrutura = ''
+          let indexParte = 99
           let indexLivro = 99
           let indexTitulo = 99
           let indexCapitulo = ''
@@ -92,146 +93,213 @@
           this.estrutura.forEach(el => {
             let items = {}
 
-            if(el.textLaw.toUpperCase().startsWith('LIVRO')){
+            if(el.textLaw.toUpperCase().startsWith('PARTE')){
               items.name = el.textLaw
               items.art = el.art
-              nameEstrutura = 'LIVRO'
+              items.children = []
+              nameEstrutura = 'PARTE'
               newEstrutura.push(items)
-              indexLivro = newEstrutura.at(-1).name
-              indexLivro = newEstrutura.findIndex( i => i.name == indexLivro )
+              indexParte = newEstrutura.at(-1).name
+              indexParte = newEstrutura.findIndex( i => i.name == indexParte )
+              console.log(indexParte)
             }
-            else if(el.textLaw.toUpperCase().startsWith('TÍTULO')){
-              if(indexLivro == 99){
+
+            else if(el.textLaw.toUpperCase().startsWith('LIVRO')){
+              if(indexParte == 99){
                 items.name = el.textLaw
                 items.art = el.art
-                nameEstrutura = 'TÍTULO'
+                nameEstrutura = 'LIVRO'
                 newEstrutura.push(items)
-                indexTitulo = newEstrutura.at(-1).name
-                indexTitulo = newEstrutura.findIndex( i => i.name == indexTitulo )
+                indexLivro = newEstrutura.at(-1).name
+                indexLivro = newEstrutura.findIndex( i => i.name == indexLivro )
               } else {
-                if (nameEstrutura == 'TÍTULO') {
-                    newEstrutura[indexLivro].children.push({name: el.textLaw, art: el.art})
-                } else if(nameEstrutura == 'LIVRO') {
-                  newEstrutura[indexLivro].children = [{name: el.textLaw, art: el.art}]
-                } else {
-                  newEstrutura[indexLivro].children.push({name: el.textLaw, art: el.art})
-                }
+                  newEstrutura[indexParte].children.push({name: el.textLaw, art: el.art})
+                  nameEstrutura = 'LIVRO'
 
-                nameEstrutura = 'TÍTULO'
-                if(indexLivro => 0){
-                  indexTitulo = newEstrutura[indexLivro].children.at(-1).name
-                  indexTitulo = newEstrutura[indexLivro].children.findIndex(i => i.name == indexTitulo)
+                    indexLivro = newEstrutura[indexParte].children.at(-1).name
+                    indexLivro = newEstrutura[indexParte].children.findIndex(i => i.name == indexLivro)
+              }
+            }
+
+            else if(el.textLaw.toUpperCase().startsWith('TÍTULO')){
+              if(indexParte == 99){
+                if(indexLivro == 99){
+                  items.name = el.textLaw
+                  items.art = el.art
+                  nameEstrutura = 'TÍTULO'
+                  newEstrutura.push(items)
+                  indexTitulo = newEstrutura.at(-1).name
+                  indexTitulo = newEstrutura.findIndex( i => i.name == indexTitulo )
+                } else {
+                  if (nameEstrutura == 'TÍTULO') {
+                    newEstrutura[indexLivro].children.push({name: el.textLaw, art: el.art})
+                  } else if(nameEstrutura == 'LIVRO') {
+                    newEstrutura[indexLivro].children = [{name: el.textLaw, art: el.art}]
+                  } else {
+                    newEstrutura[indexLivro].children.push({name: el.textLaw, art: el.art})
+                  }
+  
+                  nameEstrutura = 'TÍTULO'
+          
+                    indexTitulo = newEstrutura[indexLivro].children.at(-1).name
+                    indexTitulo = newEstrutura[indexLivro].children.findIndex(i => i.name == indexTitulo)   
                 }
+              }else{
+                if (nameEstrutura == 'TÍTULO') {
+                    newEstrutura[indexParte].children[indexLivro].children.push({name: el.textLaw, art: el.art})
+                  } else if(nameEstrutura == 'LIVRO') {
+                    newEstrutura[indexParte].children[indexLivro].children = [{name: el.textLaw, art: el.art}]
+                  } else {
+                    newEstrutura[indexParte].children[indexLivro].children.push({name: el.textLaw, art: el.art})
+                  }
+  
+                  nameEstrutura = 'TÍTULO'
+                    indexTitulo = newEstrutura[indexParte].children[indexLivro].children.at(-1).name
+                    indexTitulo = newEstrutura[indexParte].children[indexLivro].children.findIndex(i => i.name == indexTitulo)
+                 
               }
             }
           
             else if(el.textLaw.toUpperCase().startsWith('CAPÍTULO')){
-               if(indexLivro == 99){
-                  if(indexTitulo == 99) {
-                    items.name = el.textLaw
-                    items.art = el.art
-                    nameEstrutura = 'CAPÍTULO'
-                    newEstrutura.push(items)
-                    indexCapitulo = newEstrutura.at(-1).name
-                    indexCapitulo = newEstrutura.findIndex( i => i.name == indexCapitulo )
-                  }else {
-                    if (nameEstrutura == 'CAPÍTULO'){
-                      newEstrutura[indexTitulo].children.push({name: el.textLaw})
-                    } else if (nameEstrutura == 'TÍTULO') {
-                      newEstrutura[indexTitulo].children = [{name: el.textLaw}]
-                    } else {
-                      newEstrutura[indexTitulo].children.push({name: el.textLaw})
+              if(indexParte == 99){
+                if(indexLivro == 99){
+                    if(indexTitulo == 99) {
+                      items.name = el.textLaw
+                      items.art = el.art
+                      nameEstrutura = 'CAPÍTULO'
+                      newEstrutura.push(items)
+                      indexCapitulo = newEstrutura.at(-1).name
+                      indexCapitulo = newEstrutura.findIndex( i => i.name == indexCapitulo )
+                    }else {
+                      if (nameEstrutura == 'CAPÍTULO'){
+                        newEstrutura[indexTitulo].children.push({name: el.textLaw})
+                      } else if (nameEstrutura == 'TÍTULO') {
+                        newEstrutura[indexTitulo].children = [{name: el.textLaw}]
+                      } else {
+                        newEstrutura[indexTitulo].children.push({name: el.textLaw})
+                      }
+                      nameEstrutura = 'CAPÍTULO'
+                      indexCapitulo = newEstrutura[indexTitulo].children.at(-1).name
+                      indexCapitulo = newEstrutura[indexTitulo].children.findIndex(i => i.name == indexCapitulo)
                     }
-                    nameEstrutura = 'CAPÍTULO'
-                    indexCapitulo = newEstrutura[indexTitulo].children.at(-1).name
-                    indexCapitulo = newEstrutura[indexTitulo].children.findIndex(i => i.name == indexCapitulo)
-                  }
-              } else {
-                if (nameEstrutura == 'CAPÍTULO'){
-                   newEstrutura[indexLivro].children[indexTitulo].children.push({name: el.textLaw})
-                } else if (nameEstrutura == 'TÍTULO') {
-                  newEstrutura[indexLivro].children[indexTitulo].children = [{name: el.textLaw}]
                 } else {
-                  newEstrutura[indexLivro].children[indexTitulo].children.push({name: el.textLaw})
+                  if (nameEstrutura == 'CAPÍTULO'){
+                    newEstrutura[indexLivro].children[indexTitulo].children.push({name: el.textLaw})
+                  } else if (nameEstrutura == 'TÍTULO') {
+                    newEstrutura[indexLivro].children[indexTitulo].children = [{name: el.textLaw}]
+                  } else {
+                    newEstrutura[indexLivro].children[indexTitulo].children.push({name: el.textLaw})
+                  }
+                  nameEstrutura = 'CAPÍTULO'
+                  indexCapitulo = newEstrutura[indexLivro].children[indexTitulo].children.at(-1).name
+                  indexCapitulo = newEstrutura[indexLivro].children[indexTitulo].children.findIndex(i => i.name == indexCapitulo)
                 }
-                nameEstrutura = 'CAPÍTULO'
-                indexCapitulo = newEstrutura[indexLivro].children[indexTitulo].children.at(-1).name
-                indexCapitulo = newEstrutura[indexLivro].children[indexTitulo].children.findIndex(i => i.name == indexCapitulo)
+              } else{
+                if (nameEstrutura == 'CAPÍTULO'){
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children.push({name: el.textLaw})
+                  } else if (nameEstrutura == 'TÍTULO') {
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children = [{name: el.textLaw}]
+                  } else {
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children.push({name: el.textLaw})
+                  }
+                  nameEstrutura = 'CAPÍTULO'
+                  indexCapitulo = newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children.at(-1).name
+                  indexCapitulo = newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children.findIndex(i => i.name == indexCapitulo)
               }
             }
 
             else if(el.textLaw.toUpperCase().startsWith('SEÇÃO')){
-               if(indexLivro == 99){
-                  if(indexTitulo == 99) {
-                    if (nameEstrutura == 'SEÇÃO'){
-                      newEstrutura[indexCapitulo].children.push({name: el.textLaw})
-                    } else if (nameEstrutura == 'CAPÍTULO') {
-                      newEstrutura[indexCapitulo].children = [{name: el.textLaw}]
-                    } else {
-                      newEstrutura[indexCapitulo].children.push({name: el.textLaw})
+              if(indexParte == 99){
+                if(indexLivro == 99){
+                    if(indexTitulo == 99) {
+                      if (nameEstrutura == 'SEÇÃO'){
+                        newEstrutura[indexCapitulo].children.push({name: el.textLaw})
+                      } else if (nameEstrutura == 'CAPÍTULO') {
+                        newEstrutura[indexCapitulo].children = [{name: el.textLaw}]
+                      } else {
+                        newEstrutura[indexCapitulo].children.push({name: el.textLaw})
+                      }
+                      nameEstrutura = 'SEÇÃO'
+                      indexSecao = newEstrutura[indexCapitulo].children.at(-1).name
+                      indexSecao = newEstrutura[indexCapitulo].children.findIndex(i => i.name == indexSecao)
+                    }else {
+                      if (nameEstrutura == 'SEÇÃO'){
+                        newEstrutura[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                      } else if (nameEstrutura == 'CAPÍTULO') {
+                        newEstrutura[indexTitulo].children[indexCapitulo].children = [{name: el.textLaw}]
+                      } else {
+                        newEstrutura[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                      }
+                      nameEstrutura = 'SEÇÃO'
+                      indexSecao = newEstrutura[indexTitulo].children[indexCapitulo].children.at(-1).name
+                      indexSecao = newEstrutura[indexTitulo].children[indexCapitulo].children.findIndex(i => i.name == indexSecao)
                     }
-                    nameEstrutura = 'SEÇÃO'
-                    indexSecao = newEstrutura[indexCapitulo].children.at(-1).name
-                    indexSecao = newEstrutura[indexCapitulo].children.findIndex(i => i.name == indexSecao)
-                  }else {
-                    if (nameEstrutura == 'SEÇÃO'){
-                      newEstrutura[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
-                    } else if (nameEstrutura == 'CAPÍTULO') {
-                      newEstrutura[indexTitulo].children[indexCapitulo].children = [{name: el.textLaw}]
-                    } else {
-                      newEstrutura[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
-                    }
-                    nameEstrutura = 'SEÇÃO'
-                    indexSecao = newEstrutura[indexTitulo].children[indexCapitulo].children.at(-1).name
-                    indexSecao = newEstrutura[indexTitulo].children[indexCapitulo].children.findIndex(i => i.name == indexSecao)
-                  }
-              } else{
-                if (nameEstrutura == 'SEÇÃO'){
-                   newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
-                } else if (nameEstrutura == 'CAPÍTULO') {
-                  newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children = [{name: el.textLaw}]
                 } else {
-                  newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                  if (nameEstrutura == 'SEÇÃO'){
+                     newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                  } else if (nameEstrutura == 'CAPÍTULO') {
+                    newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children = [{name: el.textLaw}]
+                  } else {
+                    newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                  }
+                  nameEstrutura = 'SEÇÃO'
+                   indexSecao = newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.at(-1).name
+                   indexSecao = newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.findIndex(i => i.name == indexCapitulo)
                 }
-                nameEstrutura = 'SEÇÃO'
-                 indexSecao = newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.at(-1).name
-                 indexSecao = newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children.findIndex(i => i.name == indexCapitulo)
+              } else {
+                  if (nameEstrutura == 'SEÇÃO'){
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                  } else if (nameEstrutura == 'CAPÍTULO') {
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children = [{name: el.textLaw}]
+                  } else {
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children.push({name: el.textLaw})
+                  }
+                  nameEstrutura = 'SEÇÃO'
+                   indexSecao = newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children.at(-1).name
+                   indexSecao = newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children.findIndex(i => i.name == indexSecao)
               }
             }
 
             else if(el.textLaw.toUpperCase().startsWith('SUBSEÇÃO')){
-               if(indexLivro == 99){
-                if(indexTitulo == 99) {
-                    if (nameEstrutura == 'SUBSEÇÃO'){
-                      newEstrutura[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
-                    } else {
-                      newEstrutura[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
+              if(indexParte == 99){
+                if(indexLivro == 99){
+                  if(indexTitulo == 99) {
+                      if (nameEstrutura == 'SUBSEÇÃO'){
+                        newEstrutura[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
+                      } else {
+                        newEstrutura[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
+                      }
+                      nameEstrutura = 'SUBSEÇÃO'
+                    }else {
+                      if (nameEstrutura == 'SUBSEÇÃO'){
+                        newEstrutura[indexTitulo].children[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
+                      } else {
+                        newEstrutura[indexTitulo].children[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
+                      }
+                      nameEstrutura = 'SUBSEÇÃO'
                     }
-                    nameEstrutura = 'SUBSEÇÃO'
-                  }else {
-                    if (nameEstrutura == 'SUBSEÇÃO'){
-                      newEstrutura[indexTitulo].children[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
-                    } else {
-                      newEstrutura[indexTitulo].children[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
-                    }
-                    nameEstrutura = 'SUBSEÇÃO'
-                  }
-              } else {
-                if (nameEstrutura == 'SUBSEÇÃO'){
-                   newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
                 } else {
-                  newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
+                  if (nameEstrutura == 'SUBSEÇÃO'){
+                     newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
+                  } else {
+                    newEstrutura[indexLivro].children[indexTitulo].children[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
+                  }
+                  nameEstrutura = 'SUBSEÇÃO'
                 }
-                nameEstrutura = 'SUBSEÇÃO'
-              }
+              } else {
+                  if (nameEstrutura == 'SUBSEÇÃO'){
+                     newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children[indexSecao].children.push({name: el.textLaw})
+                  } else {
+                    newEstrutura[indexParte].children[indexLivro].children[indexTitulo].children[indexCapitulo].children[indexSecao].children = [{name: el.textLaw}]
+                  }
+                  nameEstrutura = 'SUBSEÇÃO'
+                }
             }
 
             else {
                items.name = el.textLaw
                newEstrutura.push(items)
             }
-
-
           });
           return newEstrutura || this.estrutura
         }

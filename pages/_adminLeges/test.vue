@@ -12,9 +12,7 @@
             
     </div>
     <v-card outlined>
-        <v-card-text>
-            <v-treeview :items="items"></v-treeview>
-        </v-card-text>
+       {{list.length}}
     </v-card>
 
     </div>
@@ -67,28 +65,29 @@
         },
         computed:{
             list(){
-                // let searchL = "Julgado marcado como Lido"
-                // let search = searchL.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-                //     //retirar caracteres especiais
-                // let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
-
-                // let listSumula = this.$store.getters.readJuris.filter(i => exp.test(i.info.normalize('NFD').replace(/[\u0300-\u036f]/g, "")))
                 
-                let listSumula = this.$store.getters.readJuris.filter(i => i.disciplina == 'DA')
+                let textLaw = this.$store.getters.readTextLaw
 
-                return listSumula
+                return textLaw.slice(1798, 4207)
             }
         },
         methods:{
-            ...mapActions(['editJuris', 'deleteJurisFB']),
+            ...mapActions(['editJuris', 'deleteJurisFB', 'cargaTextLaw']),
             save(){
-                // let nova = []
-                // this.list.forEach(el => {
-                //     el.info = el.info.replace("Julgado marcado como Lido", "")
-                //     el.info = el.info.trim()
-                //     nova.push(el)
-                // });
-                this.listNew = this.list
+                let art = 0
+                this.list.forEach(i => {
+                  
+                    if(i.textLaw.startsWith('Art. ')){
+                        art = i.textLaw.substr(5, 5).replace('.', '')
+                        i.art = art
+                    } else {
+                        if(art){
+                            i.art = art
+                        }
+
+                    }
+                })
+                console.log(this.list) 
             },
             gravar(){
                 this.listNew.forEach(i => {
@@ -101,6 +100,9 @@
                 })
             }
         },
+        created(){
+            this.cargaTextLaw('8Ls0mb3b-')
+        }
     }
 </script>
 
