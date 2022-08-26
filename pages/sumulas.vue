@@ -164,7 +164,7 @@
                             x-small
                           >{{item}}</v-chip>
                         </v-chip-group>
-                        <p class="formatText">{{item.text}}</p>
+                        <p class="formatText" v-html="markSearch(item.text)"></p>
                       </v-col>
                       <v-col class="shrink">
                         <v-btn icon @click="deleteFilterList(item)"><v-icon>mdi-close-circle</v-icon></v-btn>
@@ -227,7 +227,10 @@
                             </v-chip-group>
                           </div>                           
                           <div> 
-                            <p class="formatText"> <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: {{item.text}}</p>
+                            <p class="formatText"> 
+                              <span>SÚMULA</span>  <span v-if="item.vinculante">VINCULANTE</span> {{item.nro}}: 
+                              <span v-html="markSearch(item.text)"></span> 
+                            </p>
                           </div>
                       </v-list-item-content>
                       <v-list-item-action v-if="item.cancel">
@@ -561,7 +564,13 @@
               this.cargaSumulasFavLists(this.loginUid)
           }, 2000)
         }
-      }
+        },
+        markSearch(item){
+            let termoPesquisado = this.search.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+            let pattern = new RegExp(termoPesquisado,"gi");
+
+            return item.replace(pattern, match => `<mark>${match}</mark>`);
+        }
     },
     created(){
         this.carregar()

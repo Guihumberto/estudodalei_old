@@ -169,13 +169,12 @@
                                 </v-col>
                             </v-row>
                             <v-row align="center">
-                                <v-col class="formatText">{{item.texto}}</v-col>
+                                <v-col cols="12" class="formatText" v-html="markSearch(item.texto)"></v-col>
                             </v-row>
                             
                         </v-alert>
                     </div>
                 </v-expand-transition>
-
             </v-card-text>
         </v-card>
         <!-- lista das jurisprudencias -->
@@ -233,7 +232,7 @@
                                     </v-chip-group>
                                 </div>
                                 <div>
-                                    <p class="formatText">{{item.texto}}</p>
+                                    <p class="formatText" v-html="markSearch(item.texto)"></p>
                                     <p class="mt-1 font-italic font-weight-light">{{item.julgado}}</p>
                                 </div>
                                 <v-subheader class="ml-n4">
@@ -512,6 +511,12 @@
                     }, 2000)
                 }
             },
+            markSearch(item){
+                let termoPesquisado = this.search.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+                let pattern = new RegExp(termoPesquisado,"gi");
+
+                return item.replace(pattern, match => `<mark>${match}</mark>`);
+            }
         },
         created(){
             this.carregar()
@@ -529,4 +534,8 @@
     color: #36344D;
     letter-spacing: .3px;
 }
+
+.highlightText {
+        background: yellow;
+    }
 </style>

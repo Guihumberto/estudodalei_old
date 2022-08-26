@@ -196,7 +196,7 @@
                        <!-- texto da lei -->
                         <p :style="{lineHeight: font.spacement }"  class="formatText" 
                             :title="`art. ${item.art}`"
-                            v-html="item.textLaw.startsWith('Art') ?  `<b>${item.textLaw.substr(0, 4)}</b> ${item.textLaw.substr(4)}` : item.textLaw">
+                            v-html="markSearch(item.textLaw)">
                         </p>
                         <!-- materias congregados -->
                         <v-expand-transition>
@@ -397,6 +397,12 @@
                 this.artIndice = ''
                 this.artsFilterActive = false
             },
+            markSearch(item){
+                let termoPesquisado = this.search.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+                let pattern = new RegExp(termoPesquisado,"gi");
+
+                return item.replace(pattern, match => `<mark>${match}</mark>`);
+            }
         },
         created(){
             this.cargaTextLaw(this.title)
