@@ -196,7 +196,7 @@
                        <!-- texto da lei -->
                         <p :style="{lineHeight: font.spacement }"  class="formatText" 
                             :title="`art. ${item.art}`"
-                            v-html="markSearch(item.textLaw)">
+                            v-html="search ? markSearch(item.textLaw) : item.textLaw">
                         </p>
                         <!-- materias congregados -->
                         <v-expand-transition>

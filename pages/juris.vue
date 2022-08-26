@@ -232,7 +232,7 @@
                                     </v-chip-group>
                                 </div>
                                 <div>
-                                    <p class="formatText" v-html="markSearch(item.texto)"></p>
+                                    <p class="formatText" v-html="search ? markSearch(item.texto) : item.texto"></p>
                                     <p class="mt-1 font-italic font-weight-light">{{item.julgado}}</p>
                                 </div>
                                 <v-subheader class="ml-n4">

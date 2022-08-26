@@ -164,7 +164,7 @@
                             x-small
                           >{{item}}</v-chip>
                         </v-chip-group>
-                        <p class="formatText" v-html="markSearch(item.text)"></p>
+                        <p class="formatText" v-html="search ? markSearch(item.text) : item.text"></p>
                       </v-col>
                       <v-col class="shrink">
                         <v-btn icon @click="deleteFilterList(item)"><v-icon>mdi-close-circle</v-icon></v-btn>
