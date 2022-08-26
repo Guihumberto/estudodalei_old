@@ -1,5 +1,5 @@
 <template>
-    <v-container class="mt-5" style="max-width: 1080px">
+    <v-container class="mt-5" style="max-width: 1080px" v-scroll-reveal.reset="{ delay: 350 }">
         <h1 class="text-h4 mb-5">Julgados</h1>
         <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <!-- barra de busca e filtros -->

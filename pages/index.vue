@@ -1,6 +1,6 @@
 <template>
-  <v-container class="mt-5 formatText" style="max-width: 1080px">
-        <div class="mb-2 text-h4 Heading 1">O que vamos estudar hoje?</div>
+  <v-container class="mt-5 formatText" style="max-width: 1080px" v-scroll-reveal.reset="{ delay: 350 }">
+        <div class="mb-5 text-h4 Heading 1">O que vamos estudar hoje?</div>
         <!-- barra de busca -->
         <v-text-field
           dense
