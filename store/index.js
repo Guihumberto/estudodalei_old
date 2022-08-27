@@ -26,6 +26,9 @@ export const state = () => ({
         {id: 8, name: 'D. Financeiro', sigla: 'DF'},
         {id: 9, name: 'D. Ambiental', sigla: 'AMB'},
         {id: 10, name: 'D. Trabalho', sigla: 'TRAB'},
+        {id: 11, name: 'Processo CIvil', sigla: 'TRAB'},
+        {id: 12, name: 'Processo Penal', sigla: 'TRAB'},
+        {id: 13, name: 'Processo trabalho', sigla: 'TRAB'},
     ],
     provas:[
         {

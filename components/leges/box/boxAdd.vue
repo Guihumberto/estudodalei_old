@@ -6,14 +6,14 @@
         </v-system-bar>
         <v-card-title class="pa-0">
             <v-tabs
-            v-model="tab"
+            v-model="idTabIntegration"
             >
                 <v-tab v-if="questoesId">Questões</v-tab>
                 <v-tab v-if="sumulasId">Súmulas</v-tab>
                 <v-tab v-if="jurisId">Julgados</v-tab>
             </v-tabs>
         </v-card-title>
-        <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="idTabIntegration">
             <v-tab-item v-if="questoesId">
                 <v-card-text>
                     <template v-for="item, index in questoes">
@@ -123,7 +123,8 @@
         props:{
             sumulasId: Array,
             questoesId: Array, 
-            jurisId: Array
+            jurisId: Array,
+            idTabIntegration: true
         },
         computed:{
             sumulas(){
@@ -219,7 +220,7 @@
                     item.resp == item.value ? item.msg = 'você acertou' : item.msg = 'você errou'
                 }
                 return
-            }
+            },
         },
     }
 </script>

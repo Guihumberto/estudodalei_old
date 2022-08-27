@@ -216,7 +216,10 @@
       this.cargaQuestions()
       setTimeout( () => {
         this.cargaUserPreferences(this.user.uid)
-      }, 2000)
+      }, 2000),
+      setTimeout( () => {
+        this.rightDrawer = false
+      }, 100)
     }
   }
 </script>

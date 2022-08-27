@@ -159,7 +159,8 @@
                                         v-if="Array.isArray(item.idQuestions)"
                                         v-bind="attrs"
                                         v-on="on" 
-                                        title="Qtd de Questões" @click="item.show = true" 
+                                        title="Qtd de Questões" 
+                                        @click="item.show = true, idTabIntegration = 0" 
                                         x-small outlined color="success">{{item.idQuestions.length}}
                                     </v-btn>
                                 </template>
@@ -171,7 +172,8 @@
                                         v-if="Array.isArray(item.sumulas)" 
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Jurisprudência" @click="item.show = true" 
+                                        title="Qtd de Jurisprudência" 
+                                        @click="item.show = true, idTabIntegration = 1" 
                                         x-small outlined color="warning">{{item.sumulas.length}}
                                     </v-btn>
                                 </template>
@@ -183,7 +185,8 @@
                                         v-if="Array.isArray(item.idJuris)" 
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Julgados" @click="item.show = true" 
+                                        title="Qtd de Julgados" 
+                                        @click="item.show = true, idTabIntegration = 2" 
                                         x-small outlined color="orange">{{item.idJuris.length}}
                                     </v-btn>
                                 </template>
@@ -202,6 +205,7 @@
                         <v-expand-transition>
                             <v-card outlined v-if="item.show">
                                <box-add 
+                                :idTabIntegration = "idTabIntegration"
                                 :questoesId="item.idQuestions" 
                                 :sumulasId="item.sumulas" 
                                 :jurisId="item.idJuris" 
@@ -246,6 +250,7 @@
         components: { boxAdd },
         data(){
             return{
+                idTabIntegration: 0, 
                 dispositiveBtn: false,
                 // id: this.$route.query.id,
                 title: this.$route.params.law,

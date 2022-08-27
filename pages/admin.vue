@@ -1,6 +1,7 @@
 <template>
    <v-container class="mt-5" style="max-width: 1080px" v-if="$store.state.adm">
-        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
+        <v-btn class="mb-5" text @click="$router.go(-1)"> <v-icon>mdi-chevron-left</v-icon> voltar</v-btn>
+        {{tab}}
         <v-card flat outlined min-height="80vh">
             <v-tabs  v-model="tab">
                 <v-tab>Leis</v-tab>
@@ -167,7 +168,7 @@
     data: () => ({
       selected: [2],
       search: '',
-      tab: null,
+      tab: 4,
       listSumulas: [],
       sumula:{
          text: '',
