@@ -1,12 +1,13 @@
 <template>
     <v-card 
+        class="mb-16"
         outlined 
         color="transparent">
         <v-card-text>
             <h3 class="text-h4 mb-5 black--text"> <v-icon color="indigo" class="mr-2">mdi-square</v-icon>Legislação integrada</h3>
             <p class="text-h5">A legislação do site está sendo integrada com questões e jurisprudência, com vinculação por dispositivo. <br>
             Faça o teste abaixo:</p>
-            <v-card outlined>
+            <v-card outlined color="primary lighten-3">
                 <v-card-text>
                 <!-- MENU jurisprudencia e questoes -->
                         <div class="mb-1">

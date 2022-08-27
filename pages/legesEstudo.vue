@@ -60,6 +60,11 @@
             <apresentation-test />
         </v-container>
     </div>
+    <div class="black">
+        <v-container style="max-width: 1080px">
+            <apresentation-filtroArt />
+        </v-container>
+    </div>
     <v-container style="max-width: 1080px">
         <!-- Funcionalidades -->
         <!-- o básico -->
