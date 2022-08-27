@@ -22,7 +22,7 @@
                     alt="busca pelo índice"
                 ></v-img>
                 </v-col>
-                <v-col cols="12" class="px-16">
+                <v-col cols="12">
                     <v-img
                         contain
                         src="/landingPage/tela3.gif"

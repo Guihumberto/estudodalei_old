@@ -6,9 +6,9 @@
         <v-card-text>
             <h3 class="text-h4 mb-5 black--text"> <v-icon color="indigo" class="mr-2">mdi-square</v-icon>Legislação integrada</h3>
             <p class="text-h5">A legislação do site está sendo integrada com questões e jurisprudência, com vinculação por dispositivo. <br>
-            Faça o teste abaixo:</p>
+            Faça o teste abaixo clicando nos botões:</p>
             <v-card outlined color="primary lighten-3">
-                <v-card-text>
+                <v-card-text id="dispositive">
                 <!-- MENU jurisprudencia e questoes -->
                         <div class="mb-1">
                             <v-tooltip bottom>
@@ -44,15 +44,19 @@
                                 </template>
                                 <span>Julgados</span>
                             </v-tooltip>
-                            <v-btn @click="show = !show" x-small icon>
-                                <v-icon title="expandir" color="secondary" small>{{show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon>
+                            <v-btn 
+                                :href="show ? '#integration' : '#dispositive'"
+                                @click="show = !show" x-small icon>
+                                <v-icon title="expandir" color="secondary" small>
+                                    {{show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}
+                                </v-icon>
                             </v-btn>
                         </div>   
                 <p class="formatText">
                     {{textLaw}}
                 </p>
                 <v-expand-transition>
-                    <v-card outlined v-if="show">
+                    <v-card outlined v-if="show" id="integration">
                      <v-system-bar dark color="primary">
                         <v-spacer></v-spacer>
                         <v-btn @click="show = false" icon ><v-icon>mdi-close</v-icon></v-btn>
@@ -215,6 +219,9 @@
 </script>
 
 <style scoped>
+html {
+    scroll-behavior: smooth;
+}
 .formatText{
     text-align: justify;
     hyphens: auto;
