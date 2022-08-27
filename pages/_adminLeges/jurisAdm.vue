@@ -176,7 +176,6 @@
                         </v-alert>
                     </div>
                 </v-expand-transition>
-
             </v-card-text>
         </v-card>
         <!-- lista das jurisprudencias -->

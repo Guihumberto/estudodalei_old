@@ -2,7 +2,7 @@
     <v-card flat>
             <v-card-title class="text-v-card-title mb-5">
                 Lista de Questões 
-                <v-btn small color="primary" class="ml-2" to="questoes/listQuestions">ver</v-btn>
+                <v-btn small color="primary" class="ml-2" to="../questoes/listQuestions">ver</v-btn>
             </v-card-title>
             <v-card outlined>
                 <v-card-text>

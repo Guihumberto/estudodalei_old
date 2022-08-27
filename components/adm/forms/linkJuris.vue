@@ -70,6 +70,10 @@
                 block outlined color="success lighten-1"
                 @click="showMore +=100"
                 >ver mais</v-btn>
+                <v-btn 
+                block outlined color="success lighten-1"
+                @click="showMore += lawText.length"
+                >MOSTRAR TUDO</v-btn>
             </div>
         </v-card-text>
         <v-card-actions>
