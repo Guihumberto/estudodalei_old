@@ -159,7 +159,7 @@
                                         v-if="Array.isArray(item.idQuestions)"
                                         v-bind="attrs"
                                         v-on="on" 
-                                        title="Qtd de Questões" @click="item.show = !item.show" 
+                                        title="Qtd de Questões" @click="item.show = true" 
                                         x-small outlined color="success">{{item.idQuestions.length}}
                                     </v-btn>
                                 </template>
@@ -171,7 +171,7 @@
                                         v-if="Array.isArray(item.sumulas)" 
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Jurisprudência" @click="item.show = !item.show" 
+                                        title="Qtd de Jurisprudência" @click="item.show = true" 
                                         x-small outlined color="warning">{{item.sumulas.length}}
                                     </v-btn>
                                 </template>
@@ -183,7 +183,7 @@
                                         v-if="Array.isArray(item.idJuris)" 
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Julgados" @click="item.show = !item.show" 
+                                        title="Qtd de Julgados" @click="item.show = true" 
                                         x-small outlined color="orange">{{item.idJuris.length}}
                                     </v-btn>
                                 </template>

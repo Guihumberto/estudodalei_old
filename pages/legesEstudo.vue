@@ -55,6 +55,11 @@
             </v-card>
         </v-container>
     </div>
+    <div>
+        <v-container style="max-width: 1080px">
+            <apresentation-test />
+        </v-container>
+    </div>
     <v-container style="max-width: 1080px">
         <!-- Funcionalidades -->
         <!-- o básico -->

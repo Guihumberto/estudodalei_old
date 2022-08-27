@@ -231,7 +231,7 @@ export const mutations = {
         const text = Array.from(payload)
          text.forEach(i =>{
             i.resp = null
-            i.msg = null
+            i.msg = false
             newText.push(i)
         })
          state.questions = newText

@@ -24,8 +24,12 @@
                             <p class="formatText">{{item.answer}}</p>
                             <p class="formatText">{{item.alternative}}</p>
                             <div class="my-8">
-                                <v-btn @click="item.resp = 1" small outlined :color="item.resp == 1? 'primary':'grey'">Certo</v-btn>
-                                <v-btn @click="item.resp = 0" small outlined :color="item.resp == 0? 'error':'grey'">Errado</v-btn>
+                                <v-btn 
+                                    :disabled="item.msg"
+                                    @click="item.resp = 1" small outlined :color="item.resp == 1? 'primary':'grey'">Certo</v-btn>
+                                <v-btn 
+                                    :disabled="item.msg"
+                                    @click="item.resp = 0" small outlined :color="item.resp == 0? 'error':'grey'">Errado</v-btn>
                             </div>
                             <v-btn 
                                 v-if="!item.msg"
