@@ -224,6 +224,9 @@
             <div class="text-center" v-if="artIndice">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
             </div>
+            <div class="text-center" v-show="qtdArtIndice <= textLaw.size" v-if="search && !artsFilterActive">
+                <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
+            </div>
         </v-card-text>     
     </v-card>
     <!-- load -->
@@ -317,7 +320,7 @@
                     let filtro =  this.$store.getters.readTextLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
 
                     return filtro.length
-                            ? {text: filtro}
+                            ? {text: filtro.slice(0, 0 + this.qtdArtIndice), size: filtro.length}
                             : 99
                 
                 } else {
