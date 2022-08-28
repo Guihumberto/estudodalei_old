@@ -11,7 +11,7 @@
       <layoutSite-sideBar />
     </v-navigation-drawer>
 
-    <v-app-bar app flat color="grey lighten-2" v-show="loading" dense class="formatText">
+    <v-app-bar app flat color="grey lighten-2" v-show="loading" class="formatText">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <div>
         <h4 class="text-h6">Estudo da Lei</h4>
@@ -20,6 +20,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="mr-1 d-none d-sm-flex">
         <v-btn text to="/">Home</v-btn>
+        <v-btn text to="/laws">Leis</v-btn>
         <v-btn to="/sumulas" text>Súmulas</v-btn>
         <v-btn to="/juris" text>Julgados</v-btn>
       </v-toolbar-items>
@@ -174,6 +175,7 @@
         snack: false,
         items: [
           {icon:'mdi-home', title: 'Home', url:'/'},
+          {icon:'mdi-home', title: 'Leis', url:'/laws'},
           {icon:'',  title: 'Súmulas', url:'/sumulas'},
           {icon:'',  title: 'Julgados', url:'/juris'},
           {icon:'',  title: 'Novidades', url:'/news'},

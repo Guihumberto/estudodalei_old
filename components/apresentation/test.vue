@@ -4,7 +4,10 @@
         outlined 
         color="transparent">
         <v-card-text>
-            <h3 class="text-h4 mb-5 black--text"> <v-icon color="indigo" class="mr-2">mdi-square</v-icon>Legislação integrada</h3>
+            <h3 class="description mb-5"> 
+                <v-icon class="tag mr-1 indigo mb-3"></v-icon>
+                <span class="black--text text-h4 mb-5">Legislação integrada</span> 
+            </h3>
             <p class="text-h5">A legislação do site está sendo integrada com questões e jurisprudência, com vinculação por dispositivo. <br>
             Faça o teste abaixo clicando nos botões:</p>
             <v-card outlined color="primary lighten-3">
@@ -232,6 +235,10 @@ html {
     letter-spacing: .3px;
     font-size: 1.5rem;
     line-height: 1.3;
+}
+.tag{
+    height: 30px;
+    width: 20px;
 }
 
 </style>

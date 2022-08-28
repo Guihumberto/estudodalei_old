@@ -47,6 +47,7 @@
       items: [
         { text: 'Home', icon: 'mdi-home', url: '/' },
         // { text: 'Administração', icon: 'mdi-upload', url: '/admin' },
+        { text: 'Leis', icon: 'mdi-book-open-variant', url: '/laws' },
         { text: 'Súmulas', icon: 'mdi-scale-balance', url: '/sumulas' },
         { text: 'Julgados', icon: 'mdi-gavel', url: '/juris' },
         { text: 'Novidades', icon: 'mdi-bookshelf', url: '/news' },

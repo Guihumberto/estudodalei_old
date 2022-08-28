@@ -138,7 +138,7 @@
                     // carregar preferencias do usuario
                     this.cargaUserPreferences(usuario.uid)
 
-                    this.$router.push( this.$route.query.redirect || '/' )
+                    this.$router.push( this.$route.query.redirect || '/laws' )
                     this.loading = false
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Seja bem-vindo!', color:'primary lighten-1'})
 
@@ -150,7 +150,7 @@
             userLoginIn(){
                 let userON = this.$store.getters.readUser
                 if(userON.uid){
-                    this.$router.push( '/' )
+                    this.$router.push( '/laws' )
                 }
             }
         },
