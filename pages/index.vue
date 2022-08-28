@@ -176,8 +176,14 @@
             <apresentation-knowMore />
         </v-container>
     </div>
+    <!-- mail -->
+    <div class="black">
+        <v-container style="max-width: 1080px">
+            <mail />
+        </v-container>
+    </div>
      <!-- footer -->
-    <div class="secondary lighten-5">
+    <div>
         <v-container style="max-width: 1080px">
             <apresentation-footer />
         </v-container>

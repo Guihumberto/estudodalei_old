@@ -146,12 +146,7 @@
               type="card"
           ></v-skeleton-loader>
         </v-card>
-
-        <start-bannerWhat />
         <concursoBanner />
-        <sumulaBanner />
-        <funcionalidades />
-        <mail />
   </v-container>
 </template>
 

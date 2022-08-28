@@ -1,7 +1,10 @@
 <template>
-    <v-card class="ml-3" outlined color="grey lighten-3">
-        <v-card-title class="mb-2"> <v-icon class="mr-1">mdi-account-box-outline</v-icon> Contato</v-card-title>
+    <v-card class="ml-3 my-16" outlined>
         <v-card-text>
+            <h3 class="description mb-5"> 
+                <v-icon class="tag mr-1 indigo mb-4"></v-icon>
+                <span class="black--text text-h4 mb-5">Mais Informações</span>
+             </h3> 
             <v-row>
                 <v-col cols="12" sm="12" md="6">
                     <v-card min-height="405" outlined flat>
@@ -146,6 +149,10 @@
 </script>
 
 <style lang="scss" scoped>
+.tag{
+    height: 30px;
+    width: 20px;
+}
 .linkInsta{
     position: relative;
     font-size: 1rem;
