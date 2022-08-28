@@ -44,10 +44,8 @@
 </script>
 
 <style scoped>
-
 .tag{
     height: 30px;
     width: 20px;
 }
-
 </style>

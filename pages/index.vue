@@ -170,6 +170,12 @@
             <apresentation-enterApp />
         </v-container>
     </div>
+    <!-- tutorial -->
+    <div>
+        <v-container style="max-width: 1080px">
+            <apresentation-knowMore />
+        </v-container>
+    </div>
      <!-- footer -->
     <div>
         <v-container style="max-width: 1080px">
