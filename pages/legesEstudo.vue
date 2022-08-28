@@ -1,5 +1,5 @@
 <template>
-<div class="font-face" v-scroll-reveal.reset="{ delay: 350 }">
+<div class="font-face" v-scroll-reveal="{ delay: 350 }">
     <div class="black">
         <v-container style="max-width: 1080px">
             <v-app-bar dark flat color="transparent" class="mx-n5">
