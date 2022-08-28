@@ -225,6 +225,9 @@
 </script>
 
 <style>
+html {
+    scroll-behavior: smooth;
+}
 .formatText{
     font-family: 'Inter', sans-serif;
 }

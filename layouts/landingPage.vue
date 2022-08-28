@@ -12,6 +12,9 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style>
+html {
+    scroll-behavior: smooth;
+}
 
 </style>

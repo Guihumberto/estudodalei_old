@@ -1,5 +1,5 @@
 <template>
-    <v-container class="mt-5" style="max-width: 1080px">
+    <v-container class="mt-5 leges" style="max-width: 1080px">
     <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
         <v-icon small>mdi-arrow-left</v-icon>
         voltar
@@ -30,7 +30,7 @@
         ></v-skeleton-loader>
     </v-card>
     <!-- menus -->
-    <v-row align-content-space-between class="mb-2">
+    <v-row align-content-space-between class="mb-2" id="upRead">
         <v-col class="mb-n3" cols="12" sm="6">
             <v-text-field
                 dense
@@ -150,7 +150,7 @@
                     <div v-if="item.estrutura">
                         <p v-show="!artsFilterActive || artIndice" class="font-weight-medium text-center" v-text="item.textLaw"></p>
                     </div>
-                    <div v-else class="mb-2">
+                    <div v-else class="mb-2" :id="index">
                         <!-- MENU jurisprudencia e questoes -->
                         <div v-if="item.sumulas || item.idQuestions" >
                             <v-tooltip bottom>
@@ -160,6 +160,7 @@
                                         v-bind="attrs"
                                         v-on="on" 
                                         title="Qtd de Questões" 
+                                        :href="`#${index}`"
                                         @click="item.show = true, idTabIntegration = 0" 
                                         x-small outlined color="success">{{item.idQuestions.length}}
                                     </v-btn>
@@ -173,6 +174,7 @@
                                         v-bind="attrs"
                                         v-on="on"
                                         title="Qtd de Jurisprudência" 
+                                        :href="`#${index}`"
                                         @click="item.show = true, idTabIntegration = 1" 
                                         x-small outlined color="warning">{{item.sumulas.length}}
                                     </v-btn>
@@ -186,18 +188,22 @@
                                         v-bind="attrs"
                                         v-on="on"
                                         title="Qtd de Julgados" 
+                                        :href="`#${index}`"
                                         @click="item.show = true, idTabIntegration = 2" 
                                         x-small outlined color="orange">{{item.idJuris.length}}
                                     </v-btn>
                                 </template>
                                 <span>Julgados</span>
                             </v-tooltip>
-                            <v-btn @click="item.show = !item.show" x-small icon>
+                            <v-btn 
+                                :href="`#${index}`"
+                                @click="item.show = !item.show, idTabIntegration = 0" x-small icon>
                                 <v-icon title="expandir" color="secondary" small>{{item.show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon>
                             </v-btn>
                         </div>    
                        <!-- texto da lei -->
-                        <p :style="{lineHeight: font.spacement }"  class="formatText" 
+                        <p 
+                            :style="{lineHeight: font.spacement }"  class="formatText" 
                             :title="`art. ${item.art}`"
                             v-html="search ? markSearch(item.textLaw) : item.textLaw">
                         </p>
@@ -234,9 +240,9 @@
     <!-- Pagination Botton -->
     <div class="text-center mt-2 mb-16 py-5" v-if="!search && !artsFilterActive">
         <v-pagination
-        v-model="pagination.page"
-        :length="totalPages"
-        :total-visible="7"
+            v-model="pagination.page"
+            :length="totalPages"
+            :total-visible="7"
         ></v-pagination>
     </div>
     </v-container>
@@ -274,6 +280,9 @@
                 artIndice: '',
                 qtdArtIndice: 10
             }
+        },
+        watch:{
+            'pagination.page': 'pageTop'
         },
         computed:{
             textLaw(){
@@ -407,6 +416,9 @@
                 let pattern = new RegExp(termoPesquisado,"gi");
 
                 return item.replace(pattern, match => `<mark>${match}</mark>`);
+            },
+            pageTop(){
+                window.location.href = "#upRead";
             }
         },
         created(){
@@ -417,6 +429,10 @@
 </script>
 
 <style lang="scss" scoped>
+
+html {
+    scroll-behavior: smooth;
+}
 .formatText{
     text-align: justify;
     hyphens: auto;
@@ -426,4 +442,5 @@
     color: #36344D;
     letter-spacing: .3px;
 }
+
 </style>
