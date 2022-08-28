@@ -50,10 +50,10 @@
                         <v-icon class="tag mr-1 indigo mb-3"></v-icon>
                         <span class="black--text text-h4 mb-5">O que é o Estudo da Lei?</span> 
                     </h3>
-                    <p>Estudo da Lei é uma aplicação voltada para a otimização do estudo da legislação com foco em questões de concurso público, 
+                    <p style="font-size: 22px">Estudo da Lei é uma aplicação voltada para a otimização do estudo da legislação com foco em questões de concurso público, 
                         integrando jurisprudência e doutrina no texto da lei e direcionando para os dispositivos mais relevantes para prova.
                     </p>
-                    <p>Com questões, doutrina e jurisprudências vinculadas ao texto da lei, a ferramenta Estudo da Lei tem o propósito de 
+                    <p style="font-size: 22px">Com questões, doutrina e jurisprudências vinculadas ao texto da lei, a ferramenta Estudo da Lei tem o propósito de 
                         tornar a leitura da lei mais agradável, melhorando o aprendizado.
                     </p>       
                 </v-card-text>
@@ -177,7 +177,7 @@
         </v-container>
     </div>
      <!-- footer -->
-    <div>
+    <div class="secondary lighten-5">
         <v-container style="max-width: 1080px">
             <apresentation-footer />
         </v-container>
@@ -234,6 +234,7 @@
     font-weight: 600;
     font-style: normal;
     font-display: swap;
+    hyphens: auto;
   }
 
 .leges{
@@ -246,6 +247,7 @@
     font-size: 2.2rem;
     line-height: 3rem;
     font-weight: 400;
+    hyphens: auto;
 }
 .text{
     font-family: Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;;

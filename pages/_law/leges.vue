@@ -39,6 +39,7 @@
                 append-icon="mdi-magnify"
                 v-model.trim="search"
                 @keydown.enter="filterJustArt(search.replace(/[^0-9]/g,''))"
+                :messages="search && !artsFilterActive && textLaw.size ? `dispositivos encontrados ${textLaw.size}` : ''"
             ></v-text-field>
         </v-col>
         <v-col cols="12" sm="2">
@@ -68,7 +69,12 @@
             v-model="pagination.perPage"
             v-show="!search"
             ></v-select>
-            <v-btn @click="dispositiveBtnAuto" v-show="!search" v-else x-small text>Dispositivo por página: {{pagination.perPage}} <v-icon small>mdi-chevron-down</v-icon> </v-btn>
+            <v-btn 
+                @click="dispositiveBtnAuto" 
+                v-show="!search" v-else x-small text>
+                Dispositivo por página: {{pagination.perPage}} 
+                <v-icon small>mdi-chevron-down</v-icon> 
+            </v-btn>
         </v-col>
         <v-col class="mt-n6" cols="12">
             <div v-if="search.replace(/[^0-9]/g,'')">
@@ -294,7 +300,7 @@
                 if(this.artIndice){
                     
                     let indice = textTemp.findIndex(i => i.textLaw == this.artIndice)
-                    return { text: textTemp.slice(indice, indice + this.qtdArtIndice)}
+                    return { text: textTemp.slice(indice, indice + this.qtdArtIndice), size: textTemp.length}
                 }
                 else if(this.artsFilterActive){
                     let filtro = this.$store.getters.readTextLaw
