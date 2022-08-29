@@ -145,7 +145,16 @@
                 </v-col>
             </v-row>
         </v-card>
-        <!-- como pode me ajudar -->
+    </v-container>
+    <!-- demo -->
+    <div class="black">
+        <v-container style="max-width: 1080px">
+            <apresentation-demo />
+        </v-container>
+    </div>
+    <div>
+        <v-container style="max-width: 1080px">
+            <!-- como pode me ajudar -->
         <v-card flat class="my-16">
             <v-card-text>
                 <h3 class="description mb-5"> 
@@ -164,7 +173,8 @@
                 </v-row>
             </v-card-text>
         </v-card>
-    </v-container>
+        </v-container>
+    </div>
     <div class="aboutme d-flex align-center ">
         <v-container style="max-width: 1080px">
             <apresentation-enterApp />

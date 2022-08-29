@@ -19,7 +19,7 @@
                                     <v-btn 
                                         v-bind="attrs"
                                         v-on="on" 
-                                        title="Qtd de Questões" @click="show = true" 
+                                        title="Qtd de Questões" @click="show = true, tab = 0" 
                                         x-small outlined color="success">1
                                     </v-btn>
                                 </template>
@@ -30,7 +30,7 @@
                                     <v-btn 
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Jurisprudência" @click="show = true" 
+                                        title="Qtd de Jurisprudência" @click="show = true, tab = 1" 
                                         x-small outlined color="warning">2
                                     </v-btn>
                                 </template>
@@ -41,7 +41,7 @@
                                     <v-btn 
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Julgados" @click="show = true" 
+                                        title="Qtd de Julgados" @click="show = true, tab = 2" 
                                         x-small outlined color="orange">1
                                     </v-btn>
                                 </template>
@@ -49,7 +49,7 @@
                             </v-tooltip>
                             <v-btn 
                                 :href="show ? '#integration' : '#dispositive'"
-                                @click="show = !show" x-small icon>
+                                @click="show = !show, tab = 0" x-small icon>
                                 <v-icon title="expandir" color="secondary" small>
                                     {{show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}
                                 </v-icon>
