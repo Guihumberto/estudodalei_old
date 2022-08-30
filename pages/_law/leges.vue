@@ -76,32 +76,65 @@
                 <v-icon small>mdi-chevron-down</v-icon> 
             </v-btn>
         </v-col>
+        <!-- busca de artigos e salvar filtro -->
         <v-col class="mt-n6" cols="12">
             <div v-if="search.replace(/[^0-9]/g,'')">
-            <v-chip 
-                @click="filterJustArt(search.replace(/[^0-9]/g,''))"
-                 >
-                Art. {{search.replace(/[^0-9]/g,'')}}
-            </v-chip>
-        </div>
-        <div>
-             <v-chip-group
-                mandatory
-                active-class="primary--text"
-                v-if="artsFilterActive"
-             >
-                <v-chip @click="pageFilter(false)" class="transparent pr-0" v-if="artsFilter.length == 1"><v-icon>mdi-arrow-left-drop-circle-outline</v-icon></v-chip>
-                <v-chip
-                    v-for=" tag in artsFilter" :key="tag"
-                    @click:close="artFilterRemove(tag)"
-                    close
+                <v-chip 
+                    @click="filterJustArt(search.replace(/[^0-9]/g,''))"
                     >
-                        art. {{tag}}
+                    Art. {{search.replace(/[^0-9]/g,'')}}
                 </v-chip>
-                <v-btn @click="clearAllArtsFilter()" v-if="artsFilter.length > 1" text color="error">Limpar</v-btn>
-                <v-chip @click="pageFilter(true)" class="transparent pl-0" v-if="artsFilter.length == 1"><v-icon>mdi-arrow-right-drop-circle-outline</v-icon></v-chip>
-             </v-chip-group>
-        </div>
+            </div>
+            <div>
+                <v-chip-group
+                    mandatory
+                    active-class="primary--text"
+                    v-if="artsFilterActive"
+                >
+                    <v-chip 
+                        @click="pageFilter(false)" 
+                        class="transparent pr-0 chipClearArrow" v-if="artsFilter.length == 1"
+                        exact-active-class="0"
+                    >
+                        <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
+                    </v-chip>
+                    <v-chip
+                        v-for=" tag in artsFilter" :key="tag"
+                        @click:close="artFilterRemove(tag)"
+                        close
+                        >
+                            art. {{tag}}
+                    </v-chip>
+                    <v-btn 
+                        class="withUppercase" 
+                        @click="clearAllArtsFilter()" v-if="artsFilter.length > 1" text color="error">
+                        Limpar Filtro
+                    </v-btn>
+                    <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :nudge-width="200"
+                        offset-y
+                        v-if="artsFilter.length > 1"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn 
+                                v-bind="attrs"
+                                v-on="on"
+                                class="withUppercase"  
+                                text color="primary">
+                                Salvar Filtro
+                            </v-btn>
+                        </template>
+                        <leges-filterArt-saveFilter :arts="artsFilter" @close="menu = false" />
+                    </v-menu>   
+                    <v-chip 
+                        @click="pageFilter(true)" 
+                        class="transparent pl-0 chipClearArrow" v-if="artsFilter.length == 1">
+                            <v-icon>mdi-arrow-right-drop-circle-outline</v-icon>
+                    </v-chip>
+                </v-chip-group>
+            </div>
         </v-col>
     </v-row>
     <!-- Pagination top -->
@@ -265,6 +298,7 @@
         components: { boxAdd },
         data(){
             return{
+                menu: false,
                 idTabIntegration: 0, 
                 dispositiveBtn: false,
                 // id: this.$route.query.id,
@@ -452,4 +486,11 @@ html {
     letter-spacing: .3px;
 }
 
+.v-chip.chipClearArrow{
+    color: #36344D !important;
+
+}
+.v-btn.withUppercase{
+    text-transform: none !important;
+}
 </style>

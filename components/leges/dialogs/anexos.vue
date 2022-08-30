@@ -10,13 +10,13 @@
             title="Anexos"
             v-bind="attrs"
             v-on="on">
-           <v-icon small class="mr-1">mdi-paperclip</v-icon>Anexos
+           <v-icon small class="mr-1">mdi-filter</v-icon>Filtros
         </v-btn>
       </template>
 
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
-          Anexos
+          Filtros
           <v-spacer></v-spacer>
           <v-btn icon @click="dialog = false">
             <v-icon>mdi-close</v-icon>
@@ -24,7 +24,7 @@
         </v-card-title>
 
         <v-card-text class="mt-5">
-          Não há anexos disponíveis.
+          
         </v-card-text>
 
         <v-divider></v-divider>
