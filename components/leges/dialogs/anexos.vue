@@ -26,6 +26,7 @@
         <v-card-text class="mt-5" v-if="user">
           <v-list v-if="filterList[0]">
             <template v-for="item, index in filterList">
+              <v-divider v-if="index != 0"></v-divider>
               <v-list-item @click="filterActivePush(item)" :key="index">
                 <v-list-item-content>
                     <v-list-item-title>
