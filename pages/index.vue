@@ -14,7 +14,7 @@
                     <v-btn to="/sumulas" text class="mx-2">Súmulas</v-btn>
                     <v-btn to="/juris" text>Julgados</v-btn>
                 </div>
-                <v-btn to="/login" text class="ml-2 mr-0" rounded color="indigo lighten-2" outlined>Login</v-btn>
+                <v-btn v-show="false" to="/login" text class="ml-2 mr-0" rounded color="indigo lighten-2" outlined>Login</v-btn>
             </v-app-bar>
             <v-card dark flat class="my-16" color="transparent">
                 <v-row class="mt-16">

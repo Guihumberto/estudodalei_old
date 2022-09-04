@@ -51,7 +51,8 @@ export const state = () => ({
     plan: [],
     planComplete: [],
     lawComplement: [],
-    questions:[]
+    questions:[],
+    filterArts:[]
 })
 
 export const getters = {
@@ -117,6 +118,9 @@ export const getters = {
     },
     readQuestions(state){
         return state.questions
+    },
+    readFilterArts(state){
+        return state.filterArts
     },
 }
 
@@ -243,6 +247,12 @@ export const mutations = {
         const x = state.questions.map(item => item.id == payload.id ? payload : item)
         state.questions = x
     },
+    setFilterArts(state, payload){
+        state.filterArts.push(payload)
+    },
+    cargaFilterArts(state, payload){
+        state.filterArts = payload
+    }
 }
 
 export const actions = {
@@ -847,5 +857,36 @@ export const actions = {
         } catch(error){
             console.log(error)
         } 
+    },
+    async saveFilterArts({ commit, state }, art){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/filterSaveArt/${art.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(art)
+            })
+
+            const dataDB = await res.json()
+            commit('setFilterArts', art)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaFilterArts({ commit, state }){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/filterSaveArt.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaFilterArts', filterArtList)     
+        } catch (error) {
+            console.log(error)
+        }
     },
 }

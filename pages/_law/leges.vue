@@ -56,7 +56,7 @@
                 <leges-dialogs-otherLaws title="conjugar normas" @listOtherLaws="OtherLaws($event)" />
                 <leges-dialogs-estrutura :estrutura="estruturaList" @indice="searchIndice($event)" />
                 <leges-dialogs-print v-show="false" :law="nameLaw" :textLaw="textLaw.textComplete" />
-                <leges-dialogs-anexos />
+                <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
             </v-btn-toggle>
         </v-col>
         <v-col cols="12" sm="2" class="mt-n3" v-if="!artsFilterActive">
@@ -126,7 +126,7 @@
                                 Salvar Filtro
                             </v-btn>
                         </template>
-                        <leges-filterArt-saveFilter :arts="artsFilter" @close="menu = false" />
+                        <leges-filterArt-saveFilter :law="nameLaw" :arts="artsFilter" @close="menu = false" />
                     </v-menu>   
                     <v-chip 
                         @click="pageFilter(true)" 
@@ -459,6 +459,15 @@
                 let pattern = new RegExp(termoPesquisado,"gi");
 
                 return item.replace(pattern, match => `<mark>${match}</mark>`);
+            },
+            filterArtsPush(item){
+                console.log("heloo bdksadksa", item)
+                if(item){
+                    this.artsFilterActive = true
+                    item.forEach( i => {
+                        this.filterJustArt(i)
+                    })
+                }
             },
             pageTop(){
                 window.location.href = "#upRead";
