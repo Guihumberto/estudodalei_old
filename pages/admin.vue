@@ -75,7 +75,7 @@
                     <v-card-title  class="grey lighten-2 mb-2">
                         Súmulas
                         <v-spacer></v-spacer>
-                        <adm-viewSumula />
+                        <v-btn color="primary" to="adminLeges/sumulasAdmin" text>listar súmulas</v-btn>
                     </v-card-title>
                     <v-card-text>
                         <v-form @submit.prevent="viewSumula()" ref="form">

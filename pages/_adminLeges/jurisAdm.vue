@@ -124,15 +124,6 @@
                         </div>
                     </v-expand-transition>
                 </v-card-text>
-                <!-- <v-checkbox
-                    class="mt-n2"
-                    v-model="cancelInclui"
-                    color="red"
-                    label="Incluir as canceladas"
-                ></v-checkbox> -->
-                
-                <!-- subjects tags -->
-                <!-- {{subjectDisciplinaList}} -->
             </v-card-text>
         </v-card>
         <!-- lista das juris filtradas -->

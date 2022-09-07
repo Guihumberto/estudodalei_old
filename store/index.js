@@ -889,4 +889,19 @@ export const actions = {
             console.log(error)
         }
     },
+    async saveSumulaVincDispositivo({ commit }, disp){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/textLaws/${disp.idLaw}/${disp.idDispositivo}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(disp.dispositive)
+            })
+
+            const dataDB = await res.json()
+        } catch(error){
+            console.log(error)
+        } 
+    },
 }
