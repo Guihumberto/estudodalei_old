@@ -967,7 +967,6 @@ export const actions = {
         }
     },
     async saveFavDispositve({commit, state}, data){
-        console.log(data)
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositive/${data.idLaw}/${data.dispositive}.json`, {
                 method: 'PUT',
