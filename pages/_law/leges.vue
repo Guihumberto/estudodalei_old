@@ -446,6 +446,29 @@
                             ? {text: filtro.slice(0, 0 + this.qtdArtIndice), size: filtro.length}
                             : 99
                 
+                } else if(this.filters.favs){
+
+                    let textLaw = this.$store.getters.readTextLaw
+                    let listNew = []
+
+                    textLaw.forEach( i => {
+                        this.listFavDispositive.forEach( l => {
+                            if(l == i.id){
+                                listNew.push(i)
+                            }
+                        })
+                    })
+
+                    textLaw = listNew
+
+                    let page = this.pagination.page - 1
+                    let start = page * this.pagination.perPage
+                    let end = start + this.pagination.perPage
+                    return {
+                            totalDispositivos: textLaw.length,
+                            text: textLaw.slice(start, end),
+                            textComplete: textLaw
+                           }
                 } else {
                     let page = this.pagination.page - 1
                     let start = page * this.pagination.perPage
