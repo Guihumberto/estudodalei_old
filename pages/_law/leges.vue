@@ -145,24 +145,27 @@
                     class="mr-1"
                     v-model="filters.favs"
                 ></v-checkbox>
-                <v-checkbox
+                <!-- <v-checkbox
                     label="Comentários"
                     dense
                     class="mr-1"
                     v-model="filters.comments"
+                    v-show="false"
                 ></v-checkbox>
                 <v-checkbox
                     label="Questões"
                     dense
                     class="mr-1 d-none d-sm-flex"
                     v-model="filters.questions"
+                    v-show="false"
                 ></v-checkbox>
                 <v-checkbox
                     label="Jurisprudência"
                     dense
                     class="mr-1 d-none d-sm-flex"
                     v-model="filters.juris"
-                ></v-checkbox>
+                    v-show="false"
+                ></v-checkbox> -->
             </div>
         </v-col>
     </v-row>
