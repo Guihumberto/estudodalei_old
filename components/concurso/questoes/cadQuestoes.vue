@@ -96,6 +96,13 @@
                     {id: 11, name: 'Processo CIvil', sigla: 'TRAB'},
                     {id: 12, name: 'Processo Penal', sigla: 'TRAB'},
                     {id: 13, name: 'Processo trabalho', sigla: 'TRAB'},
+                    {id: 14, name: 'D. Cultural', sigla: 'CTL'},
+                    {id: 15, name: 'D. Criança e Adolescente', sigla: 'ECA'},
+                    {id: 16, name: 'D. Consumidor', sigla: 'CSD'},
+                    {id: 17, name: 'D. Internacional', sigla: 'ITN'},
+                    {id: 18, name: 'D. Humanos', sigla: 'HMN'},
+                    {id: 19, name: 'Ética', sigla: 'ETC'},
+                    {id: 20, name: 'Teorias', sigla: 'FSJ'},
                 ],
                 questionsProve: [
                     {id: 1, answer: '', alternative: '', value: 0, subject:1, prove: 1}
