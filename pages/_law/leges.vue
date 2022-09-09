@@ -463,6 +463,7 @@
                     })
 
                     textLaw = listNew
+                    this.pagination.page = 1
 
                     let page = this.pagination.page - 1
                     let start = page * this.pagination.perPage
