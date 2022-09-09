@@ -137,6 +137,31 @@
                 </v-chip-group>
             </div>
         </v-col>
+        <v-col cols="12">
+            <h5 class="ml-2 overline">apenas com:</h5>
+            <div class="d-flex ml-1">
+                <v-checkbox
+                    label="Favoritos"
+                    dense
+                    class="mr-1"
+                ></v-checkbox>
+                <v-checkbox
+                    label="Comentários"
+                    dense
+                    class="mr-1"
+                ></v-checkbox>
+                <v-checkbox
+                    label="Questões"
+                    dense
+                    class="mr-1 d-none d-sm-flex"
+                ></v-checkbox>
+                <v-checkbox
+                    label="Jurisprudência"
+                    dense
+                    class="mr-1 d-none d-sm-flex"
+                ></v-checkbox>
+            </div>
+        </v-col>
     </v-row>
     <!-- Pagination top -->
     <div class="text-right">
