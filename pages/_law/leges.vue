@@ -1,6 +1,5 @@
 <template>
-    <v-container class="mt-5 leges" style="max-width: 1080px">
-       <span class="dd-none">{{listFavDispositive}}</span> 
+    <v-container class="mt-5 leges" style="max-width: 1080px"> 
     <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
         <v-icon small>mdi-arrow-left</v-icon>
         voltar
@@ -144,21 +143,25 @@
                     label="Favoritos"
                     dense
                     class="mr-1"
+                    v-model="filters.favs"
                 ></v-checkbox>
                 <v-checkbox
                     label="Comentários"
                     dense
                     class="mr-1"
+                    v-model="filters.comments"
                 ></v-checkbox>
                 <v-checkbox
                     label="Questões"
                     dense
                     class="mr-1 d-none d-sm-flex"
+                    v-model="filters.questions"
                 ></v-checkbox>
                 <v-checkbox
                     label="Jurisprudência"
                     dense
                     class="mr-1 d-none d-sm-flex"
+                    v-model="filters.juris"
                 ></v-checkbox>
             </div>
         </v-col>
@@ -394,7 +397,14 @@
                 },
                 boxAdd: false,
                 artIndice: '',
-                qtdArtIndice: 10
+                qtdArtIndice: 10,
+                filters:{
+                    favs: false, 
+                    comments: false,
+                    questions: false, 
+                    juris: false
+                },
+                listFavDispositive: []
             }
         },
         watch:{
@@ -467,10 +477,6 @@
                 const user = this.$store.getters.readUser
                 return user.uid
             },
-            listFavDispositive(){
-                let list = this.$store.getters.readFavDispositive
-                return list || []
-            }
         },
         methods:{
             ...mapActions(['cargaTextLaw', 'cargaNameLaw', 'saveFavDispositve', 'cargaFavDispositive', 'removeFavDispositive']),
@@ -580,12 +586,19 @@
                     }
 
                     
+            },
+            cargaLazy(){
+                this.cargaFavDispositive(this.title)
+                setTimeout(() => {
+                    this.listFavDispositive = this.$store.getters.readFavDispositive
+                }, 2000)
             }
         },
         created(){
             this.cargaTextLaw(this.title)
             this.cargaNameLaw(this.title)
             this.cargaFavDispositive(this.title)
+            this.cargaLazy()
         }
     }
 </script>
