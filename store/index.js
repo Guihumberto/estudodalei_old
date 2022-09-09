@@ -59,7 +59,9 @@ export const state = () => ({
     planComplete: [],
     lawComplement: [],
     questions:[],
-    filterArts:[]
+    filterArts:[],
+    favDispositiveLaw: [],
+    favDispositiveLaw: []
 })
 
 export const getters = {
@@ -128,6 +130,12 @@ export const getters = {
     },
     readFilterArts(state){
         return state.filterArts
+    },
+    readFavDispositiveLaw(state){
+        return state.favDispositiveLaw
+    },
+    readFavDispositive(state){
+        return state.favDispositive
     },
 }
 
@@ -259,6 +267,21 @@ export const mutations = {
     },
     cargaFilterArts(state, payload){
         state.filterArts = payload
+    },
+    cargaDispositiveLaw(state, payload){
+        state.favDispositiveLaw = payload
+    },
+    setFavDispositiveLaw(state, payload){
+        state.favDispositiveLaw.push(payload)
+    },
+    cargaDispositive(state, payload){
+        state.favDispositive = payload
+    },
+    setFavDispositive(state, payload){
+        state.favDispositive.push(payload)
+    },
+    deleteFavDispositive(state, payload){
+        state.favDispositive = state.favDispositive.filter( item => item != payload)
     }
 }
 
@@ -910,5 +933,79 @@ export const actions = {
         } catch(error){
             console.log(error)
         } 
+    },
+    async saveCommentFB({commit, state}, data){
+        console.log(data)
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositiveLaw/${data.idLaw}/${data.dipositive}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data.comments)
+            })
+
+            const dataDB = await res.json()
+            commit('setFavDispositiveLaw', art)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaFavDispositiveLaw({ commit, state }, law){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositiveLaw/${law.idLaw}/${law.dispositive}.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaDispositiveLaw', filterArtList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async saveFavDispositve({commit, state}, data){
+        console.log(data)
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositive/${data.idLaw}/${data.dispositive}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data.dispositive)
+            })
+
+            const dataDB = await res.json()
+            commit('setFavDispositive', data.dispositive)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaFavDispositive({ commit, state }, law){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositive/${law}.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaDispositive', filterArtList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async removeFavDispositive({commit, state}, law){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositive/${law.idLaw}/${law.dispositive}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteFavDispositive', law.dispositive)
+        } catch (error) {
+            console.log(error)
+        }
     },
 }

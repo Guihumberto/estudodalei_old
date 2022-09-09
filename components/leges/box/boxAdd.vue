@@ -8,12 +8,52 @@
             <v-tabs
             v-model="idTabIntegration"
             >
-                <v-tab v-if="questoesId">Questões</v-tab>
+                <v-tab>Comentários</v-tab>
                 <v-tab v-if="sumulasId">Súmulas</v-tab>
                 <v-tab v-if="jurisId">Julgados</v-tab>
+                <v-tab v-if="questoesId">Questões</v-tab>
             </v-tabs>
         </v-card-title>
         <v-tabs-items v-model="idTabIntegration">
+            <v-tab-item>
+                <v-card-text v-if="user">
+                    <v-alert type="error" outlined v-if="!comments">
+                        <p>Não há comentários cadastrados</p>
+                    </v-alert>
+                    <div v-else>
+                        <p>Meus Comentários</p>
+                        <div>
+                            <p v-for="item, i in comments" :key="i">{{item}}</p>
+                        </div>
+                    </div>
+                    <v-form @submit.prevent="saveComment()" ref="form">
+                        <v-textarea
+                            dense outlined
+                            label="Comentário"
+                            placeholder="Inserir comentário"
+                            v-model="comment"
+                            :rules="[rules.required]"
+                        ></v-textarea>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn 
+                                @click="comment = ''"
+                                text color="success">Limpar</v-btn>
+                            <v-btn 
+                                type="submit"
+                                tile
+                                color="success">Salvar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-form>
+                </v-card-text>
+                <v-card-text v-else>
+                    <v-alert class="text-center">
+                        <p>Necessário estar conectado</p>
+                        <v-btn to="/login"> <v-icon class="mr-1">mdi-account</v-icon> Login</v-btn>
+                    </v-alert>
+                </v-card-text>
+            </v-tab-item> 
             <v-tab-item v-if="questoesId">
                 <v-card-text>
                     <template v-for="item, index in questoes">
@@ -98,7 +138,8 @@
                         
                     </v-list>
                 </v-card-text>
-            </v-tab-item>       
+            </v-tab-item>    
+             
         </v-tabs-items>
         <v-divider></v-divider>
         <v-card-actions>
@@ -109,14 +150,21 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex';
+
     export default {
         data(){
             return{
                 tab: null,
                 tabs: ['Questões', 'Súmulas'],
+                idLaw: this.$route.params.law,
+                comment: '',
                 pagination:{
                     page: 1,
                     perPage: 1,
+                },
+                rules:{
+                    required: (value) => !!value || "Campo obrigatório",
                 },
             }
         },
@@ -124,7 +172,8 @@
             sumulasId: Array,
             questoesId: Array, 
             jurisId: Array,
-            idTabIntegration: true
+            idTabIntegration: true,
+            idDispositive: true
         },
         computed:{
             sumulas(){
@@ -210,8 +259,19 @@
                 const proves = this.$store.getters.readProvas
                 return (item) => proves.find( p => p.id == item)
             },
+            comments(){
+                let comments = this.$store.getters.readFavDispositiveLaw
+                return comments.length
+                ? comments
+                : false
+            },  
+            user(){
+                const user = this.$store.getters.readUser
+                return user.uid
+            }
         },
         methods:{
+            ...mapActions(['saveCommentFB', 'cargaFavDispositiveLaw']),
             close(){
                 this.$emit('fechar')
             },
@@ -221,7 +281,36 @@
                 }
                 return
             },
+            saveComment(){
+                if(this.comment){
+                    let saveData = {}
+                    if(this.$refs.form.validate()){
+                        saveData = {
+                            idLaw: this.idLaw,
+                            dipositive: this.idDispositive,
+                            comments: this.comments || []
+                        }
+                        saveData.comments.push(this.comment)
+                    }
+                    this.saveCommentFB(saveData)
+                    this.comment = ''
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Comentário salvo com sucesso', color:'success'})
+                } else {
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Digite um comentário para salvar', color:'error'})
+                }
+            },
+            cargaComments(){
+                let dataLaw = {}
+                dataLaw = {
+                    idLaw: this.idLaw,
+                    dispositive: this.idDispositive
+                }
+                this.cargaFavDispositiveLaw(dataLaw)
+            },
         },
+        created(){
+            this.cargaComments()
+        }
     }
 </script>
 

@@ -191,55 +191,100 @@
                     </div>
                     <div v-else class="mb-2" :id="index">
                         <!-- MENU jurisprudencia e questoes -->
-                        <div v-if="item.sumulas || item.idQuestions" >
+                        <div class="d-flex">
+                            <div v-if="item.sumulas || item.idQuestions" class="d-flex">
+                                <v-expand-transition>
+                                    <div v-show="menuExpanse">
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                    v-if="Array.isArray(item.idQuestions)"
+                                                    v-bind="attrs"
+                                                    v-on="on" 
+                                                    title="Qtd de Questões" 
+                                                    :href="`#${index}`"
+                                                    @click="item.show = true, idTabIntegration = 3" 
+                                                    x-small outlined color="success">{{item.idQuestions.length}}
+                                                </v-btn>
+                                            </template>
+                                            <span>Questões</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                    v-if="Array.isArray(item.sumulas)" 
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    title="Qtd de Jurisprudência" 
+                                                    :href="`#${index}`"
+                                                    @click="item.show = true, idTabIntegration = 1" 
+                                                    x-small outlined color="warning">{{item.sumulas.length}}
+                                                </v-btn>
+                                            </template>
+                                            <span>Súmulas</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                    v-if="Array.isArray(item.idJuris)" 
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    title="Qtd de Julgados" 
+                                                    :href="`#${index}`"
+                                                    @click="item.show = true, idTabIntegration = 2" 
+                                                    x-small outlined color="orange">{{item.idJuris.length}}
+                                                </v-btn>
+                                            </template>
+                                            <span>Julgados</span>
+                                        </v-tooltip>
+                                    </div>
+                                </v-expand-transition>
+                            </div>    
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn 
-                                        v-if="Array.isArray(item.idQuestions)"
                                         v-bind="attrs"
-                                        v-on="on" 
-                                        title="Qtd de Questões" 
+                                        class="mt-1"
+                                        v-on="on"
+                                        title="Comentários" 
                                         :href="`#${index}`"
                                         @click="item.show = true, idTabIntegration = 0" 
-                                        x-small outlined color="success">{{item.idQuestions.length}}
+                                        x-small icon color="grey"> 
+                                        <v-icon>mdi-comment-processing-outline</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Questões</span>
+                                <span>Comentários</span>
                             </v-tooltip>
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn 
-                                        v-if="Array.isArray(item.sumulas)" 
+                                        class="mt-1"
+                                        @click="favDispositive(item.id)"
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Jurisprudência" 
-                                        :href="`#${index}`"
-                                        @click="item.show = true, idTabIntegration = 1" 
-                                        x-small outlined color="warning">{{item.sumulas.length}}
+                                        x-small icon 
+                                        :color="findListFavDispositive(item.id) ? 'warning' : 'grey'"> 
+                                        <v-icon v-text="findListFavDispositive(item.id) ? 'mdi-star' : 'mdi-star-outline'"></v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Súmulas</span>
+                                <span>Favoritar</span>
                             </v-tooltip>
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn 
-                                        v-if="Array.isArray(item.idJuris)" 
+                                        v-if="item.sumulas || item.idQuestions"
+                                        class="mt-1"
                                         v-bind="attrs"
                                         v-on="on"
-                                        title="Qtd de Julgados" 
-                                        :href="`#${index}`"
-                                        @click="item.show = true, idTabIntegration = 2" 
-                                        x-small outlined color="orange">{{item.idJuris.length}}
+                                        title="fechar" 
+                                        @click="menuExpanse = !menuExpanse" 
+                                        x-small icon color="grey"> 
+                                        <v-icon v-text="menuExpanse ? 'mdi-close' : 'mdi-chevron-right'"></v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Julgados</span>
+                                <span v-text="menuExpanse ? 'Fechar' : 'Exapndir' "></span>
                             </v-tooltip>
-                            <v-btn 
-                                :href="`#${index}`"
-                                @click="item.show = !item.show, idTabIntegration = 0" x-small icon>
-                                <v-icon title="expandir" color="secondary" small>{{item.show ? 'mdi-chevron-down-circle' : 'mdi-chevron-right-circle' }}</v-icon>
-                            </v-btn>
-                        </div>    
+                        </div>
                        <!-- texto da lei -->
                         <p 
                             :style="{lineHeight: font.spacement }"  class="formatText" 
@@ -254,6 +299,7 @@
                                 :questoesId="item.idQuestions" 
                                 :sumulasId="item.sumulas" 
                                 :jurisId="item.idJuris" 
+                                :idDispositive="item.id"
                                 @fechar="item.show = false" />
                             </v-card>
                         </v-expand-transition>
@@ -299,6 +345,7 @@
         data(){
             return{
                 menu: false,
+                menuExpanse: true,
                 idTabIntegration: 0, 
                 dispositiveBtn: false,
                 // id: this.$route.query.id,
@@ -389,10 +436,18 @@
                 const law = this.$store.getters.readTextLaw
                 const lastArt = law[law.length -1]
                 return lastArt.art
+            },
+            user(){
+                const user = this.$store.getters.readUser
+                return user.uid
+            },
+            listFavDispositive(){
+                let list = this.$store.getters.readFavDispositive
+                return list
             }
         },
         methods:{
-            ...mapActions(['cargaTextLaw', 'cargaNameLaw']),
+            ...mapActions(['cargaTextLaw', 'cargaNameLaw', 'saveFavDispositve', 'cargaFavDispositive', 'removeFavDispositive']),
             dispositiveBtnAuto(){
                 this.dispositiveBtn = true
                 setTimeout(() => {
@@ -471,11 +526,40 @@
             },
             pageTop(){
                 window.location.href = "#upRead";
+            },
+            findListFavDispositive(item){
+                let find = this.listFavDispositive.find(i => i == item)
+                return !!find
+            },
+            favDispositive(item){
+                    if(this.findListFavDispositive(item)){
+                        let dataLaw = {}
+                        dataLaw = {
+                            idLaw: this.title,
+                            dispositive: item
+                        }
+                        this.listFavDispositive.splice(item, 1)
+                        this.removeFavDispositive(dataLaw)
+                        this.$store.dispatch("snackbars/setSnackbars", {text:'Dispositivo removido da lista de Favoritos', color:'error'})
+                        
+                    } else {
+                        let dataLawFav = {}
+                        dataLawFav = {
+                            idLaw: this.title,
+                            dispositive: item
+                        }
+                        this.saveFavDispositve(dataLawFav)
+                        this.listFavDispositive.push(item)
+                        this.$store.dispatch("snackbars/setSnackbars", {text:'Dispositivo incluído na lista de Favoritos', color:'success'})
+                    }
+
+                    
             }
         },
         created(){
             this.cargaTextLaw(this.title)
             this.cargaNameLaw(this.title)
+            this.cargaFavDispositive(this.title)
         }
     }
 </script>
