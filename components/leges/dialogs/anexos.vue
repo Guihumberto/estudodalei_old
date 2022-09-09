@@ -81,7 +81,7 @@
       }
     },
     props:{
-      law: Array
+      law: true
     },
     computed:{
       user(){

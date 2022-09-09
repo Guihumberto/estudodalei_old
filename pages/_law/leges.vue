@@ -1,6 +1,6 @@
 <template>
     <v-container class="mt-5 leges" style="max-width: 1080px">
-       <span class="d-none">{{listFavDispositive}}</span> 
+       <span class="dd-none">{{listFavDispositive}}</span> 
     <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
         <v-icon small>mdi-arrow-left</v-icon>
         voltar
@@ -469,7 +469,7 @@
             },
             listFavDispositive(){
                 let list = this.$store.getters.readFavDispositive
-                return list
+                return list || []
             }
         },
         methods:{
