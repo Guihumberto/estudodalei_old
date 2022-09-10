@@ -152,7 +152,18 @@
                     <v-card-title  class="grey lighten-2">
                         Questões
                     </v-card-title>
-                    <concurso-questoes-cadQuestoes />
+                    <v-card-text>
+                        <v-chip-group>
+                            <v-chip 
+                                v-for="item, i in bancas" :key="i"
+                                @click="selectForm = item.id"
+                                >
+                                {{item.name}}
+                            </v-chip>
+                        </v-chip-group>
+                    </v-card-text>
+                    <concurso-questoes-cadQuestoes v-if="selectForm == 1" />
+                    <concurso-questoes-cadCespeVF v-if="selectForm == 2" />
                 </v-tab-item>
             </v-tabs-items>
        </v-card>
@@ -170,6 +181,11 @@
       search: '',
       tab: 4,
       listSumulas: [],
+      selectForm: 1,
+      bancas:[
+        {id: 1, name: "FGV/OAB"},
+        {id: 2, name: "CESPE/VF"},
+      ],
       sumula:{
          text: '',
          orgao: '',
