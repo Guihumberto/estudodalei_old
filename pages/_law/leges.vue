@@ -224,8 +224,8 @@
                     </div>
                     <div v-else class="mb-2" :id="index">
                         <!-- MENU jurisprudencia e questoes -->
-                        <div class="d-flex">
-                            <div v-if="item.sumulas || item.idQuestions" class="d-flex">
+                        <div class="d-flex" v-if="item.textLaw">
+                            <div v-if="item.sumulas || item.idQuestions" class="d-flex mr-1">
                                 <v-expand-transition>
                                     <div v-show="menuExpanse">
                                         <v-tooltip bottom>
