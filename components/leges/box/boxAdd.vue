@@ -17,6 +17,7 @@
         <v-tabs-items v-model="idTabIntegration">
             <v-tab-item>
                 <v-card-text v-if="user">
+                    
                     <v-alert type="error" outlined v-if="!comments">
                         <p>Não há comentários salvos neste dispositivo.</p>
                     </v-alert>
@@ -24,15 +25,28 @@
                         <p class="text-h6">Meus Comentários</p>
                         <v-alert 
                             outlined color="grey"
+                            class="pb-0"
                             v-for="item, i in comments" :key="i"
                             >
                             <p 
-                              style="color:black"
-                            >{{item}}
+                              style="color:black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: medium;"
+                            >{{item.comment}}
                             </p>
                             <v-chip-group>
-                                <v-chip outlined small>editar</v-chip>
-                                <v-chip outlined small>apagar</v-chip>
+                                <v-chip 
+                                    title="editar"
+                                    outlined small
+                                    @click="editComment = !editComment"
+                                    v-show="false"
+                                    >
+                                    <v-icon small>mdi-file-document-edit</v-icon>
+                                </v-chip>
+                                <v-chip 
+                                    color="error"
+                                    title="apagar"
+                                    outlined small @click="deleteComment(item.id)">
+                                    <v-icon small>mdi-delete</v-icon>
+                                </v-chip>
                             </v-chip-group>
                         </v-alert>
                     </div>
@@ -41,7 +55,7 @@
                             dense outlined
                             label="Comentário"
                             placeholder="Inserir comentário"
-                            v-model="comment"
+                            v-model.trim="comment"
                             :rules="[rules.required]"
                         ></v-textarea>
                         <v-card-actions>
@@ -161,6 +175,7 @@
 
 <script>
     import { mapActions } from 'vuex';
+    const shortid = require('shortid');
 
     export default {
         data(){
@@ -169,6 +184,7 @@
                 tabs: ['Questões', 'Súmulas'],
                 idLaw: this.$route.params.law,
                 comment: '',
+                editComment: false, 
                 pagination:{
                     page: 1,
                     perPage: 1,
@@ -270,7 +286,7 @@
                 return (item) => proves.find( p => p.id == item)
             },
             comments(){
-                let comments = this.$store.getters.readFavDispositiveLaw
+                let comments = this.$store.getters.readComments
                 return comments
             },  
             user(){
@@ -279,7 +295,7 @@
             }
         },
         methods:{
-            ...mapActions(['saveCommentFB', 'cargaComments']),
+            ...mapActions(['saveCommentFB', 'cargaComments', 'removeComment']),
             close(){
                 this.$emit('fechar')
             },
@@ -294,11 +310,11 @@
                     let saveData = {}
                     if(this.$refs.form.validate()){
                         saveData = {
+                            id: shortid.generate(),
                             idLaw: this.idLaw,
-                            dipositive: this.idDispositive,
-                            comments: this.comments || []
+                            dispositive: this.idDispositive,
+                            comment: this.comment
                         }
-                        saveData.comments.push(this.comment)
                     }
                     this.saveCommentFB(saveData)
                     this.comment = ''
@@ -306,6 +322,15 @@
                 } else {
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Digite um comentário para salvar', color:'error'})
                 }
+            },
+            deleteComment(item){
+                let dataRemove = {}
+                dataRemove = {
+                    idLaw: this.idLaw,
+                    dispositive: this.idDispositive,
+                    idComment: item
+                }
+                this.removeComment(dataRemove)
             },
             cargaCommentsBD(){
                 let dataLaw = {}

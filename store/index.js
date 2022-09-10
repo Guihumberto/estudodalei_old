@@ -60,8 +60,8 @@ export const state = () => ({
     lawComplement: [],
     questions:[],
     filterArts:[],
-    favDispositiveLaw: [],
-    favDispositiveLaw: []
+    comments: [],
+    favDispositive: []
 })
 
 export const getters = {
@@ -131,8 +131,8 @@ export const getters = {
     readFilterArts(state){
         return state.filterArts
     },
-    readFavDispositiveLaw(state){
-        return state.favDispositiveLaw
+    readComments(state){
+        return state.comments
     },
     readFavDispositive(state){
         return state.favDispositive
@@ -268,11 +268,14 @@ export const mutations = {
     cargaFilterArts(state, payload){
         state.filterArts = payload
     },
-    cargaDispositiveLaw(state, payload){
-        state.favDispositiveLaw = payload
+    cargaComments(state, payload){
+        state.comments = payload
     },
-    setFavDispositiveLaw(state, payload){
-        state.favDispositiveLaw.push(payload)
+    setCommentLaw(state, payload){
+        state.comments.push(payload)
+    },
+    deleteComment(state, payload){
+        state.comments = state.comments.filter(item => item.id != payload.idComment)
     },
     cargaDispositive(state, payload){
         state.favDispositive = payload
@@ -935,18 +938,18 @@ export const actions = {
         } 
     },
     async saveCommentFB({commit, state}, data){
-        console.log(data)
+
         try {
-            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositiveLaw/${data.idLaw}/${data.dipositive}.json`, {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsLaw/${data.idLaw}/${data.dispositive}/${data.id}.json`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data.comments)
+                body: JSON.stringify(data)
             })
 
             const dataDB = await res.json()
-            commit('setFavDispositiveLaw', art)
+            commit('setCommentLaw', data)
 
         } catch(error){
             console.log(error)
@@ -954,14 +957,24 @@ export const actions = {
     },
     async cargaComments({ commit, state }, law){
         try {
-            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositiveLaw/${law.idLaw}/${law.dispositive}.json`)
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsLaw/${law.idLaw}/${law.dispositive}.json`)
             const dataDB = await res.json()
             const filterArtList = []
 
             for (let id in dataDB){
                 filterArtList.push(dataDB[id])
             }
-            commit('cargaDispositiveLaw', filterArtList)     
+            commit('cargaComments', filterArtList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async removeComment({commit, state}, law){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsLaw/${law.idLaw}/${law.dispositive}/${law.idComment}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteComment', law)
         } catch (error) {
             console.log(error)
         }
