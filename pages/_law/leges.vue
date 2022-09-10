@@ -137,13 +137,14 @@
             </div>
         </v-col>
         <v-col cols="12">
-            <h5 class="ml-2 overline">apenas com:</h5>
+            <h5 v-show="false" class="ml-2 overline">apenas com:</h5>
             <div class="d-flex ml-1">
                 <v-checkbox
                     label="Favoritos"
                     dense
                     class="mr-1"
                     v-model="filters.favs"
+                    :disabled="!user"
                 ></v-checkbox>
                 <!-- <v-checkbox
                     label="Comentários"
@@ -591,6 +592,9 @@
                 return !!find
             },
             favDispositive(item){
+                    if(!this.user){
+                        return this.$store.dispatch("snackbars/setSnackbars", {text:'Necessário estar logado para esta função.', color:'error'})
+                    }
                     if(this.findListFavDispositive(item)){
                         let dataLaw = {}
                         dataLaw = {
