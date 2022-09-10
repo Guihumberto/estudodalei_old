@@ -9,9 +9,10 @@
             v-model="idTabIntegration"
             >
                 <v-tab>Comentários</v-tab>
+                <v-tab v-if="questoesId">Questões</v-tab>
                 <v-tab v-if="sumulasId">Súmulas</v-tab>
                 <v-tab v-if="jurisId">Julgados</v-tab>
-                <v-tab v-if="questoesId">Questões</v-tab>
+                
             </v-tabs>
         </v-card-title>
         <v-tabs-items v-model="idTabIntegration">

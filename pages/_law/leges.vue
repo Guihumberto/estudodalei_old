@@ -236,7 +236,7 @@
                                                     v-on="on" 
                                                     title="Qtd de Questões" 
                                                     :href="`#${index}`"
-                                                    @click="item.show = !item.show, idTabIntegration = 3" 
+                                                    @click="item.show = !item.show, idTabIntegration = 1" 
                                                     x-small outlined color="success">{{item.idQuestions.length}}
                                                 </v-btn>
                                             </template>
@@ -250,7 +250,7 @@
                                                     v-on="on"
                                                     title="Qtd de Jurisprudência" 
                                                     :href="`#${index}`"
-                                                    @click="item.show = !item.show, idTabIntegration = 1" 
+                                                    @click="item.show = !item.show, idTabIntegration = 2" 
                                                     x-small outlined color="warning">{{item.sumulas.length}}
                                                 </v-btn>
                                             </template>
@@ -264,7 +264,7 @@
                                                     v-on="on"
                                                     title="Qtd de Julgados" 
                                                     :href="`#${index}`"
-                                                    @click="item.show = !item.show, idTabIntegration = 2" 
+                                                    @click="item.show = !item.show, idTabIntegration = 3" 
                                                     x-small outlined color="orange">{{item.idJuris.length}}
                                                 </v-btn>
                                             </template>
