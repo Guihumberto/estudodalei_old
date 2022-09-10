@@ -152,15 +152,14 @@
                     class="mr-1"
                     v-model="filters.comments"
                     v-show="false"
-                ></v-checkbox>
+                ></v-checkbox> -->
                 <v-checkbox
                     label="Questões"
                     dense
                     class="mr-1 d-none d-sm-flex"
                     v-model="filters.questions"
-                    v-show="false"
                 ></v-checkbox>
-                <v-checkbox
+                <!-- <v-checkbox
                     label="Jurisprudência"
                     dense
                     class="mr-1 d-none d-sm-flex"
@@ -450,18 +449,28 @@
                             ? {text: filtro.slice(0, 0 + this.qtdArtIndice), size: filtro.length}
                             : 99
                 
-                } else if(this.filters.favs){
+                } else if(this.filters.favs || this.filters.questions){
 
                     let textLaw = this.$store.getters.readTextLaw
                     let listNew = []
 
-                    textLaw.forEach( i => {
-                        this.listFavDispositive.forEach( l => {
-                            if(l == i.id){
+                    if(this.filters.favs){
+                        textLaw.forEach( i => {
+                            this.listFavDispositive.forEach( l => {
+                                if(l == i.id){
+                                    listNew.push(i)
+                                }
+                            })
+                        })
+                    }
+
+                    if(this.filters.questions){
+                        textLaw.forEach( i => {
+                            if(i.idQuestions&&i.idQuestions.length){
                                 listNew.push(i)
                             }
                         })
-                    })
+                    }
 
                     textLaw = listNew
                     this.pagination.page = 1
