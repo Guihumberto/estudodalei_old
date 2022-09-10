@@ -18,13 +18,23 @@
             <v-tab-item>
                 <v-card-text v-if="user">
                     <v-alert type="error" outlined v-if="!comments">
-                        <p>Não há comentários cadastrados</p>
+                        <p>Não há comentários salvos neste dispositivo.</p>
                     </v-alert>
                     <div v-else>
-                        <p>Meus Comentários</p>
-                        <div>
-                            <p v-for="item, i in comments" :key="i">{{item}}</p>
-                        </div>
+                        <p class="text-h6">Meus Comentários</p>
+                        <v-alert 
+                            outlined color="grey"
+                            v-for="item, i in comments" :key="i"
+                            >
+                            <p 
+                              style="color:black"
+                            >{{item}}
+                            </p>
+                            <v-chip-group>
+                                <v-chip outlined small>editar</v-chip>
+                                <v-chip outlined small>apagar</v-chip>
+                            </v-chip-group>
+                        </v-alert>
                     </div>
                     <v-form @submit.prevent="saveComment()" ref="form">
                         <v-textarea
@@ -261,9 +271,7 @@
             },
             comments(){
                 let comments = this.$store.getters.readFavDispositiveLaw
-                return comments.length
-                ? comments
-                : false
+                return comments
             },  
             user(){
                 const user = this.$store.getters.readUser
@@ -271,7 +279,7 @@
             }
         },
         methods:{
-            ...mapActions(['saveCommentFB', 'cargaFavDispositiveLaw']),
+            ...mapActions(['saveCommentFB', 'cargaComments']),
             close(){
                 this.$emit('fechar')
             },
@@ -299,17 +307,17 @@
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Digite um comentário para salvar', color:'error'})
                 }
             },
-            cargaComments(){
+            cargaCommentsBD(){
                 let dataLaw = {}
                 dataLaw = {
                     idLaw: this.idLaw,
                     dispositive: this.idDispositive
                 }
-                this.cargaFavDispositiveLaw(dataLaw)
+                this.cargaComments(dataLaw)
             },
         },
         created(){
-            this.cargaComments()
+            this.cargaCommentsBD()
         }
     }
 </script>
