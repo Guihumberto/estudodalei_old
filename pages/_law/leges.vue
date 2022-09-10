@@ -189,7 +189,7 @@
                 type="error"
                 outlined
             >
-                Termo pesquisado não encontrado na norma... refaça a busca!
+                Filtro utilizado não encontrado na norma... refaça a busca!
             </v-alert>
         </v-card-text>
     </v-card>
@@ -469,11 +469,13 @@
                     let page = this.pagination.page - 1
                     let start = page * this.pagination.perPage
                     let end = start + this.pagination.perPage
-                    return {
-                            totalDispositivos: textLaw.length,
-                            text: textLaw.slice(start, end),
-                            textComplete: textLaw
-                           }
+                    return textLaw.length
+                    ? {
+                        totalDispositivos: textLaw.length,
+                        text: textLaw.slice(start, end),
+                        textComplete: textLaw
+                        }
+                    : 99
                 } else {
                     let page = this.pagination.page - 1
                     let start = page * this.pagination.perPage
