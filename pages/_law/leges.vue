@@ -1,6 +1,5 @@
 <template>
     <v-container class="mt-5 leges" style="max-width: 1080px"> 
-        {{listFavDispositive}}
     <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
         <v-icon small>mdi-arrow-left</v-icon>
         voltar
@@ -68,11 +67,10 @@
             :label="`Dispositivos por página: ${pagination.perPage}`"
             dense
             v-model="pagination.perPage"
-            v-show="!search"
             ></v-select>
             <v-btn 
                 @click="dispositiveBtnAuto" 
-                v-show="!search" v-else x-small text>
+                v-else x-small text>
                 Dispositivo por página: {{pagination.perPage}} 
                 <v-icon small>mdi-chevron-down</v-icon> 
             </v-btn>
@@ -181,11 +179,11 @@
     <div class="text-right">
         <v-btn class="mr-0 pr-0" small color="error" v-show="artIndice" text @click="clearSearchIndice">fechar buscar por índice</v-btn>
     </div>
-    <div class="text-center mb-2 py-5" v-if="!search && !artsFilterActive">
+    <div class="text-center mb-2 py-5" v-if="!artsFilterActive">
         <v-pagination
-        v-model="pagination.page"
-        :length="totalPages"
-        :total-visible="7"
+            v-model="pagination.page"
+            :length="textLaw.totalPages"
+            :total-visible="7"
         ></v-pagination>
     </div>
     <!--termo nao encontrado -->
@@ -329,7 +327,8 @@
                         <p 
                             :style="{lineHeight: font.spacement }"  class="formatText" 
                             :title="`art. ${item.art}`"
-                            v-html="search ? markSearch(item.textLaw) : item.textLaw">
+                            v-html="search ? markSearch(item.textLaw) : item.textLaw"
+                            @dblclick="favDispositive(item.id)">
                         </p>
                         <!-- materias congregados -->
                         <v-expand-transition>
@@ -349,7 +348,7 @@
             <div class="text-center" v-if="artIndice">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
             </div>
-            <div class="text-center" v-show="qtdArtIndice <= textLaw.size" v-if="search && !artsFilterActive">
+            <div class="text-center" v-show="qtdArtIndice <= textLaw.size" v-if="!artsFilterActive">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
             </div>
         </v-card-text>     
@@ -366,10 +365,10 @@
         ></v-skeleton-loader>
     </v-card>
     <!-- Pagination Botton -->
-    <div class="text-center mt-2 mb-16 py-5" v-if="!search && !artsFilterActive">
+    <div class="text-center mt-2 mb-16 py-5" v-if="!artsFilterActive">
         <v-pagination
             v-model="pagination.page"
-            :length="totalPages"
+            :length="textLaw.totalPages"
             :total-visible="7"
         ></v-pagination>
     </div>
@@ -420,11 +419,12 @@
             }
         },
         watch:{
-            'pagination.page': 'pageTop'
+            'pagination.page': 'pageTop',
+            'textLaw.totalPages': 'pageOne'
         },
         computed:{
             textLaw(){
-                const textTemp = this.$store.getters.readTextLaw
+                let textTemp = this.$store.getters.readTextLaw
 
                 if(this.artIndice){
                     
@@ -447,24 +447,24 @@
 
                     return {text: novoFiltro}
 
-                } else if(this.search){
+                }
+                
+                if(this.search){
                     let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                     //retirar caracteres especiais
                     let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
                     //fazer o filtro
-                    let filtro =  this.$store.getters.readTextLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
+                    let filtro =  textTemp.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
 
-                    return filtro.length
-                            ? {text: filtro.slice(0, 0 + this.qtdArtIndice), size: filtro.length}
-                            : 99
+                    textTemp = filtro
+                } 
                 
-                } else if(this.filters.favs || this.filters.questions){
+                if(this.filters.favs || this.filters.questions){
 
-                    let textLaw = this.$store.getters.readTextLaw
                     let listNew = []
 
                     if(this.filters.favs){
-                        textLaw.forEach( i => {
+                        textTemp.forEach( i => {
                             this.listFavDispositive.forEach( l => {
                                 if(l == i.id){
                                     listNew.push(i)
@@ -474,36 +474,30 @@
                     }
 
                     if(this.filters.questions){
-                        textLaw.forEach( i => {
+                        textTemp.forEach( i => {
                             if(i.idQuestions&&i.idQuestions.length){
                                 listNew.push(i)
                             }
                         })
                     }
 
-                    textLaw = listNew
-                    this.pagination.page = 1
-
-                    let page = this.pagination.page - 1
-                    let start = page * 60
-                    let end = start + 60
-                    return textLaw.length
-                    ? {
-                        totalDispositivos: textLaw.length,
-                        text: textLaw.slice(start, end),
-                        textComplete: textLaw
-                        }
-                    : 99
-                } else {
-                    let page = this.pagination.page - 1
-                    let start = page * this.pagination.perPage
-                    let end = start + this.pagination.perPage
-                    return {
-                            totalDispositivos: this.$store.getters.readTextLaw.length,
-                            text: textTemp.slice(start, end),
-                            textComplete: this.$store.getters.readTextLaw
-                           }
+                    textTemp = listNew
+                
                 }
+
+                let page = this.pagination.page - 1
+                let start = page * this.pagination.perPage
+                let end = start + this.pagination.perPage
+
+                return textTemp.length
+                ? {
+                    totalDispositivos: textTemp.length,
+                    text: textTemp.slice(start, end),
+                    textComplete: textTemp,
+                    totalPages: Math.ceil(textTemp.length/this.pagination.perPage),
+                    size: textTemp.length
+                  }
+                : 99
             },
             estruturaList(){
                 const list = this.$store.getters.readTextLaw || []
@@ -606,6 +600,9 @@
             pageTop(){
                 window.location.href = "#upRead";
             },
+            pageOne(){
+                this.pagination.page = 1
+            },
             findListFavDispositive(item){
                 let find = this.listFavDispositive.find(i => i == item)
                 return !!find
@@ -641,8 +638,9 @@
                 this.cargaFavDispositive(this.title)
                 setTimeout(() => {
                     this.listFavDispositive = this.$store.getters.readFavDispositive
+                    this.listFavDispositive = [...new Set(this.listFavDispositive)];
                 }, 2000)
-            }
+            },
         },
         created(){
             this.cargaTextLaw(this.title)

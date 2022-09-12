@@ -30,8 +30,11 @@
               <v-list-item @click="filterActivePush(item)" :key="index">
                 <v-list-item-content>
                     <v-list-item-title>
-                      {{item.filter}}
+                      <v-icon class="mr-1 mb-1">mdi-folder</v-icon>{{item.folder}}
                     </v-list-item-title>
+                    <v-list-item-subtitle class="overline">
+                      <v-icon small class="mr-1 mb-1">mdi-file</v-icon>{{item.filter}}
+                    </v-list-item-subtitle>
                     <v-list-item-subtitle>
                       Arts: <span v-for="art, i in item.arts" :key="i"> <span v-if="i != 0">,</span> {{art}}</span> 
                     </v-list-item-subtitle>
