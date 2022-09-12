@@ -1032,7 +1032,6 @@ export const actions = {
         } 
     },
     async cargaFavDispositive({ commit, state }, law){
-        console.log("carregou")
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/favDispositive/${law}.json`)
             const dataDB = await res.json()

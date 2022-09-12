@@ -28,10 +28,15 @@
                             clearable
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" class="mt-0 pt-0">
+                    <v-col cols="12" class="mt-0 pt-0 d-flex">
                         <v-checkbox
                             label="apenas as questões não vinculadas"
                             v-model="vincs"
+                        ></v-checkbox>
+                        <v-checkbox
+                            label="apenas as questões com comentários"
+                            v-model="justComment"
+                            class="ml-2"
                         ></v-checkbox>
                     </v-col>
                 </v-row>
@@ -92,7 +97,8 @@
                 disciplina: 0,
                 prova: 0,
                 search: '',
-                vincs: false
+                vincs: false,
+                justComment: false
             }
         },
         computed:{
@@ -105,6 +111,10 @@
 
                if(this.prova){
                 list = list.filter( i => i.prove == this.prova)
+               }
+
+               if(this.justComment){
+                list = list.filter( i => i.doutrina)
                }
 
                if(this.vincs){

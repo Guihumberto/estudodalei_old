@@ -1,5 +1,6 @@
 <template>
     <v-container class="mt-5 leges" style="max-width: 1080px"> 
+        {{listFavDispositive}}
     <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
         <v-icon small>mdi-arrow-left</v-icon>
         voltar
@@ -59,7 +60,7 @@
                 <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
             </v-btn-toggle>
         </v-col>
-        <v-col cols="12" sm="2" class="mt-n3" v-if="!artsFilterActive">
+        <v-col cols="12" sm="2" class="mt-n3 d-flex" v-if="!artsFilterActive">
             <v-select
             class="pt-4"
             v-if="dispositiveBtn"
@@ -75,6 +76,13 @@
                 Dispositivo por página: {{pagination.perPage}} 
                 <v-icon small>mdi-chevron-down</v-icon> 
             </v-btn>
+            <v-btn
+                x-small text
+                @click="painelExpanse = !painelExpanse"
+            >
+                <v-icon class="mr-1" small v-text="painelExpanse? 'mdi-eye-off-outline' : 'mdi-eye-outline'"></v-icon>
+                 {{painelExpanse ? 'ocultar painel' : 'mostrar painel'}}
+        </v-btn>
         </v-col>
         <!-- busca de artigos e salvar filtro -->
         <v-col class="mt-n6" cols="12">
@@ -156,7 +164,7 @@
                 <v-checkbox
                     label="Questões"
                     dense
-                    class="mr-1 d-none d-sm-flex"
+                    class="mr-1"
                     v-model="filters.questions"
                 ></v-checkbox>
                 <!-- <v-checkbox
@@ -223,7 +231,7 @@
                     </div>
                     <div v-else class="mb-2" :id="index">
                         <!-- MENU jurisprudencia e questoes -->
-                        <div class="d-flex" v-if="item.textLaw">
+                        <div class="d-flex" v-if="item.textLaw && painelExpanse">
                             <div v-if="item.sumulas || item.idQuestions" class="d-flex mr-1">
                                 <v-expand-transition>
                                     <div v-show="menuExpanse">
@@ -378,6 +386,7 @@
             return{
                 menu: false,
                 menuExpanse: true,
+                painelExpanse: true,
                 idTabIntegration: 0, 
                 dispositiveBtn: false,
                 // id: this.$route.query.id,
@@ -476,8 +485,8 @@
                     this.pagination.page = 1
 
                     let page = this.pagination.page - 1
-                    let start = page * this.pagination.perPage
-                    let end = start + this.pagination.perPage
+                    let start = page * 60
+                    let end = start + 60
                     return textLaw.length
                     ? {
                         totalDispositivos: textLaw.length,
@@ -587,7 +596,6 @@
                 return item.replace(pattern, match => `<mark>${match}</mark>`);
             },
             filterArtsPush(item){
-                console.log("heloo bdksadksa", item)
                 if(item){
                     this.artsFilterActive = true
                     item.forEach( i => {
@@ -612,7 +620,7 @@
                             idLaw: this.title,
                             dispositive: item
                         }
-                        this.listFavDispositive.splice(item, 1)
+                        this.listFavDispositive = this.listFavDispositive.filter(i => i != item)
                         this.removeFavDispositive(dataLaw)
                         this.$store.dispatch("snackbars/setSnackbars", {text:'Dispositivo removido da lista de Favoritos', color:'error'})
                         
