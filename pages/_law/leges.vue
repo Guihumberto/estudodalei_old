@@ -1,6 +1,6 @@
 <template>
     <v-container class="mt-5 leges" style="max-width: 1080px"> 
-    <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
+    <v-btn small text class="px-0 mb-5" to="/laws">
         <v-icon small>mdi-arrow-left</v-icon>
         voltar
     </v-btn>
@@ -59,7 +59,7 @@
                 <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
             </v-btn-toggle>
         </v-col>
-        <v-col cols="12" sm="2" class="mt-n3 d-flex" v-if="!artsFilterActive">
+        <v-col cols="12" sm="2" class="mt-n3 d-flex">
             <v-select
             class="pt-4"
             v-if="dispositiveBtn"
@@ -179,7 +179,7 @@
     <div class="text-right">
         <v-btn class="mr-0 pr-0" small color="error" v-show="artIndice" text @click="clearSearchIndice">fechar buscar por índice</v-btn>
     </div>
-    <div class="text-center mb-2 py-5" v-if="!artsFilterActive">
+    <div class="text-center mb-2 py-5">
         <v-pagination
             v-model="pagination.page"
             :length="textLaw.totalPages"
@@ -348,9 +348,9 @@
             <div class="text-center" v-if="artIndice">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
             </div>
-            <div class="text-center" v-show="qtdArtIndice <= textLaw.size" v-if="!artsFilterActive">
+            <!-- <div class="text-center" v-show="qtdArtIndice <= textLaw.size" v-if="!artsFilterActive">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
-            </div>
+            </div> -->
         </v-card-text>     
     </v-card>
     <!-- load -->
@@ -365,7 +365,7 @@
         ></v-skeleton-loader>
     </v-card>
     <!-- Pagination Botton -->
-    <div class="text-center mt-2 mb-16 py-5" v-if="!artsFilterActive">
+    <div class="text-center mt-2 mb-16 py-5">
         <v-pagination
             v-model="pagination.page"
             :length="textLaw.totalPages"
@@ -431,12 +431,11 @@
                     let indice = textTemp.findIndex(i => i.textLaw == this.artIndice)
                     return { text: textTemp.slice(indice, indice + this.qtdArtIndice), size: textTemp.length}
                 }
-                else if(this.artsFilterActive){
-                    let filtro = this.$store.getters.readTextLaw
+                if(this.artsFilterActive){
                     let novoFiltro = []
 
                     if(this.artsFilter){
-                        filtro = filtro.forEach(item => {
+                        textTemp.forEach(item => {
                             this.artsFilter.forEach( art => {
                                 if(art == item.art){
                                     novoFiltro.push(item)
@@ -444,9 +443,7 @@
                             })
                         })
                     }
-
-                    return {text: novoFiltro}
-
+                    textTemp = novoFiltro
                 }
                 
                 if(this.search){
