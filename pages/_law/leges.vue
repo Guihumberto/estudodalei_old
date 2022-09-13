@@ -166,13 +166,13 @@
                     v-model="filters.questions"
                     @click="subjectSelected = 0"
                 ></v-checkbox>
-                <!-- <v-checkbox
+                <v-checkbox
                     label="Jurisprudência"
                     dense
                     class="mr-1 d-none d-sm-flex"
                     v-model="filters.juris"
                     v-show="false"
-                ></v-checkbox> -->
+                ></v-checkbox>
                 <v-expand-x-transition>
                     <v-card flat class="mx-1"  v-show="filters.questions">
                         <v-select
@@ -512,6 +512,16 @@
 
                     textTemp = listNew
                 
+                }
+
+                if(this.filters.juris){
+                    let listNew = []
+                    textTemp.forEach( i => {
+                            if(i.idJuris || i.sumulas){
+                                listNew.push(i)
+                            }
+                        })
+                    textTemp = listNew
                 }
 
                 if(this.filters.questions && this.subjectSelected){
