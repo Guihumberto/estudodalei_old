@@ -84,7 +84,7 @@
                     <template v-for="item, index in questoes">
                         <div :key="index">
                             <p style="text-transform: uppercase; font-size: 18px;" class="font-weight-bold">
-                               {{prova(item.prove).cargo}}/{{prova(item.prove).orgao}}/FGV/{{prova(item.prove).year}}
+                               {{prova(item.prove).cargo}}/{{prova(item.prove).orgao}}/{{prova(item.prove).year}}
                             </p>
                             <p class="formatText">{{item.answer}}</p>
                             <p class="formatText">{{item.alternative}}</p>

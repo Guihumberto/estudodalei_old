@@ -164,6 +164,7 @@
                     dense
                     class="mr-1"
                     v-model="filters.questions"
+                    @click="subjectSelected = 0"
                 ></v-checkbox>
                 <!-- <v-checkbox
                     label="Jurisprudência"
@@ -172,6 +173,19 @@
                     v-model="filters.juris"
                     v-show="false"
                 ></v-checkbox> -->
+                <v-expand-x-transition>
+                    <v-card flat class="mx-1"  v-show="filters.questions">
+                        <v-select
+                            dense
+                            label="Disciplina"
+                            :items="disciplinas"
+                            item-value="id"
+                            item-text="name"
+                            v-model="subjectSelected"
+                            clearable
+                        ></v-select>
+                    </v-card>
+                </v-expand-x-transition>
             </div>
         </v-col>
     </v-row>
@@ -386,6 +400,7 @@
                 menu: false,
                 menuExpanse: true,
                 painelExpanse: true,
+                subjectSelected: 0,
                 idTabIntegration: 0, 
                 dispositiveBtn: false,
                 // id: this.$route.query.id,
@@ -425,6 +440,23 @@
         computed:{
             textLaw(){
                 let textTemp = this.$store.getters.readTextLaw
+
+                let listQuestions = this.$store.getters.readQuestions
+
+                const textWithQuestions = textTemp.filter (i => i.idQuestions)
+
+                let merged = {};
+                    for (let i = 0; i < textWithQuestions.length; i++) {
+                        merged[textWithQuestions[i].idQuestions[0]] = textWithQuestions[i];
+                }
+
+                for (let i = 0; i < listQuestions.length; i++) {
+                    if (merged[listQuestions[i].id]) {
+                        merged[listQuestions[i].id] = { ...merged[listQuestions[i].id], ...listQuestions[i] };
+                    }
+                }
+
+                merged = Object.values(merged);
 
                 if(this.artIndice){
                     
@@ -482,6 +514,11 @@
                 
                 }
 
+                if(this.filters.questions && this.subjectSelected){
+                    textTemp = merged
+                    textTemp = textTemp.filter(i => i.subject == this.subjectSelected)
+                }
+
                 let page = this.pagination.page - 1
                 let start = page * this.pagination.perPage
                 let end = start + this.pagination.perPage
@@ -502,6 +539,9 @@
             },
             nameLaw(){
                 return this.$store.getters.readNameLaw
+            },
+            disciplinas(){
+                return this.$store.getters.readDisciplinas
             },
             totalPages (){
                 let totalPages = Math.ceil(this.textLaw.totalDispositivos/this.pagination.perPage)
