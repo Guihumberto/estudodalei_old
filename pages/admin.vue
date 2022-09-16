@@ -9,6 +9,7 @@
                 <v-tab>Julgados</v-tab>
                 <v-tab>Concursos</v-tab>
                 <v-tab>Questões</v-tab>
+                <v-tab>Provas</v-tab>
             </v-tabs>
             <v-tabs-items v-model="tab">
                 <v-tab-item>
@@ -165,6 +166,13 @@
                     <concurso-questoes-cadQuestoes v-if="selectForm == 1" />
                     <concurso-questoes-cadCespeVF v-if="selectForm == 2" />
                 </v-tab-item>
+                <v-tab-item>
+                    <v-card-title  class="grey lighten-2">
+                        Provas
+                    </v-card-title>
+                    <concurso-provas-cadProvas />
+                    <concurso-provas-listProvas />
+                </v-tab-item>
             </v-tabs-items>
        </v-card>
    </v-container>
@@ -179,7 +187,7 @@
     data: () => ({
       selected: [2],
       search: '',
-      tab: 4,
+      tab: 5,
       listSumulas: [],
       selectForm: 1,
       bancas:[
@@ -216,7 +224,7 @@
         }
     },
     methods:{
-        ...mapActions(['setLaw', 'setSumula']),
+        ...mapActions(['setLaw', 'setSumula', 'cargaProvas']),
         lawListInsert(event){
             event.id = shortid.generate()
             this.setLaw(event)
@@ -265,6 +273,9 @@
             }
         }
     },
+    created(){
+        this.cargaProvas()
+    }
   }
 </script>
 

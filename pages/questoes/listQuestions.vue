@@ -21,7 +21,7 @@
                         <v-select
                             label="Prova"
                             outlined dense 
-                            :items="listProvas"
+                            :items="listProvas.filter(i => i.active)"
                             item-text="cargo"
                             item-value="id"
                             v-model="prova"
@@ -140,7 +140,8 @@
                 return this.$store.getters.readDisciplinas
             },
             listProvas(){
-                return this.$store.getters.readProvas
+                let list = this.$store.getters.readProvas.filter( i => i)
+                return list
             },
             findRef1(){
                 return (item) => this.listDisciplinas.find( i => i.id == item)

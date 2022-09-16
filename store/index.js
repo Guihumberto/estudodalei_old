@@ -38,55 +38,6 @@ export const state = () => ({
         {id: 20, name: 'Teorias', sigla: 'FSJ'},
     ],
     provas:[
-        {
-            id: 1, 
-            orgao: 'OAB', 
-            cargo: 'XXXIV Exame',
-            year: 2022,
-            banca: 1, 
-        },
-        {
-            id: 2, 
-            orgao: 'OAB', 
-            cargo: 'XXXV Exame',
-            year: 2022,
-            banca: 1, 
-        },
-        {
-            id: 3, 
-            orgao: 'fub', 
-            cargo: 'Assistente Social',
-            year: 2022,
-            banca: 2, 
-        },
-        {
-            id: 4, 
-            orgao: 'FUNPRESP', 
-            cargo: 'Analista de Previdência Complementar',
-            year: 2022,
-            banca: 2, 
-        },
-        {
-            id: 5, 
-            orgao: 'DP DF', 
-            cargo: 'Analista de Apoio à Assistência Judiciária',
-            year: 2022,
-            banca: 2, 
-        },
-        {
-            id: 6, 
-            orgao: 'PGM - Pires do Rio', 
-            cargo: 'Procurador Jurídico do Município',
-            year: 2022,
-            banca: 2, 
-        },
-        {
-            id: 7, 
-            orgao: 'PGE - RJ', 
-            cargo: 'Analista',
-            year: 2022,
-            banca: 2, 
-        }
     ],
     concursos: [],
     ementa: [],
@@ -320,6 +271,16 @@ export const mutations = {
     },
     deleteFavDispositive(state, payload){
         state.favDispositive = state.favDispositive.filter( item => item != payload)
+    },
+    saveProve(state, payload){
+        state.provas.push(payload)
+    },
+    cargaProve(state, payload){
+        state.provas = payload
+    },
+    editProve(state, payload){
+        const x = state.provas.map(item => item.id == payload.id ? payload : item)
+        state.provas = x
     }
 }
 
@@ -897,8 +858,6 @@ export const actions = {
         } 
     },
     async editSetQuestao({commit}, questao){
-        console.log('questao editada')
-        console.log(questao)
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/questions/${questao.id}.json`, {
                 method: 'PATCH',
@@ -1055,4 +1014,47 @@ export const actions = {
             console.log(error)
         }
     },
+    async setProve({commit}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/proves/${data.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const dataDB = await res.json()
+            commit('saveProve', data)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async cargaProvas({ commit }){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/proves.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaProve', filterArtList)     
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async ediSetProve({ commit }, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/proves/${data.id}.json`, {
+                method: 'PATCH',
+                body: JSON.stringify(data)
+            })
+            const dataDB = await res.json()
+            commit('editProve', data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

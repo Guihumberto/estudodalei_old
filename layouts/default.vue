@@ -202,7 +202,7 @@
       }
     },
     methods:{
-       ...mapActions(['cargaLawList', 'cargaSumula', 'cargajuris', 'setUser', 'logout', 'cargaUserPreferences', 'cargaConcursosList', 'cargaQuestions']),
+       ...mapActions(['cargaLawList', 'cargaSumula', 'cargajuris', 'setUser', 'logout', 'cargaUserPreferences', 'cargaConcursosList', 'cargaQuestions', 'cargaProvas']),
        closeLogin(){
         this.logout()
         this.$store.dispatch("snackbars/setSnackbars", {text:'Sessão encerrada', color:'error'})
@@ -216,6 +216,7 @@
       this.cargajuris()
       this.cargaConcursosList()
       this.cargaQuestions()
+      this.cargaProvas()
       setTimeout( () => {
         this.cargaUserPreferences(this.user.uid)
       }, 2000),
