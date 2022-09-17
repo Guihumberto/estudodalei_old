@@ -244,70 +244,7 @@
                     <div v-else class="mb-2" :id="index">
                         <!-- MENU jurisprudencia e questoes -->
                         <div class="d-flex" v-if="item.textLaw && painelExpanse">
-                            <div v-if="item.sumulas || item.idQuestions" class="d-flex mr-1">
-                                <v-expand-transition>
-                                    <div v-show="menuExpanse">
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-btn 
-                                                    v-if="Array.isArray(item.idQuestions)"
-                                                    v-bind="attrs"
-                                                    v-on="on" 
-                                                    title="Qtd de Questões" 
-                                                    :href="`#${index}`"
-                                                    @click="item.show = !item.show, idTabIntegration = 1" 
-                                                    x-small outlined color="success">{{item.idQuestions.length}}
-                                                </v-btn>
-                                            </template>
-                                            <span>Questões</span>
-                                        </v-tooltip>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-btn 
-                                                    v-if="Array.isArray(item.sumulas)" 
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    title="Qtd de Jurisprudência" 
-                                                    :href="`#${index}`"
-                                                    @click="item.show = !item.show, idTabIntegration = 2" 
-                                                    x-small outlined color="warning">{{item.sumulas.length}}
-                                                </v-btn>
-                                            </template>
-                                            <span>Súmulas</span>
-                                        </v-tooltip>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-btn 
-                                                    v-if="Array.isArray(item.idJuris)" 
-                                                    v-bind="attrs"
-                                                    v-on="on"
-                                                    title="Qtd de Julgados" 
-                                                    :href="`#${index}`"
-                                                    @click="item.show = !item.show, idTabIntegration = 3" 
-                                                    x-small outlined color="orange">{{item.idJuris.length}}
-                                                </v-btn>
-                                            </template>
-                                            <span>Julgados</span>
-                                        </v-tooltip>
-                                    </div>
-                                </v-expand-transition>
-                            </div>    
-                            <v-tooltip bottom>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn 
-                                        v-bind="attrs"
-                                        class="mt-1"
-                                        v-on="on"
-                                        title="Comentários" 
-                                        :href="`#${index}`"
-                                        @click="item.show = !item.show, idTabIntegration = 0" 
-                                        x-small icon color="grey"> 
-                                        <v-icon>mdi-comment-processing-outline</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Comentários</span>
-                            </v-tooltip>
-                            <v-tooltip bottom>
+                            <v-tooltip bottom> <!-- favoritar -->
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn 
                                         class="mt-1"
@@ -321,10 +258,73 @@
                                 </template>
                                 <span>Favoritar</span>
                             </v-tooltip>
+                            <v-tooltip bottom><!-- comentarios -->
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn 
+                                        v-bind="attrs"
+                                        class="mt-1"
+                                        v-on="on"
+                                        title="Comentários" 
+                                        :href="`#${index}`"
+                                        @click="item.show = true, idTabIntegration = 0" 
+                                        x-small icon color="grey"> 
+                                        <v-icon>mdi-comment-processing-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Comentários</span>
+                            </v-tooltip>
+                            <div v-if="item.sumulas || item.idQuestions || item.idJuris" class="d-flex mr-1">
+                                <v-expand-transition>
+                                    <div v-show="menuExpanse">
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                    v-if="Array.isArray(item.idQuestions)"
+                                                    v-bind="attrs"
+                                                    v-on="on" 
+                                                    title="Qtd de Questões" 
+                                                    :href="`#${index}`"
+                                                    @click="item.show = true, idTabIntegration = 1" 
+                                                    x-small outlined color="success">{{item.idQuestions.length}}
+                                                </v-btn>
+                                            </template>
+                                            <span>Questões</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                    v-if="Array.isArray(item.sumulas)" 
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    title="Qtd de Jurisprudência" 
+                                                    :href="`#${index}`"
+                                                    @click="item.show = true, idTabIntegration = 2" 
+                                                    x-small outlined color="warning">{{item.sumulas.length}}
+                                                </v-btn>
+                                            </template>
+                                            <span>Súmulas</span>
+                                        </v-tooltip>
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                    v-if="item.idJuris" 
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    title="Qtd de Julgados" 
+                                                    :href="`#${index}`"
+                                                    @click="item.show = true, idTabIntegration = 3" 
+                                                    x-small outlined color="orange">{{item.idJuris.length}}
+                                                </v-btn>
+                                            </template>
+                                            <span>Julgados</span>
+                                        </v-tooltip>
+                                    </div>
+                                </v-expand-transition>
+                            </div>                        
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn 
-                                        v-if="item.sumulas || item.idQuestions"
+                                        v-if="item.sumulas || item.idQuestions || item.idJuris"
                                         class="mt-1"
                                         v-bind="attrs"
                                         v-on="on"
