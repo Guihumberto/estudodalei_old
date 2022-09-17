@@ -69,57 +69,6 @@
                     {id: 2, name: 'CESPE'},
                     {id: 3, name: 'FCC'},
                 ],
-                provas:[
-                    {
-                        id: 1, 
-                        orgao: 'OAB', 
-                        cargo: 'XXXIV Exame',
-                        year: 2022,
-                        banca: 1, 
-                    },
-                    {
-                        id: 2, 
-                        orgao: 'OAB', 
-                        cargo: 'XXXV Exame',
-                        year: 2022,
-                        banca: 1, 
-                    },
-                    {
-                        id: 3, 
-                        orgao: 'fub', 
-                        cargo: 'Assistente Social',
-                        year: 2022,
-                        banca: 2, 
-                    },
-                    {
-                        id: 4, 
-                        orgao: 'FUNPRESP', 
-                        cargo: 'Analista de Previdência Complementar',
-                        year: 2022,
-                        banca: 2, 
-                    },
-                    {
-                        id: 5, 
-                        orgao: 'DP DF', 
-                        cargo: 'Analista de Apoio à Assistência Judiciária',
-                        year: 2022,
-                        banca: 2, 
-                    },
-                    {
-                        id: 6, 
-                        orgao: 'PGM - Pires do Rio', 
-                        cargo: 'Procurador Jurídico do Município',
-                        year: 2022,
-                        banca: 2, 
-                    },
-                    {
-                        id: 7, 
-                        orgao: 'PGE - RJ', 
-                        cargo: 'Analista',
-                        year: 2022,
-                        banca: 2, 
-                    }
-                ],
                 subjects:[
                     {id: 1, name:'Direito Administrativo', sigla: 'DA'},
                     {id: 2, name:'Direito Constitucional', sigla: 'DC'},
@@ -189,6 +138,10 @@
 
                     }
                 
+            },
+            provas(){
+                const list = this.$store.getters.readProvas.filter(i => i)
+                return list
             }
         },
         methods:{

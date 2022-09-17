@@ -6,7 +6,7 @@
         </v-system-bar>
         <v-card-title class="pa-0">
             <v-tabs
-            v-model="idTabIntegration"
+            v-model="tab"
             >
                 <v-tab>Comentários</v-tab>
                 <v-tab v-if="questoesId">Questões</v-tab>
@@ -15,7 +15,7 @@
                 
             </v-tabs>
         </v-card-title>
-        <v-tabs-items v-model="idTabIntegration">
+        <v-tabs-items v-model="tab">
             <v-tab-item>
                 <v-card-text v-if="user">
                     
