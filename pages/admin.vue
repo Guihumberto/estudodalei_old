@@ -1,7 +1,6 @@
 <template>
    <v-container class="mt-5" style="max-width: 1080px" v-if="$store.state.adm">
         <v-btn class="mb-5" text @click="$router.go(-1)"> <v-icon>mdi-chevron-left</v-icon> voltar</v-btn>
-        {{tab}}
         <v-card flat outlined min-height="80vh">
             <v-tabs  v-model="tab">
                 <v-tab>Leis</v-tab>
@@ -146,6 +145,8 @@
                 <v-tab-item>
                     <v-card-title  class="grey lighten-2">
                         Concurso
+                        <v-spacer></v-spacer>
+                        <v-btn to="adminLeges/ementa" color="primary" text>Ementa</v-btn>
                     </v-card-title>
                     <adm-forms-concursoCreated />
                 </v-tab-item>
@@ -187,7 +188,7 @@
     data: () => ({
       selected: [2],
       search: '',
-      tab: 4,
+      tab: 3,
       listSumulas: [],
       selectForm: 1,
       bancas:[
@@ -271,10 +272,18 @@
                 orgao: '',
                 vinculante: false
             }
+        },
+        tabSelect(){
+            if(this.$route.params.tab){
+                this.tab = this.$route.params.tab
+            } else {
+                this.tab = 0
+            }
         }
     },
     created(){
         this.cargaProvas()
+        this.tabSelect()
     }
   }
 </script>

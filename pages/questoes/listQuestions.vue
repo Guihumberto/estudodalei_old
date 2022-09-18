@@ -1,6 +1,10 @@
 <template>
     <v-container style="max-width:1080px">
-        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
+        <v-btn 
+            :to="{name: 'admin', 
+                  params:{tab:4}
+                 }" 
+            text><v-icon>mdi-chevron-left</v-icon> voltar</v-btn>
         <h5 class="text-h5 mb-5">Lista de Questões</h5>
         <!-- busca -->
         <v-card class="mb-5">
@@ -49,6 +53,7 @@
                     placeholder="Digite o texto ou assertiva da questao..."
                     v-model="search"
                     required
+                    clearable
                 ></v-text-field>
             </v-card-text>
         </v-card>

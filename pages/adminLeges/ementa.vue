@@ -1,5 +1,10 @@
 <template>
     <v-container style="max-width: 1080px" v-if="$store.state.adm">
+        <v-btn 
+            :to="{name: 'admin', 
+                  params:{tab:3}
+                 }" 
+            text><v-icon>mdi-chevron-left</v-icon> voltar</v-btn>
         <h1 class="my-5 text-h5">Importar Ementas</h1>
         <v-card outlined>
             <v-card-text>

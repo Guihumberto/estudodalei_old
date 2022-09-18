@@ -1,7 +1,11 @@
 <template>
    <v-container class="mt-5" style="max-width: 1080px" v-scroll-reveal.reset="{ delay: 350 }">
+        <v-btn 
+            :to="{name: 'admin', 
+                  params:{tab:1}
+                 }" 
+            text><v-icon>mdi-chevron-left</v-icon> voltar</v-btn>
         <h1 class="text-h4 mb-5">Súmulas</h1>
-        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <v-card class="mb-2">
             <!-- barra de buscas -->
             <v-card-text class="mt-3">

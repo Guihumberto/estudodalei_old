@@ -1,7 +1,11 @@
 <template>
     <v-container class="mt-5" style="max-width: 1080px">
+        <v-btn 
+            :to="{name: 'admin', 
+                  params:{tab:2}
+                 }" 
+            text><v-icon>mdi-chevron-left</v-icon> voltar</v-btn>
         <h1 class="text-h4 mb-5">Julgados</h1>
-        <v-btn outlined class="mb-5" text @click="$router.go(-1)">voltar</v-btn>
         <!-- barra de busca e filtros -->
         <v-card class="my-2">
             <v-card-text>
