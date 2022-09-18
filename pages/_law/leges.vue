@@ -201,9 +201,19 @@
         ></v-pagination>
     </div>
     <!--termo nao encontrado -->
-    <v-card v-if="textLaw == 99"
-        outlined min-height="20vw" class="my-5">
-        <v-card-text>
+    <v-card 
+        v-if="textLaw == 99"
+        outlined min-height="20vw" 
+        class="my-5 text-center">
+        <v-card-text v-if="!textCompleteLaw[0]">
+            <v-progress-circular
+                :size="70"
+                :width="7"
+                color="purple"
+                indeterminate
+            ></v-progress-circular>
+        </v-card-text>
+        <v-card-text v-else>
             <v-alert
                 type="error"
                 outlined
@@ -439,7 +449,7 @@
         },
         computed:{
             textLaw(){
-                let textTemp = this.$store.getters.readTextLaw
+                let textTemp = this.textCompleteLaw
 
                 let listQuestions = this.$store.getters.readQuestions
 
@@ -542,6 +552,9 @@
                     size: textTemp.length
                   }
                 : 99
+            },
+            textCompleteLaw(){
+                return this.$store.getters.readTextLaw
             },
             estruturaList(){
                 const list = this.$store.getters.readTextLaw || []
