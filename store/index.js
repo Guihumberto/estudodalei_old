@@ -281,6 +281,9 @@ export const mutations = {
     editProve(state, payload){
         const x = state.provas.map(item => item.id == payload.id ? payload : item)
         state.provas = x
+    },
+    deleteQuestion(state, payload){
+        state.questions = state.questions.filter( item => item != payload)
     }
 }
 
@@ -1053,6 +1056,16 @@ export const actions = {
             })
             const dataDB = await res.json()
             commit('editProve', data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async removeQuestion({commit}, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/questions/${data}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteQuestion', data)
         } catch (error) {
             console.log(error)
         }

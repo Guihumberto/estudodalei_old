@@ -43,6 +43,9 @@
                         <v-btn color="primary" @click="saveBD()">Salvar BD</v-btn>
                     </v-card-title>
                     <div class="mb-5" v-for="item, index in questionGravar" :key="index">
+                        <v-subheader>
+                            <concurso-provas-cadProvasAtm :prova="_questions" v-if="item.prove == 0" @clearAll="clearFields()" />
+                        </v-subheader>
                         <p>{{item.prove}} / {{item.subject}}</p>
                         <p>{{item.answer}}</p>
                         <p>{{item.alternative}}</p>
@@ -115,12 +118,29 @@
                     
                     bancaAnoExame = list[0]
                     bancaAnoExame = bancaAnoExame.split('/')
+
+                    if(bancaAnoExame.length >= 3){
+                        bancaAnoExame.splice(1, 1)
+                    }
+
+                    if(bancaAnoExame.at(-1).includes("mais")){
+                        let ano = bancaAnoExame.at(-1).substr(0, 4)
+                        bancaAnoExame[1] = ano
+
+                    }
+
+
+                    if(!bancaAnoExame[2]){
+                       let cargo = bancaAnoExame[0]
+                       bancaAnoExame[0] = cargo + " ()"
+                    }
+
                     let bancaCargo = bancaAnoExame[0].split('-')
                     banca = bancaCargo[0]
                     let cargoOrgao = bancaCargo[1].split('(')
-                    name = bancaCargo[1].replace(/\(.+/g, "")
+                    name = bancaCargo[1].replace(/\(.+/g, "") ? bancaCargo[1].replace(/\(.+/g, "") : ""
                     year = bancaAnoExame[bancaAnoExame.length - 1]
-                    orgao = cargoOrgao[1].replace(')', '')
+                    orgao = cargoOrgao[1].replace(')', '') ? cargoOrgao[1].replace(')', '') : ""
 
                     let divider = list.findIndex(i => i == 'A')
 
