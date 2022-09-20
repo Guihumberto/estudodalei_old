@@ -6,16 +6,16 @@
         </v-system-bar>
         <v-card-title class="pa-0">
             <v-tabs
-            v-model="tab"
+            v-model="idTabIntegration"
             >
                 <v-tab>Comentários</v-tab>
-                <v-tab v-if="questoesId">Questões</v-tab>
-                <v-tab v-if="sumulasId">Súmulas</v-tab>
-                <v-tab v-if="jurisId">Julgados</v-tab>
+                <v-tab v-show="questoesId">Questões</v-tab>
+                <v-tab v-show="sumulasId">Súmulas</v-tab>
+                <v-tab v-show="jurisId">Julgados</v-tab>
                 
             </v-tabs>
         </v-card-title>
-        <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="idTabIntegration">
             <v-tab-item>
                 <v-card-text v-if="user">
                     
@@ -79,7 +79,7 @@
                     </v-alert>
                 </v-card-text>
             </v-tab-item> 
-            <v-tab-item v-if="questoesId">
+            <v-tab-item v-show="questoesId">
                 <v-card-text>
                     <template v-for="item, index in questoes">
                         <div :key="index">
@@ -121,7 +121,7 @@
                     </template>
                 </v-card-text>
             </v-tab-item>
-            <v-tab-item v-if="sumulasId">
+            <v-tab-item v-show="sumulasId">
                 <v-card-text>
                     <v-list>
                         <template v-for="(item, index) in sumulas" >
@@ -141,7 +141,7 @@
                     </v-list>
                 </v-card-text>
             </v-tab-item>  
-            <v-tab-item v-if="jurisId">
+            <v-tab-item v-show="jurisId">
                 <v-card-text>
                     <v-list>
                         <template v-for="(item, index) in juris" >

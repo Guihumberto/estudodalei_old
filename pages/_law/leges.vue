@@ -286,7 +286,7 @@
                             <div v-if="item.sumulas || item.idQuestions || item.idJuris" class="d-flex mr-1">
                                 <v-expand-transition>
                                     <div v-show="menuExpanse">
-                                        <v-tooltip bottom>
+                                        <v-tooltip bottom> <!-- questoes -->
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-btn 
                                                     v-if="Array.isArray(item.idQuestions)"
@@ -300,7 +300,7 @@
                                             </template>
                                             <span>Questões</span>
                                         </v-tooltip>
-                                        <v-tooltip bottom>
+                                        <v-tooltip bottom> <!-- sumulas -->
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-btn 
                                                     v-if="Array.isArray(item.sumulas)" 
@@ -314,7 +314,7 @@
                                             </template>
                                             <span>Súmulas</span>
                                         </v-tooltip>
-                                        <v-tooltip bottom>
+                                        <v-tooltip bottom> <!-- julgados -->
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-btn 
                                                     v-if="item.idJuris" 
