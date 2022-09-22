@@ -254,6 +254,21 @@
                     <div v-else class="mb-2" :id="index">
                         <!-- MENU jurisprudencia e questoes -->
                         <div class="d-flex" v-if="item.textLaw && painelExpanse">
+                            <v-tooltip bottom> <!-- artigo -->
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn 
+                                        class="mt-1 mr-2 px-0"
+                                        v-if="item.order != 10"
+                                        v-show="filters.favs || filters.questions || filters.juris"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        x-small text 
+                                        color="grey"> 
+                                        Art. {{item.art}}
+                                    </v-btn>
+                                </template>
+                                <span>Artigo</span>
+                            </v-tooltip>
                             <v-tooltip bottom> <!-- favoritar -->
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn 
@@ -330,21 +345,20 @@
                                         </v-tooltip>
                                     </div>
                                 </v-expand-transition>
-                            </div>                        
-                            <v-tooltip bottom>
+                            </div>                      
+                            <v-tooltip bottom><!-- menu expanse ativar -->
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-btn 
-                                        v-if="item.sumulas || item.idQuestions || item.idJuris"
+                                    <v-btn
                                         class="mt-1"
                                         v-bind="attrs"
                                         v-on="on"
                                         title="fechar" 
-                                        @click="menuExpanse = !menuExpanse" 
+                                        @click="item.show = !item.show" 
                                         x-small icon color="grey"> 
-                                        <v-icon v-text="menuExpanse ? 'mdi-close' : 'mdi-chevron-right'"></v-icon>
+                                        <v-icon v-text="item.show ? 'mdi-close' : 'mdi-chevron-right'"></v-icon>
                                     </v-btn>
                                 </template>
-                                <span v-text="menuExpanse ? 'Fechar' : 'Exapndir' "></span>
+                                <span v-text="item.show ? 'Fechar' : 'Exapndir' "></span>
                             </v-tooltip>
                         </div>
                        <!-- texto da lei -->
@@ -440,12 +454,16 @@
                     questions: false, 
                     juris: false
                 },
-                listFavDispositive: []
+                listFavDispositive: [],
             }
         },
         watch:{
             'pagination.page': 'pageTop',
-            'textLaw.totalPages': 'pageOne'
+            'textLaw.totalPages': 'pageOne',
+            'filters.favs' : 'update',
+            'filters.comments' : 'update',
+            'filters.questions' : 'update',
+            'filters.juris' : 'update',
         },
         computed:{
             textLaw(){
@@ -701,6 +719,13 @@
                     this.listFavDispositive = [...new Set(this.listFavDispositive)];
                 }, 2000)
             },
+            update(){
+                this.painelExpanse = false
+                setTimeout(() => {
+                    this.painelExpanse = true
+                }, 1000)
+                
+            }
         },
         created(){
             this.cargaTextLaw(this.title)

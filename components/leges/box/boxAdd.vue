@@ -6,7 +6,7 @@
         </v-system-bar>
         <v-card-title class="pa-0">
             <v-tabs
-            v-model="idTabIntegration"
+            v-model="tab"
             >
                 <v-tab>Comentários</v-tab>
                 <v-tab v-show="questoesId">Questões</v-tab>
@@ -15,7 +15,7 @@
                 
             </v-tabs>
         </v-card-title>
-        <v-tabs-items v-model="idTabIntegration">
+        <v-tabs-items v-model="tab">
             <v-tab-item>
                 <v-card-text v-if="user">
                     
@@ -30,25 +30,30 @@
                             v-for="item, i in comments" :key="i"
                             >
                             <p 
+                              class="mb-5"
                               style="color:black; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: medium;"
                             >{{item.comment}}
                             </p>
-                            <v-chip-group>
-                                <v-chip 
-                                    title="editar"
-                                    outlined small
-                                    @click="editComment = !editComment"
-                                    v-show="false"
-                                    >
-                                    <v-icon small>mdi-file-document-edit</v-icon>
-                                </v-chip>
-                                <v-chip 
-                                    color="error"
-                                    title="apagar"
-                                    outlined small @click="deleteComment(item.id)">
-                                    <v-icon small>mdi-delete</v-icon>
-                                </v-chip>
-                            </v-chip-group>
+                            <v-divider></v-divider>
+                            <v-subheader>
+                                <v-spacer></v-spacer>
+                                <v-chip-group>
+                                    <v-chip 
+                                        title="editar"
+                                        outlined x-small
+                                        @click="editComment = !editComment"
+                                        v-show="false"
+                                        >
+                                        <v-icon small>mdi-file-document-edit</v-icon>
+                                    </v-chip>
+                                    <v-chip 
+                                        color="error"
+                                        title="apagar"
+                                        outlined small @click="deleteComment(item.id)">
+                                        <v-icon small>mdi-delete</v-icon>
+                                    </v-chip>
+                                </v-chip-group>
+                            </v-subheader>
                         </v-alert>
                     </div>
                     <v-form @submit.prevent="saveComment()" ref="form">
@@ -200,8 +205,11 @@
             sumulasId: Array,
             questoesId: Array, 
             jurisId: Array,
-            idTabIntegration: true,
+            idTabIntegration: Number,
             idDispositive: true
+        },
+        watch:{
+            'idTabIntegration': 'tabSelect'
         },
         computed:{
             sumulas(){
@@ -294,7 +302,7 @@
             user(){
                 const user = this.$store.getters.readUser
                 return user.uid
-            }
+            },
         },
         methods:{
             ...mapActions(['saveCommentFB', 'cargaComments', 'removeComment']),
@@ -342,6 +350,9 @@
                 }
                 this.cargaComments(dataLaw)
             },
+            tabSelect(){
+                this.tab = this.idTabIntegration
+            }
         },
         created(){
             this.cargaCommentsBD()
