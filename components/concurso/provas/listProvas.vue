@@ -10,6 +10,28 @@
             ></v-text-field>
         </v-card-text>
         <v-card-text>
+            <v-row align="center">
+                <v-col
+                    cols="12"
+                    sm="6"
+                >
+                    <v-select
+                        v-model="yearSelect"
+                        :items="listYear"
+                        attach
+                        chips
+                        label="Ano"
+                        multiple
+                        clearable
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-btn color="success" @click="activeYear"><v-icon>mdi-power-standby</v-icon></v-btn>
+                <v-btn color="error" @click="DesactiveYear"><v-icon>mdi-power-standby</v-icon></v-btn>
+              </v-col>
+            </v-row>
+        </v-card-text>
+        <v-card-text>
             <v-list>
                 <template v-for="item, index in listProves">
                     <v-divider v-if="index != 0"></v-divider>
@@ -19,7 +41,7 @@
                                 {{item.id}} - {{item.cargo}} - {{item.year}}
                             </v-list-item-title>
                             <v-list-item-subtitle>
-                                {{item.orgao}}
+                                {{item.orgao}} - {{item.id}}
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action class="d-flex">
@@ -41,7 +63,8 @@
     export default {
         data(){
             return{
-                search: ''
+                search: '',
+                yearSelect: []
             }
         },
         computed:{
@@ -62,18 +85,56 @@
             lastId(){
                 let last = this.listProves.at(-1)
                 return last.id++
+            },
+            listYear(){
+                let list = this.$store.getters.readProvas.filter( i => i)
+                list = list.map(i => i.year)
+                return list
+            },
+            listCompleteProves(){
+                let list = this.$store.getters.readProvas.filter( i => i)
+                return list
             }
         },
         methods:{
             ...mapActions(['ediSetProve']),
             changeActive(item){
                 this.ediSetProve(item)
+                this.$store.dispatch("snackbars/setSnackbars", {text:'Status alterado!', color:'success'})
             },
             removeProve(item){
                 console.log('ok')
             },
             editProve(item){
                 console.log('ok')
+            },
+            activeYear(){
+                if(this.yearSelect.length){
+                    this.yearSelect.forEach(i => {
+                       this.listCompleteProves.forEach(list => {
+                            if(list.year == i && list.active == false){
+                                list.active = true
+                                this.ediSetProve(list)
+                            }
+                       })
+                    })
+                } else {
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione o ano!', color:'error'})
+                }
+            },
+            DesactiveYear(){
+                if(this.yearSelect.length){
+                    this.yearSelect.forEach(i => {
+                       this.listCompleteProves.forEach(list => {
+                            if(list.year == i && list.active == true){
+                                list.active = false
+                                this.ediSetProve(list)
+                            }
+                       })
+                    })
+                } else {
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione o ano!', color:'error'})
+                }
             },
         },
     }

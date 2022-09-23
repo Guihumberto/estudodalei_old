@@ -160,7 +160,7 @@
                 
             },
             provas(){
-                const list = this.$store.getters.readProvas.filter(i => i)
+                const list = this.$store.getters.readProvas.filter(i => i && i.active)
                 return list
             }
         },
