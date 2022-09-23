@@ -218,7 +218,7 @@ import boxAdd from '../../components/leges/box/boxAdd.vue';
                 } else if(this.search){
                     let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                     //retirar caracteres especiais
-                    let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+                    let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
                     //fazer o filtro
                     let filtro =  this.$store.getters.readTextLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
                     return {text: filtro}

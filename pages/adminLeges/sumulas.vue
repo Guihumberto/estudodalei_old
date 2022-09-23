@@ -221,7 +221,7 @@
         if(this.search){
               let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
               //retirar caracteres especiais
-              let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+              let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
 
               if(this.filtroOrgao != 'Todos') {
                 sumulas = sumulas.filter (i => i.orgao == this.filtroOrgao)

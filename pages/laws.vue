@@ -209,7 +209,7 @@
               //retirar acentuação
               let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
               //retirar caracteres especiais
-              let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+              let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
               //fazer o filtro
               let filtro = listLaws.filter(project => exp.test(project.nickname.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( project.nro ))
               return filtro.length
@@ -281,7 +281,7 @@
       transformStr(rota){
         let search = rota.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         //retirar caracteres especiais
-        let exp = search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, "").replace('.', "").replace(' ', "")
+        let exp = search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, "").replace('.', "").replace(' ', "")
       },
       listFavExist(item){
         if(this.isLogin.login){

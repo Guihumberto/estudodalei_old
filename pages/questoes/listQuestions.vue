@@ -131,7 +131,7 @@
                 //retirar acentuação
                 let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                 //retirar caracteres especiais
-                let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+                let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
                 //fazer o filtro
                 let filtro = list.filter(project => exp.test(project.answer.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test(project.alternative.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ))
                 

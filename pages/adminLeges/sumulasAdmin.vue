@@ -379,7 +379,7 @@
 
         if(this.search){
             let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-            let exp = new RegExp(search.trim().replace(/[\[\]!'@,><|://\\;&*()_+=]/g, ""), "i")
+            let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
             let filtro = sumulas.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.nro ) || exp.test( item.text ))
             sumulas = filtro
         }
