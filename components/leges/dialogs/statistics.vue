@@ -31,10 +31,11 @@
              {{ law[3] }} <br>
              {{ law[4] }}
             </h1>
+           <strong>Total de Questões: {{totaldeQuestoes}}</strong> 
           </v-card-text>
           <v-card-text class="mt-5" v-if="!isEmpty" >
             <v-list width="400" class="mx-auto">
-                <v-list-item>
+                <v-list-item class="primary white--text">
                     <v-list-item-content>
                         <v-list-item-title>Artigo</v-list-item-title>
                     </v-list-item-content>
@@ -134,10 +135,19 @@
         },
         isEmpty(){
             return Object.keys(this.listArts).length === 0;
+        },
+        totaldeQuestoes(){
+            let law = this.textLaw.filter( i => i.idQuestions)
+            let total = 0
+
+            law.forEach(element => {
+               total += element.idQuestions.length
+            });
+            return total
         }
       },
       methods:{
-        somaQuestions(item){
+         somaQuestions(item){
             let total = 0
             item.forEach(element => {
                total += element.idQuestions.length
