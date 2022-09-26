@@ -51,12 +51,13 @@
                 <v-btn small icon><v-icon small>mdi-format-font</v-icon></v-btn>
             </v-btn-toggle>
         </v-col>
-        <v-col cols="12" sm="4">
-            <v-btn-toggle>
+        <v-col cols="12" sm="4" class="mx-0 px-0">
+            <v-btn-toggle class="mx-0 px-0">
                 <leges-dialogs-otherLaws title="conjugar normas" @listOtherLaws="OtherLaws($event)" />
                 <leges-dialogs-estrutura :estrutura="estruturaList" @indice="searchIndice($event)" />
                 <leges-dialogs-print v-show="false" :law="nameLaw" :textLaw="textLaw.textComplete" />
                 <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
+                <leges-dialogs-statistics :law="nameLaw" :textLaw="textCompleteLaw" @filterArtsPush="filterArtsPush($event)"  />
             </v-btn-toggle>
         </v-col>
         <v-col cols="12" sm="2" class="mt-n3 d-flex">
