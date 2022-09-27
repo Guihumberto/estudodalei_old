@@ -46,15 +46,14 @@
            ></v-select>
           </v-card-text>
 
-          <!-- {{listArts}} -->
-
-          <v-card height="600" class="overflow-auto">
+          <v-card height="500" class="overflow-auto">
             <v-card-text class="mt-5" v-if="!isEmpty" >
               <v-list max-width="400" class="mx-auto">
                 <v-list-item-group
                   v-model="model"
                   multiple
                 >
+                <span class="caption">Qtd. de artigos: {{qtdFiltrada}}</span> 
                   <v-list-item class="primary white--text">
                       <v-list-item-content>
                           <v-list-item-title>Artigo</v-list-item-title>
@@ -189,6 +188,10 @@
           arr = arr.map(i => i.art)
           const arrUnique = [...new Set(arr)];
           return arrUnique.length
+        },
+        qtdFiltrada(){
+          let result = Object.keys(this.listArts).filter(i => i >= this.selectedQtd)
+          return result.length
         }
       },
       methods:{
