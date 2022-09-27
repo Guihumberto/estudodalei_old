@@ -31,70 +31,108 @@
              {{ law[3] }} <br>
              {{ law[4] }}
             </h1>
-           <strong>Total de Questões: {{totaldeQuestoes}}</strong> 
-          </v-card-text>
-          <v-card-text class="mt-5" v-if="!isEmpty" >
-            <v-list width="400" class="mx-auto">
-                <v-list-item class="primary white--text">
-                    <v-list-item-content>
-                        <v-list-item-title>Artigo</v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                        Nº de Questões 
-                    </v-list-item-action>
-                </v-list-item>
-                <template v-for="item, index in listArts">
-                    <v-divider></v-divider>
-                    <v-list-item :key="index" @click="gotoArt(index)">
-                        <v-list-item-content>
-                            <v-list-item-title>{{index}}</v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                           {{somaQuestions(item)}}
-                        </v-list-item-action>
-                    </v-list-item>
-                </template>
-            </v-list>
-            <div v-if="artigos[0]">
-                Seleção de artigos:
-                <v-chip-group>
-                    <v-chip 
-                            color="success"
-                            v-for="item, i in artigos" :key="i"
-                            @click="gotoArt(item)"
-                            close
-                            @click:close="gotoArt(item)"
-                        >
-                        {{item}}</v-chip>
-                </v-chip-group>
-            </div>
+           <strong>Total de Questões: {{totaldeQuestoes}}</strong> <br>
+           <strong>Artigos com Questões: {{totaldeArtigos}}</strong> 
+           <v-select
+            dense solo outlined
+            prepend-inner-icon="mdi-greater-than-or-equal"
+            label="Filtro por Qtd"
+            style="width: 30%"
+            :items="selectQtd"
+            v-model="selectedQtd"
+            class="ml-n1 mt-1"
+            clearable
+            v-if="!isEmpty"
+           ></v-select>
           </v-card-text>
 
-          <v-card-text v-else>
-            <v-alert type="error" outlined>
-                Não há questões cadastradas nesta lei!
-            </v-alert>
-          </v-card-text>
-         
+          <!-- {{listArts}} -->
+
+          <v-card height="600" class="overflow-auto">
+            <v-card-text class="mt-5" v-if="!isEmpty" >
+              <v-list max-width="400" class="mx-auto">
+                <v-list-item-group
+                  v-model="model"
+                  multiple
+                >
+                  <v-list-item class="primary white--text">
+                      <v-list-item-content>
+                          <v-list-item-title>Artigo</v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                          Nº de Questões 
+                      </v-list-item-action>
+                  </v-list-item>
+                  <template v-for="item, index in listArts">
+                      <v-divider v-if="somaQuestions(item) >= selectedQtd"></v-divider>
+                      <v-list-item 
+                        v-slot:default="{ active }"
+                        :key="index" @click="gotoArt(index)"
+                        active-class="deep-purple--text text--accent-4"
+                        v-if="somaQuestions(item) >= selectedQtd"
+                      >
+                          <v-list-item-content>
+                              <v-list-item-title>{{index}}</v-list-item-title>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                             {{somaQuestions(item)}}
+                          </v-list-item-action>
+                          <v-list-item-action>
+                          <v-checkbox
+                            :input-value="active"
+                            color="deep-purple accent-4"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                      </v-list-item>
+                  </template>
+                </v-list-item-group>
+              </v-list>
+            </v-card-text>
+            <v-card-text v-else>
+              <v-alert type="error" outlined>
+                  Não há questões cadastradas nesta lei!
+              </v-alert>
+            </v-card-text>
+          </v-card>
+       
           <v-divider></v-divider>
-  
+        
+        </v-card>
+        <v-card flat color="#f9f5f5">
+          <v-card-text>
+            <v-expand-transition>
+              <div v-if="artigos[0]">
+                  Seleção de artigos:
+                  <v-chip-group>
+                      <v-chip 
+                              color="success"
+                              v-for="item, i in artigos" :key="i"
+                              @click="gotoArt(item)"
+                              close
+                              @click:close="gotoArt(item)"
+                          >
+                          {{item}}</v-chip>
+                  </v-chip-group>
+              </div>
+            </v-expand-transition>
+          </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              text
-              @click="dialog = false"
-            >
-              Fechar
-            </v-btn>
-            <v-btn
-              v-if="artigos[0]"
-              color="primary"
-              @click="filterActivePush"
-            >
-              Filtrar
-            </v-btn>
-          </v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="primary"
+                text
+                @click="dialog = false"
+              >
+                Fechar
+              </v-btn>
+              <v-btn
+                v-if="artigos[0]"
+                color="primary"
+                @click="filterActivePush"
+              >
+                Filtrar
+              </v-btn>
+            </v-card-actions>
         </v-card>
       </v-dialog>
     </div>
@@ -102,13 +140,14 @@
   
   <script>
   
-    import jspdf from 'jspdf'
-  
     export default {
       data () {
         return {
           dialog: false,
-          artigos: []
+          artigos: [],
+          model:[],
+          selectQtd:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          selectedQtd: 0
         }
       },
       props:{
@@ -130,7 +169,7 @@
 
                     }, {}
                 )
-                    console.log(groupBy('art', list))
+                    
             return groupBy('art', list)
         },
         isEmpty(){
@@ -144,6 +183,12 @@
                total += element.idQuestions.length
             });
             return total
+        },
+        totaldeArtigos(){
+          let arr = this.textLaw.filter( i => i.idQuestions)
+          arr = arr.map(i => i.art)
+          const arrUnique = [...new Set(arr)];
+          return arrUnique.length
         }
       },
       methods:{
@@ -163,7 +208,7 @@
                 this.artigos.push(item)
                 this.$store.dispatch("snackbars/setSnackbars", {text:'Artigo inserido.', color:'success'})
             }
-            console.log(this.artigos)
+         
          },
          filterActivePush(){
             if(this.artigos[0]){
