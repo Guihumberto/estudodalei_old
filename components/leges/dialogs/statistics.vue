@@ -14,7 +14,7 @@
           </v-btn>
         </template>
   
-        <v-card>
+        <v-card color="#f9f5f5">
           <v-card-title class="mb-5 text-h5 grey lighten-2">
             <v-icon class="mr-1" color="primary">
                 mdi-finance
