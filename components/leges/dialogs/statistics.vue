@@ -26,34 +26,39 @@
             </v-btn>
           </v-card-title>
 
-          <v-card-text>
+          <v-card-text class="d-flex justify-center">
             <h1 class="text-h6">
              {{ law[3] }} <br>
              {{ law[4] }}
             </h1>
-           <strong>Total de Questões: {{totaldeQuestoes}}</strong> <br>
-           <strong>Artigos com Questões: {{totaldeArtigos}}</strong> 
-           <v-select
-            dense solo outlined
-            prepend-inner-icon="mdi-greater-than-or-equal"
-            label="Filtro por Qtd"
-            style="width: 30%"
-            :items="selectQtd"
-            v-model="selectedQtd"
-            class="ml-n1 mt-1"
-            clearable
-            v-if="!isEmpty"
-           ></v-select>
+            <v-divider
+            class="mx-5"
+              vertical
+            ></v-divider>
+            <div>
+              <strong>Total de Questões: {{totaldeQuestoes}}</strong> <br>
+              <strong>Artigos com Questões: {{totaldeArtigos}}</strong> 
+            </div>
           </v-card-text>
 
           <v-card height="500" class="overflow-auto">
-            <v-card-text class="mt-5" v-if="!isEmpty" >
+            <v-card-text class="mt-5" v-if="isEmpty" >
               <v-list max-width="400" class="mx-auto">
                 <v-list-item-group
                   v-model="model"
                   multiple
                 >
-                <span class="caption">Qtd. de artigos: {{qtdFiltrada}}</span> 
+                <v-select
+                  dense
+                  prepend-inner-icon="mdi-greater-than-or-equal"
+                  label="Filtro por Qtd"
+                  :items="selectQtd"
+                  v-model="selectedQtd"
+                  class="ml-n1 mt-1"
+                  clearable
+                  v-if="isEmpty"
+                ></v-select>
+                <span class="caption">Qtd. de artigos: {{qtdFiltrada.filter(i => i.valor >= selectedQtd).length}} </span> 
                   <v-list-item class="primary white--text">
                       <v-list-item-content>
                           <v-list-item-title>Artigo</v-list-item-title>
@@ -62,26 +67,26 @@
                           Nº de Questões 
                       </v-list-item-action>
                   </v-list-item>
-                  <template v-for="item, index in listArts">
-                      <v-divider v-if="somaQuestions(item) >= selectedQtd"></v-divider>
+                  <template v-for="item, index in qtdFiltrada">
+                      <v-divider v-if="item.valor >= selectedQtd"></v-divider>
                       <v-list-item 
                         v-slot:default="{ active }"
-                        :key="index" @click="gotoArt(index)"
+                        :key="index" @click="gotoArt(item.art)"
                         active-class="deep-purple--text text--accent-4"
-                        v-if="somaQuestions(item) >= selectedQtd"
+                        v-if="item.valor >= selectedQtd"
                       >
+                        <v-list-item-action>
+                            <v-checkbox
+                              :input-value="active"
+                              color="deep-purple accent-4"
+                            ></v-checkbox>
+                        </v-list-item-action>
                           <v-list-item-content>
-                              <v-list-item-title>{{index}}</v-list-item-title>
+                              <v-list-item-title>{{item.art}}</v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
-                             {{somaQuestions(item)}}
+                             {{item.valor}}
                           </v-list-item-action>
-                          <v-list-item-action>
-                          <v-checkbox
-                            :input-value="active"
-                            color="deep-purple accent-4"
-                          ></v-checkbox>
-                        </v-list-item-action>
                       </v-list-item>
                   </template>
                 </v-list-item-group>
@@ -98,17 +103,14 @@
         
         </v-card>
         <v-card flat color="#f9f5f5">
-          <v-card-text>
+          <v-card-text class="my-0 py-0">
             <v-expand-transition>
               <div v-if="artigos[0]">
                   Seleção de artigos:
                   <v-chip-group>
                       <v-chip 
-                              color="success"
-                              v-for="item, i in artigos" :key="i"
-                              @click="gotoArt(item)"
-                              close
-                              @click:close="gotoArt(item)"
+                          color="success"
+                          v-for="item, i in artigos" :key="i"           
                           >
                           {{item}}</v-chip>
                   </v-chip-group>
@@ -145,7 +147,6 @@
           dialog: false,
           artigos: [],
           model:[],
-          selectQtd:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
           selectedQtd: 0
         }
       },
@@ -155,24 +156,22 @@
       },
       computed:{
         listArts(){
-            let list = this.textLaw.filter( i => i.idQuestions)
+          const list = this.textLaw.filter( i => i.idQuestions)
 
-            const groupBy = (key, arr) => arr
-                .reduce(
-                    (cache, product) => {
-                        const property = product[key]
-                        if(property in cache) {
-                            return { ...cache, [property]: cache[property].concat(product)}
-                        }
-                        return {...cache, [property]: [product]}
+          const somar = (itens) => {
+            const total = itens.reduce((acc, {art, idQuestions}) => {
+              acc[art] = (acc[art] || 0) + idQuestions.length
+              return acc
+            }, {})
 
-                    }, {}
-                )
-                    
-            return groupBy('art', list)
+            return Object.keys(total).map((art) => ({art, valor: parseInt(total[art]) }))
+          }
+
+          const result = somar(list)
+          return result
         },
         isEmpty(){
-            return Object.keys(this.listArts).length === 0;
+            return !!this.listArts[0];
         },
         totaldeQuestoes(){
             let law = this.textLaw.filter( i => i.idQuestions)
@@ -190,8 +189,24 @@
           return arrUnique.length
         },
         qtdFiltrada(){
-          let result = Object.keys(this.listArts).filter(i => i >= this.selectedQtd)
-          return result.length
+          const list = this.textLaw.filter( i => i.idQuestions)
+
+          const somar = (itens) => {
+            const total = itens.reduce((acc, {art, idQuestions}) => {
+              acc[art] = (acc[art] || 0) + idQuestions.length
+              return acc
+            }, {})
+
+            return Object.keys(total).map((art) => ({art, valor: parseInt(total[art]) }))
+          }
+
+          const result = somar(list)
+          return result
+        },
+        selectQtd(){
+          const list = this.qtdFiltrada.map(i => i.valor)
+          const arrUnique = [...new Set(list)];
+          return arrUnique.sort(this.order)
         }
       },
       methods:{
@@ -213,13 +228,16 @@
             }
          
          },
-         filterActivePush(){
+         filterActivePush(){  
             if(this.artigos[0]){
                 this.$emit('filterArtsPush', this.artigos)
                 this.$store.dispatch("snackbars/setSnackbars", {text:'Filtro na tela.', color:'success'})
                 this.dialog = false
             }
-      },
+         },
+         order(a, b){
+            return a - b
+         }
       }
     }
   </script>
