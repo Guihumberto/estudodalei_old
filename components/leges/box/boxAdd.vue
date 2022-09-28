@@ -356,6 +356,7 @@
         },
         created(){
             this.cargaCommentsBD()
+            this.tabSelect()
         }
     }
 </script>
