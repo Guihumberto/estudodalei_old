@@ -12,6 +12,7 @@
                 <v-tab v-show="questoesId">Questões</v-tab>
                 <v-tab v-show="sumulasId">Súmulas</v-tab>
                 <v-tab v-show="jurisId">Julgados</v-tab>
+                <v-tab v-show="questoesDoutrina">Doutrina</v-tab>
                 
             </v-tabs>
         </v-card-title>
@@ -170,7 +171,22 @@
                     </v-list>
                 </v-card-text>
             </v-tab-item>    
-             
+            <v-tab-item v-show="questoesDoutrina">
+                <v-card-text>
+                    <v-list>
+                        <template v-for="(item, index) in questoes" >
+                            <v-divider v-if="index != 0"></v-divider>
+                            <v-list-item :key="index">
+                                <v-list-item-content>
+                                    <div class="pl-1 mt-1"> 
+                                        <p class="formatText">{{item.doutrina}}</p>
+                                    </div>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                    </v-list>
+                </v-card-text>
+            </v-tab-item>
         </v-tabs-items>
         <v-divider></v-divider>
         <v-card-actions>
@@ -271,6 +287,10 @@
                 
                 return newQuestoes.slice(start, end)
          
+            },
+            questoesDoutrina(){
+                const list = this.questoes.filter(i => i.doutrina).length
+                return list
             },
             questoesComplete(){
                 const questoes = this.$store.getters.readQuestions
