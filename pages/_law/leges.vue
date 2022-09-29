@@ -378,6 +378,7 @@
                                 :sumulasId="item.sumulas" 
                                 :jurisId="item.idJuris" 
                                 :idDispositive="item.id"
+                                :refQuestions="referenciaArts"
                                 @fechar="item.show = false" />
                             </v-card>
                         </v-expand-transition>
@@ -387,9 +388,6 @@
             <div class="text-center" v-if="artIndice">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
             </div>
-            <!-- <div class="text-center" v-show="qtdArtIndice <= textLaw.size" v-if="!artsFilterActive">
-                <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
-            </div> -->
         </v-card-text>     
     </v-card>
     <!-- load -->
@@ -598,6 +596,11 @@
                 const user = this.$store.getters.readUser
                 return user.uid
             },
+            referenciaArts(){
+                let idQuestions = this.textCompleteLaw.filter(i => i.idQuestions)
+
+                return idQuestions
+            }
         },
         methods:{
             ...mapActions(['cargaTextLaw', 'cargaNameLaw', 'saveFavDispositve', 'cargaFavDispositive', 'removeFavDispositive']),

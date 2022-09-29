@@ -13,7 +13,7 @@
                 <v-tab v-show="sumulasId">Súmulas</v-tab>
                 <v-tab v-show="jurisId">Julgados</v-tab>
                 <v-tab v-show="questoesDoutrina">Doutrina</v-tab>
-                
+                <v-tab v-show="refQt">Referência</v-tab>
             </v-tabs>
         </v-card-title>
         <v-tabs-items v-model="tab">
@@ -187,6 +187,25 @@
                     </v-list>
                 </v-card-text>
             </v-tab-item>
+            <v-tab-item v-show="refQt">
+                <v-card-text>
+                    <v-list>
+                        <v-list-item v-for="item, i in refQt" :key="i">
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                   Art. {{i}}
+                                </v-list-item-title>
+                                <div>
+                                    <p 
+                                        class="formatText" v-for="disp, index in [...new Set(item)]" :key="index"
+                                        v-if="disp.id != idDispositive"
+                                    >{{disp.textLaw}}</p>
+                                </div>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-card-text>
+            </v-tab-item>
         </v-tabs-items>
         <v-divider></v-divider>
         <v-card-actions>
@@ -222,7 +241,8 @@
             questoesId: Array, 
             jurisId: Array,
             idTabIntegration: Number,
-            idDispositive: true
+            idDispositive: true,
+            refQuestions: Array
         },
         watch:{
             'idTabIntegration': 'tabSelect'
@@ -323,6 +343,37 @@
                 const user = this.$store.getters.readUser
                 return user.uid
             },
+            refQt(){
+                const ref = this.refQuestions
+                
+                let result = []
+
+                this.questoesId?.forEach( i => {
+                    ref.forEach(item => {
+                        item.idQuestions.forEach(quest => {
+                            if(quest == i) {
+                                result.push(item)
+                            }
+                        })
+                    })
+                })
+
+
+
+                const final = result.reduce((dispositivo, disp) => {
+                    dispositivo[disp.art] = dispositivo[disp.art] || []
+                    dispositivo[disp.art].push(disp)
+
+                    return dispositivo
+                }, {})
+
+                let finalEmpty = !!Object.keys(final).length
+
+
+                return finalEmpty
+                ? final
+                : false
+            }
         },
         methods:{
             ...mapActions(['saveCommentFB', 'cargaComments', 'removeComment']),
