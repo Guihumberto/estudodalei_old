@@ -192,14 +192,13 @@
                     <v-list>
                         <v-list-item v-for="item, i in refQt" :key="i">
                             <v-list-item-content>
-                                <v-list-item-title>
-                                   Art. {{i}}
-                                </v-list-item-title>
                                 <div>
                                     <p 
                                         class="formatText" v-for="disp, index in [...new Set(item)]" :key="index"
                                         v-if="disp.id != idDispositive"
-                                    >{{disp.textLaw}}</p>
+                                    >
+                                    <span v-if="disp.order !=10">Art.{{disp.art}}, </span>
+                                    {{disp.textLaw}}</p>
                                 </div>
                             </v-list-item-content>
                         </v-list-item>
