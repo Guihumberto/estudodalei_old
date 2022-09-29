@@ -76,7 +76,7 @@
                     //retirar caracteres especiais
                     let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
                     //fazer o filtro
-                    let filtro =  list.filter(item => exp.test(item.cargo.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.orgao ))
+                    let filtro =  list.filter(item => exp.test(item.cargo.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.orgao ) || exp.test( item.year ))
                     list = filtro
                 }
                 
@@ -118,6 +118,7 @@
                             }
                        })
                     })
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Ano alterado!', color:'success'})
                 } else {
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione o ano!', color:'error'})
                 }
@@ -132,6 +133,7 @@
                             }
                        })
                     })
+                    this.$store.dispatch("snackbars/setSnackbars", {text:'Ano alterado!', color:'success'})
                 } else {
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione o ano!', color:'error'})
                 }
