@@ -8,6 +8,11 @@
                 v-model="search"
                 clearable
             ></v-text-field>
+            <v-checkbox
+                class="mt-n5"
+                label="Somente Ativos"
+                v-model="isActive"
+            ></v-checkbox>
         </v-card-text>
         <v-card-text>
             <v-row align="center">
@@ -64,12 +69,17 @@
         data(){
             return{
                 search: '',
-                yearSelect: []
+                yearSelect: [],
+                isActive: false
             }
         },
         computed:{
             listProves(){
                 let list = this.$store.getters.readProvas.filter( i => i)
+
+                if(this.isActive){
+                    list = list.filter(i => i.active)
+                }
 
                 if(this.search){
                     let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
