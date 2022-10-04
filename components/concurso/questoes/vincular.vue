@@ -45,7 +45,7 @@
              text class="px-0"
              @click="clearLaw()"
             > Limpar </v-btn>
-            <v-btn  v-if="law" @click="cargaLawComplement(law)" class="ml-2" color="primary">Carregar</v-btn>
+            <v-btn  v-if="law" @click="cargaLawComplement(law), showMore += lawText.length" class="ml-2" color="primary">Carregar</v-btn>
         </v-card-text>
         <!-- texto da lei -->
         <v-card-text>

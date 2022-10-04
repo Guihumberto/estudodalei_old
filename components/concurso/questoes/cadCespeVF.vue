@@ -21,6 +21,20 @@
                         v-model="questions"
                     ></v-textarea>
                 </v-card-text>
+                <v-card-actions class="mt-n6 mr-3 ">
+                    <v-spacer></v-spacer>
+                    <v-checkbox
+                        label="Anulada"
+                        color="red"
+                        class="mr-2"
+                        v-model="canceled"
+                    ></v-checkbox>
+                    <v-checkbox
+                        label="Desatualizada"
+                        color="warning"
+                        v-model="outdated"
+                    ></v-checkbox>
+                </v-card-actions>
             </v-card>
             <v-card outlined class="mt-5">
                 <v-card-title>
@@ -67,6 +81,8 @@
             return{
                 questions: '',
                 subject: 0,
+                canceled: false,
+                outdated: false,
                 bancas:[
                     {id: 1, name: 'FGV'},
                     {id: 2, name: 'CESPE'},
@@ -182,7 +198,9 @@
                         alternative: this._questions.alternative.replace('\n', ''), 
                         value: 0, 
                         subject: this.subject, 
-                        prove: prove
+                        prove: prove,
+                        canceled: this.canceled,
+                        outdated: this.outdated
                     }
                     this.questionGravar.push(question)
             },
@@ -215,6 +233,8 @@
             clearFields(){
                 this.questions = ''
                 this.questionGravar = []
+                this.canceled = false
+                this.outdated = false
             }
         }
     }

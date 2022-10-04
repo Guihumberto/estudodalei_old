@@ -34,12 +34,24 @@
                     </v-col>
                     <v-col cols="12" class="mt-0 pt-0 d-flex">
                         <v-checkbox
-                            label="apenas as questões não vinculadas"
+                            label="não vinculadas"
                             v-model="vincs"
                         ></v-checkbox>
                         <v-checkbox
-                            label="apenas as questões com comentários"
+                            label="com comentários"
                             v-model="justComment"
+                            class="ml-2"
+                        ></v-checkbox>
+                        <v-checkbox
+                            label="desatualizadas"
+                            v-model="outdated"
+                            color="warning"
+                            class="ml-2"
+                        ></v-checkbox>
+                        <v-checkbox
+                            label="anuladas"
+                            v-model="canceled"
+                            color="error"
                             class="ml-2"
                         ></v-checkbox>
                     </v-col>
@@ -103,7 +115,9 @@
                 prova: 0,
                 search: '',
                 vincs: false,
-                justComment: false
+                justComment: false,
+                outdated: false,
+                canceled: false
             }
         },
         computed:{
@@ -120,6 +134,14 @@
 
                if(this.justComment){
                 list = list.filter( i => i.doutrina)
+               }
+
+               if(this.outdated){
+                list = list.filter( i => i.outdated)
+               }
+
+               if(this.canceled){
+                list = list.filter( i => i.canceled)
                }
 
                if(this.vincs){
