@@ -14,79 +14,100 @@
         </v-btn>
       </template>
 
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2 mb-5">
+      <v-card color="grey lighten-2">
+        <v-card-title class="text-h5 grey mb-5">
           Vincular
           <v-spacer></v-spacer>
           <v-btn icon @click="dialog = false"> <v-icon>mdi-close</v-icon></v-btn>
         </v-card-title>
-        <!-- questao -->
-        <v-card-text>
-          <v-alert color="primary" outlined>
-            <p>{{questao.id}}</p>
-            <p>{{questao.answer}}</p>
-            <p>{{questao.alternative}}</p>
-          </v-alert>
-        </v-card-text>
-        <!-- busca -->
-        <v-card-text>
-            <v-autocomplete
-                label="Busca"
-                placeholder="Escolha a Lei"
-                solo
-                dense outlined
-                :items="listLaws"
-                item-text="nickname"
-                item-value="id"
-                v-model="law"
-                clearable
-            ></v-autocomplete>
-            <v-btn 
-             text class="px-0"
-             @click="clearLaw()"
-            > Limpar </v-btn>
-            <v-btn  v-if="law" @click="cargaLawComplement(law), showMore += lawText.length" class="ml-2" color="primary">Carregar</v-btn>
-        </v-card-text>
-        <!-- texto da lei -->
-        <v-card-text>
-            <div v-for="(item, index) in lawText.slice(0, showMore)" :key="index">
-              <div class="d-flex jus justify-space-between">
-                <div>
-                  <div v-if="item.estrutura">
-                  <p class="font-weight-medium text-center" v-text="item.textLaw"></p>
-                  </div>
-                  <div v-else>
-                  <p class="formatText" v-text="item.textLaw"></p>
+          <!-- busca -->
+          <v-card-text>
+              <v-autocomplete
+                  label="Busca"
+                  placeholder="Escolha a Lei"
+                  solo
+                  dense outlined
+                  :items="listLaws"
+                  item-text="nickname"
+                  item-value="id"
+                  v-model="law"
+                  clearable
+              ></v-autocomplete>
+              <v-card-actions class="my-n3">
+                <v-text-field
+                  label="Busca"
+                  placeholder="digite o número do artigo"
+                  v-if="cargaLoad"
+                  @dblclick="scroll(artFind)"
+                  v-model="artFind"
+                ></v-text-field>
+                <v-btn
+                  v-else
+                  text
+                  loading
+                ></v-btn>
+                <v-spacer></v-spacer>
+                <v-btn 
+                outlined color="primary"
+                @click="clearLaw()"
+                > Limpar </v-btn>
+                <v-btn  
+                  v-if="law" 
+                  @click="cargaLawComplement(law), showMore += lawText.length" class="ml-2" color="primary">
+                  Carregar
+                </v-btn>
+              </v-card-actions>
+          </v-card-text>
+          <v-card flat height="700" class="overflow-auto">
+            <!-- questao -->
+            <v-card-text>
+              <v-alert color="primary" outlined>
+                <p>{{questao.id}}</p>
+                <p>{{questao.answer}}</p>
+                <p>{{questao.alternative}}</p>
+              </v-alert>
+            </v-card-text>
+            <!-- texto da lei -->
+            <v-card-text>
+                <div v-for="(item, index) in lawText.slice(0, showMore)" :key="index">
+                  <div class="d-flex jus justify-space-between">
+                    <div>
+                      <div v-if="item.estrutura">
+                      <p class="font-weight-medium text-center" v-text="item.textLaw"></p>
+                      </div>
+                      <div v-else>
+                      <p :id="`10${item.art}`" class="formatText" v-text="item.textLaw"></p>
+                      </div>
+                    </div>
+                    <v-btn 
+                      @click="vincular(item, index)"
+                      v-if="!item.estrutura" small color="primary" outlined>vincular
+                    </v-btn>
                   </div>
                 </div>
-                <v-btn 
-                  @click="vincular(item, index)"
-                  v-if="!item.estrutura" small color="primary" outlined>vincular
-                </v-btn>
-              </div>
-            </div>
-            <div v-if="lawText.length > showMore">
-                <v-btn 
-                block outlined color="success lighten-1"
-                @click="showMore +=250"
-                >ver mais</v-btn>
-                <v-btn 
-                block text color="success lighten-1"
-                @click="showMore += lawText.length"
-                >mostrar tudo</v-btn>
-            </div>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            Fechar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+                <div v-if="lawText.length > showMore">
+                    <v-btn 
+                    block outlined color="success lighten-1"
+                    @click="showMore +=250"
+                    >ver mais</v-btn>
+                    <v-btn 
+                    block text color="success lighten-1"
+                    @click="showMore += lawText.length"
+                    >mostrar tudo</v-btn>
+                </div>
+            </v-card-text>
+          </v-card>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              outlined
+              @click="dialog = false"
+            >
+              Fechar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
     </v-dialog>
   </div>
 </template>
@@ -97,13 +118,14 @@
   export default {
     data () {
       return {
-        dialog: false,
-        law:'',
-        lawDefault: 'qrSLeELU-',
-        search: '',
-        listFilterArt: [],
-        filterArtActive: false,
-        showMore: 20
+          dialog: false,
+          law:'',
+          lawDefault: 'qrSLeELU-',
+          search: '',
+          listFilterArt: [],
+          filterArtActive: false,
+          showMore: 20,
+          artFind: 1,
         }
     },
     props:{
@@ -143,13 +165,18 @@
             return textLaw
         },
         cargaLaw(){
-        if(this.law){
-          this.cargaLawComplement(this.law)
-        } else {
-          this.cargaLawComplement(this.lawDefault)
+          if(this.law){
+            this.cargaLawComplement(this.law)
+          } else {
+            this.cargaLawComplement(this.lawDefault)
+          }
+          return '!'
+        },
+        cargaLoad(){
+          return this.lawText
+          ? true
+          : false
         }
-        return '!'
-      }
     },
     methods:{
         ...mapActions(['cargaLawComplement', 'linkQuestionDispositive', 'editSetQuestao']),
@@ -192,6 +219,10 @@
             this.listFilterArt = []
             this.filterArtActive = false
         },
+        scroll(ref){
+          const element = document.getElementById(`10${ref}`)
+          element.scrollIntoView({behavior: "smooth"})
+        }
     }
   }
 </script>
