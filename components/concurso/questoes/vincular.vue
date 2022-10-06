@@ -37,8 +37,8 @@
                 <v-text-field
                   label="Busca"
                   placeholder="digite o número do artigo"
-                  v-if="cargaLoad"
-                  @dblclick="scroll(artFind)"
+                  v-if="!cargaLoad"
+                  @keyup.enter="scroll(artFind)"
                   v-model="artFind"
                 ></v-text-field>
                 <v-btn
@@ -53,7 +53,7 @@
                 > Limpar </v-btn>
                 <v-btn  
                   v-if="law" 
-                  @click="cargaLawComplement(law), showMore += lawText.length" class="ml-2" color="primary">
+                  @click="cargaNew(law), showMore += lawText.length" class="ml-2" color="primary">
                   Carregar
                 </v-btn>
               </v-card-actions>
@@ -119,13 +119,14 @@
     data () {
       return {
           dialog: false,
-          law:'',
+          law:'qrSLeELU-',
           lawDefault: 'qrSLeELU-',
           search: '',
           listFilterArt: [],
           filterArtActive: false,
           showMore: 20,
           artFind: 1,
+          cargaLoad: false
         }
     },
     props:{
@@ -172,11 +173,6 @@
           }
           return '!'
         },
-        cargaLoad(){
-          return this.lawText
-          ? true
-          : false
-        }
     },
     methods:{
         ...mapActions(['cargaLawComplement', 'linkQuestionDispositive', 'editSetQuestao']),
@@ -220,8 +216,19 @@
             this.filterArtActive = false
         },
         scroll(ref){
-          const element = document.getElementById(`10${ref}`)
-          element.scrollIntoView({behavior: "smooth"})
+          const loadArt = this.lawText.slice(0, this.showMore).find(i => i.art == ref)
+          if(loadArt){
+            const element = document.getElementById(`10${ref}`)
+            element.scrollIntoView({behavior: "smooth"})
+          } else {
+            this.$store.dispatch("snackbars/setSnackbars", {text:'Artigo não encontrado ou lei não carregada.', color:'error'})
+          }
+        },
+        cargaNew(law){
+          this.cargaLoad = true
+          this.cargaLawComplement(law).then((res) => {
+            this.cargaLoad = false
+          })
         }
     }
   }
