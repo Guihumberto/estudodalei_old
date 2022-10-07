@@ -110,6 +110,7 @@
           if(this.questaoValidar){
             this.editSetQuestao(this.questao)
             this.$store.dispatch("snackbars/setSnackbars", {text:'editado com sucesso', color:'success'})
+            this.dialog = false
           } else {
             this.$store.dispatch("snackbars/setSnackbars", {text:'não foi possível salvar', color:'error'})
           }

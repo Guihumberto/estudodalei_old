@@ -37,18 +37,20 @@
                 </v-card-actions>
             </v-card>
             <v-card outlined class="mt-5">
-                <v-card-title>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="importSave()">Listar</v-btn>
-                </v-card-title>
-                <v-card-text >
-                    BANCA: {{_questions.banca}} <br>
-                    ANO: {{_questions.year}} <br>
-                    cargo: {{_questions.name}} <br>
-                    Orgao: {{_questions.orgao}}<br>
-                    Texto: {{_questions.answer}} <br>
-                    Assertiva {{_questions.alternative}} <br>
-                </v-card-text>
+                <div v-if="!questionGravar.length">
+                    <v-card-title>
+                        <v-spacer></v-spacer>
+                        <v-btn outlined @click="importSave()">Listar</v-btn>
+                    </v-card-title>
+                    <v-card-text >
+                        BANCA: {{_questions.banca}} <br>
+                        ANO: {{_questions.year}} <br>
+                        cargo: {{_questions.name}} <br>
+                        Orgao: {{_questions.orgao}}<br>
+                        Texto: {{_questions.answer}} <br>
+                        Assertiva {{_questions.alternative}} <br>
+                    </v-card-text>
+                </div>
                 <v-divider></v-divider>
                 <v-card-text v-if="questionGravar.length">
                     <v-card-title>
@@ -63,8 +65,11 @@
                         <p>{{item.prove}} / {{item.subject}}</p>
                         <p>{{item.answer}}</p>
                         <p>{{item.alternative}}</p>
-                        <v-btn small @click="item.value = 1" :outlined="item.value == 0" color="success">Certo</v-btn>
-                        <v-btn small @click="item.value = 0" :outlined="item.value == 1" color="error">Errado</v-btn>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn small @click="item.value = 1" :outlined="item.value == 0" color="success">Certo</v-btn>
+                            <v-btn small @click="item.value = 0" :outlined="item.value == 1" color="error">Errado</v-btn>
+                        </v-card-actions>
                     </div>
                 </v-card-text>
             </v-card>
