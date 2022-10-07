@@ -33,7 +33,24 @@
                   v-model="law"
                   clearable
               ></v-autocomplete>
+              <v-col class="my-n5 pl-0">
+                <v-chip-group>
+                  <v-chip 
+                    small color="primary lighten-2" 
+                    v-for="item, i in lawsRecentes" :key="i"
+                    @click="cargaNew(item), showMore += lawText.length, law = item"
+                    close
+                    @click:close="excluirLawRecente(item)"
+                  >
+                    {{nomeLawApa(item)}}
+                  </v-chip>
+                </v-chip-group>
+              </v-col>
               <v-card-actions class="my-n3">
+                <v-switch
+                  v-show="false"
+                  class="mr-2"
+                ></v-switch>
                 <v-text-field
                   label="Busca"
                   placeholder="digite o número do artigo"
@@ -119,7 +136,7 @@
     data () {
       return {
           dialog: false,
-          law:'qrSLeELU-',
+          law:'',
           lawDefault: 'qrSLeELU-',
           search: '',
           listFilterArt: [],
@@ -130,7 +147,8 @@
         }
     },
     props:{
-            questao: Object
+            questao: Object,
+            lawsRecentes: Array
     },
     computed:{
         listLaws(){
@@ -229,6 +247,15 @@
           this.cargaLawComplement(law).then((res) => {
             this.cargaLoad = false
           })
+
+          this.$emit('consultaRecente', law)
+        },
+        nomeLawApa(item){
+          let name = this.listLaws.find(i => i.id == item)
+          return name.nro
+        },
+        excluirLawRecente(law){
+          this.$emit('excluirLawRct', law)
         }
     }
   }
