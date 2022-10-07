@@ -93,7 +93,7 @@
                       <p class="font-weight-medium text-center" v-text="item.textLaw"></p>
                       </div>
                       <div v-else>
-                      <p :id="`10${item.art}`" class="formatText" v-text="item.textLaw"></p>
+                      <p :id="`10${item.art}`" class="formatText" v-text="item.textLaw" :title="item.art"></p>
                       </div>
                     </div>
                     <v-btn 
