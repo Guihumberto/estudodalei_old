@@ -81,7 +81,16 @@
             >
                 <v-icon class="mr-1" small v-text="painelExpanse? 'mdi-eye-off-outline' : 'mdi-eye-outline'"></v-icon>
                  {{painelExpanse ? 'ocultar painel' : 'mostrar painel'}}
-        </v-btn>
+            </v-btn>
+            <v-btn
+                x-small
+                text
+                v-if="closeAllPaineis"
+                @click="closeAllPaineisFunction()"
+                >
+                <v-icon small>mdi-close</v-icon> 
+                Fechar Paineis
+            </v-btn>
         </v-col>
         <!-- busca de artigos e salvar filtro -->
         <v-col class="mt-n6" cols="12">
@@ -388,7 +397,19 @@
             <div class="text-center" v-if="artIndice">
                 <v-btn @click="qtdArtIndice += 10" outlined>mostrar mais <v-icon class="ml-1 mr-n2">mdi-plus</v-icon></v-btn>
             </div>
-        </v-card-text>     
+        </v-card-text>   
+        <v-subheader>
+            <v-spacer></v-spacer>
+            <v-btn
+                x-small
+                text
+                v-if="closeAllPaineis"
+                @click="closeAllPaineisFunction()"
+                >
+                <v-icon small>mdi-close</v-icon> 
+                Fechar Paineis
+            </v-btn>  
+        </v-subheader>
     </v-card>
     <!-- load -->
     <v-card v-else>
@@ -600,6 +621,13 @@
                 let idQuestions = this.textCompleteLaw.filter(i => i.idQuestions)
 
                 return idQuestions
+            },
+            closeAllPaineis(){
+                let filter = this.textLaw.text.filter( i => i.show)
+
+                return filter.length
+                ? true
+                : false
             }
         },
         methods:{
@@ -729,6 +757,13 @@
                     this.painelExpanse = true
                 }, 1000)
                 
+            },
+            closeAllPaineisFunction(){
+                let filter = this.textLaw.text.filter( i => i.show)
+                filter.forEach(i => {
+                    i.show = false
+                })
+                this.pageTop()
             }
         },
         created(){
