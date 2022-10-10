@@ -75,7 +75,7 @@
                 </v-btn>
               </v-card-actions>
           </v-card-text>
-          <v-card flat height="700" class="overflow-auto">
+          <v-card flat height="600" class="overflow-auto">
             <!-- questao -->
             <v-card-text>
               <v-alert color="primary" outlined>
@@ -98,7 +98,11 @@
                     </div>
                     <v-btn 
                       @click="vincular(item, index)"
-                      v-if="!item.estrutura" small color="primary" outlined>vincular
+                      v-if="!item.estrutura" 
+                      small 
+                      :outlined="!vincFormat(item)"
+                      :color="vincFormat(item)? 'error' : 'primary'">
+                      {{vincFormat(item) ? 'Excluir' : 'vincular'}}
                     </v-btn>
                   </div>
                 </div>
@@ -207,20 +211,26 @@
           let validador = data.dispositive.idQuestions.find(i => i == this.questao.id)
 
           if(validador){
-            this.$store.dispatch("snackbars/setSnackbars", {text:'questao ja cadastrada neste dispositivo', color:'error'})
-            return
 
+            if(data.idLaw && data.idDispositivo && data.dispositive){
+              data.dispositive.idQuestions = data.dispositive.idQuestions.filter(i => i != this.questao.id)
+              this.linkQuestionDispositive(data)
+              this.questao.vinc = false
+              this.editSetQuestao(this.questao)
+              return this.$store.dispatch("snackbars/setSnackbars", {text:'Questão desvinculada do dispositivo', color:'success'})
+            } else {
+              return this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione a Lei na barra de busca', color:'error'})
+            }
           }
 
           data.dispositive.idQuestions.push(this.questao.id)
 
           if(data.idLaw && data.idDispositivo && data.dispositive){
-            console.log(data)
             this.linkQuestionDispositive(data)
             this.editQuestao()
             this.$store.dispatch("snackbars/setSnackbars", {text:'salvo com sucesso', color:'success'})
           } else {
-            this.$store.dispatch("snackbars/setSnackbars", {text:'há propriedades vazias', color:'error'})
+            this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione a Lei na barra de busca', color:'error'})
           }
         },
         editQuestao(){
@@ -256,6 +266,16 @@
         },
         excluirLawRecente(law){
           this.$emit('excluirLawRct', law)
+        },
+        vincFormat(item){
+          if(item.idQuestions && item.idQuestions.length){
+            let result = item.idQuestions.find(i => i == this.questao.id)
+            return result
+              ? true 
+              : false
+          } else {
+            return false
+          }
         }
     }
   }
