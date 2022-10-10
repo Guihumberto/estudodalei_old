@@ -59,6 +59,14 @@
                 <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
                 <leges-dialogs-statistics :law="nameLaw" :textLaw="textCompleteLaw" @filterArtsPush="filterArtsPush($event)"  />
             </v-btn-toggle>
+            <v-btn outlined small class="ml-2" 
+                :to="{
+                        name: 'law-summary',
+                        params:{law:title, summary: 45},
+                      }"
+            >
+                Resumo
+            </v-btn>
         </v-col>
         <v-col cols="12" sm="2" class="mt-n3 d-flex">
             <v-select
