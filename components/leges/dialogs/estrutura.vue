@@ -12,7 +12,6 @@
             v-bind="attrs"
             v-on="on">
             <v-icon small class="mr-1">mdi-format-list-bulleted-square</v-icon> 
-            índice
         </v-btn>
       </template>
 

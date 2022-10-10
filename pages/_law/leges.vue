@@ -623,9 +623,14 @@
                 return idQuestions
             },
             closeAllPaineis(){
-                let filter = this.textLaw.text.filter( i => i.show)
+                let filterNow = []
+                let filterLaw = this.textLaw.text || false
 
-                return filter.length
+                if(filterLaw){
+                    filterNow = filterLaw.filter( i => i.show) || []
+                }
+
+                return filterNow.length
                 ? true
                 : false
             }

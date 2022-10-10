@@ -10,7 +10,7 @@
             title="Anexos"
             v-bind="attrs"
             v-on="on">
-           <v-icon small class="mr-1">mdi-filter</v-icon>Filtros
+           <v-icon small class="mr-1">mdi-filter</v-icon>
         </v-btn>
       </template>
 

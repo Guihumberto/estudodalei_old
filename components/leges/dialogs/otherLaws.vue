@@ -9,7 +9,7 @@
             small outlined
             v-bind="attrs"
             v-on="on">
-           <v-icon small>mdi-book-plus-outline</v-icon> Add
+           <v-icon small>mdi-book-plus-outline</v-icon>
         </v-btn>
       </template>
 
