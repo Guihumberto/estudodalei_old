@@ -74,13 +74,9 @@
                 let list = this.textCompleteLaw.filter(i => i.idQuestions || i.sumulas)
 
                 if(this.search){
-
                     let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-                    //retirar caracteres especiais
                     let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
-                    //fazer o filtro
-                    list =  this.$store.getters.readTextLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
-                
+                    list =  this.$store.getters.readTextLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))           
                 }
 
                 return list
@@ -100,16 +96,14 @@
             },
             bringCaputArt(item){
                 let caput = this.textCompleteLaw.find(i => i.order == 10 && i.art == item.art)
-                let caputExist = this.textList.find(i => i.id == caput.id)
 
-                let isArray = this.arrayCaputExist.find(i => i.id == caput.id)
-
-                if(!caputExist &&  !isArray){
-                    this.arrayCaputExist.push(caput)
+                if(caput) {
+                    let caputExist = this.textList.find(i => i.id == caput.id)
+            
+                    if(!caputExist){
+                        return caput.textLaw
+                    } 
                 }
-                if(isArray){
-                    return caput.textLaw
-                } 
             }
         },
         created(){

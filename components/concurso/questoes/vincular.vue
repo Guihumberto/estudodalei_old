@@ -156,7 +156,15 @@
     },
     computed:{
         listLaws(){
-            return this.$store.getters.readLawsList
+            let listDotNot = []
+            let list = this.$store.getters.readLawsList
+
+            list.forEach(i => {
+              i.nickname = i.nickname.replace('.', '')
+              listDotNot.push(i)
+            })
+
+            return listDotNot
         }, 
         lawTextComplete(){
           return this.$store.getters.readLawComplement

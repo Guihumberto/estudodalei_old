@@ -209,9 +209,11 @@
               //retirar acentuação
               let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
               //retirar caracteres especiais
-              let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
+              let exp = new RegExp(search.trim().replace(/[\[\]!'.@><|//\\&*()_+=]/g, ""), "i")
               //fazer o filtro
-              let filtro = listLaws.filter(project => exp.test(project.nickname.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( project.nro ))
+              let filtro = listLaws.filter(project => exp.test(project.nickname.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, "") ) || exp.test( project.nro.replace('.', '') ))
+
               return filtro.length
               ? filtro
               : 99
