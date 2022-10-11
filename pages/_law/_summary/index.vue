@@ -16,12 +16,36 @@
                 </span>
             </v-card-text>
             <v-divider class="mx-4"></v-divider>
+            <v-card flat class="mt-5">
+                <v-card-text>
+                    <v-text-field
+                        label="Busca"
+                        outlined dense
+                        placeholder="digite o termo ou artigos"
+                        v-model="search"
+                        clearable
+                        append-icon="mdi-magnify"
+                    ></v-text-field>
+                </v-card-text>
+            </v-card>
+            <v-divider class="mx-4"></v-divider>
             <v-card-text>
                 <div>
                     <div v-for="item, i in textList" :key="i">
-                        <p class="formatText">
-                            {{item.textLaw}}
-                        </p>
+                        <div>
+                            <p class="font-weight-black">{{bringCaputArt(item)}}</p>
+                        </div>
+                        <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                                <p 
+                                    class="formatText"
+                                    v-bind="attrs"
+                                    v-on="on">
+                                {{item.textLaw}}
+                                </p>
+                            </template>
+                            <span>Art. {{item.art}}</span>
+                        </v-tooltip>
                         <summary-juris :sumulasId="item.sumulas" :jurisId="item.idJuris" v-if="item.sumulas || item.idJuris" />
                         <summary-questoes class="my-2" :questoesId="item.idQuestions" v-if="item.idQuestions" />
                     </div>
@@ -38,6 +62,8 @@
         data(){
             return{
                 title: this.$route.params.law,
+                search: '',
+                arrayCaputExist: []
             }
         },
         computed:{
@@ -45,7 +71,19 @@
                 return this.$store.getters.readTextLaw
             },
             textList(){
-                return this.textCompleteLaw.filter(i => i.idQuestions || i.sumulas)
+                let list = this.textCompleteLaw.filter(i => i.idQuestions || i.sumulas)
+
+                if(this.search){
+
+                    let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                    //retirar caracteres especiais
+                    let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
+                    //fazer o filtro
+                    list =  this.$store.getters.readTextLaw.filter(item => exp.test(item.textLaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
+                
+                }
+
+                return list
             },
             nameLaw(){
                 return this.$store.getters.readNameLaw
@@ -60,6 +98,19 @@
                     this.listFavDispositive = [...new Set(this.listFavDispositive)];
                 }, 2000)
             },
+            bringCaputArt(item){
+                let caput = this.textCompleteLaw.find(i => i.order == 10 && i.art == item.art)
+                let caputExist = this.textList.find(i => i.id == caput.id)
+
+                let isArray = this.arrayCaputExist.find(i => i.id == caput.id)
+
+                if(!caputExist &&  !isArray){
+                    this.arrayCaputExist.push(caput)
+                }
+                if(isArray){
+                    return caput.textLaw
+                } 
+            }
         },
         created(){
             this.cargaTextLaw(this.title)
