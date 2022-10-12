@@ -23,28 +23,35 @@
                 </v-card-text>
             </v-card>
             <v-card outlined class="mt-5">
-                <v-card-title>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="importSave()">Listar</v-btn>
-                </v-card-title>
-                <v-card-text >
-                    {{_questions.banca}} / {{_questions.year}} / {{_questions.name}}  / {{_questions.orgao}}<br><br>
-                    {{_questions.answer}} <br><br>
-                    {{_questions.alternatives}} <br><br>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-text v-if="questionGravar.length">
+                <div v-if="!questionGravar.length">
+                    <v-card-title>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="importSave()">Listar</v-btn>
+                    </v-card-title>
+                    <v-card-text >
+                        {{_questions.banca}} / {{_questions.year}} / {{_questions.name}}  / {{_questions.orgao}}<br><br>
+                        {{_questions.answer}} <br><br>
+                        {{_questions.alternatives}} <br><br>
+                    </v-card-text>
+                </div>
+                <v-card-text v-else>
                     <v-card-title>
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="clearFields()">Limpar Tudo</v-btn>
                         <v-btn color="primary" @click="saveBD()">Salvar BD</v-btn>
                     </v-card-title>
                     <div class="mb-5" v-for="item, index in questionGravar" :key="index">
+                        <v-subheader>
+                            <concurso-provas-cadProvasAtm :prova="_questions" v-if="item.prove == 0" @clearAll="clearFields()" />
+                        </v-subheader>
                         <p>{{item.prove}} / {{item.subject}}</p>
                         <p>{{item.answer}}</p>
                         <p>{{item.alternative}}</p>
-                        <v-btn small @click="item.value = 1" :outlined="item.value == 0" color="success">Certo</v-btn>
-                        <v-btn small @click="item.value = 0" :outlined="item.value == 1" color="error">Errado</v-btn>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn small @click="item.value = 1" :outlined="item.value == 0" color="success">Certo</v-btn>
+                            <v-btn small @click="item.value = 0" :outlined="item.value == 1" color="error">Errado</v-btn>
+                        </v-card-actions>
                     </div>
                 </v-card-text>
             </v-card>
@@ -65,22 +72,6 @@
                     {id: 1, name: 'FGV'},
                     {id: 2, name: 'CESPE'},
                     {id: 3, name: 'FCC'},
-                ],
-                provas:[
-                    {
-                        id: 1, 
-                        orgao: 'OAB', 
-                        cargo: 'XXXIV Exame',
-                        year: 2022,
-                        banca: 1, 
-                    },
-                    {
-                        id: 2, 
-                        orgao: 'OAB', 
-                        cargo: 'XXXV Exame',
-                        year: 2022,
-                        banca: 1, 
-                    }
                 ],
                 subjects:[
                     {id: 1, name:'Direito Administrativo', sigla: 'DA'},
@@ -118,6 +109,8 @@
                 let newAlt = []
                 let name
                 let year
+                let orgao
+                let type = 2
 
                 if(this.questions){
                     let list = this.questions.split('\n')
@@ -127,8 +120,29 @@
                     
                     bancaAnoExame = list[0]
                     bancaAnoExame = bancaAnoExame.split('/')
-                    name = bancaAnoExame[bancaAnoExame.length - 1]
-                    year = bancaAnoExame[bancaAnoExame.length - 2]
+                    year = bancaAnoExame[bancaAnoExame.length - 1]
+                    name = bancaAnoExame[bancaAnoExame.length - 2]
+                    
+                    name = name.replace('-', '*')
+                    name = name.split('*')
+                    name = name[1]
+
+
+
+                    let patt = /\([a-z]+\s*[a-z]*\s*\)/gi
+                    
+                    const found = patt.exec(name)
+
+                    if(found){
+                        orgao = name.match(patt);
+                        orgao = orgao[0].replace('(', '')
+                        orgao = orgao.replace(')', '')
+                    } else {
+                        orgao = "nao encontrado"
+                    }
+
+
+
 
                     let divider = list.findIndex(i => i == 'A')
 
@@ -137,7 +151,7 @@
                     alternatives = list.slice(divider, list.length)
 
                     alternatives.forEach( i => {
-                        if(i == 'A' || i == 'B' || i == 'C' || i == 'D'){
+                        if(i == 'A' || i == 'B' || i == 'C' || i == 'D' || i == 'E'){
                             let index = alternatives.findIndex(ind => ind == i)
                             let novaAlt = alternatives[++index]
                             newAlt.push(novaAlt)
@@ -145,21 +159,25 @@
                     })
                 }
                     return {
-                        banca: 'FGV',
-                        orgao: 'OAB',
+                        banca: 'CESPE',
+                        orgao,
                         name, 
                         year,
                         answer, 
-                        alternatives: newAlt
-
+                        alternatives: newAlt,
+                        type
                     }
                 
+            },
+            provas(){
+                const list = this.$store.getters.readProvas.filter(i => i && i.active)
+                return list
             }
         },
         methods:{
             ...mapActions(['setQuestions']),
             provaSearch(name){
-                let result = this.provas.filter(i => i.cargo == name)
+                let result = this.provas.filter(i => i.cargo.trim() == name.trim())
                 return result.length
                 ? result[0].id
                 : 0
@@ -186,7 +204,7 @@
                     let allCorreto = this.questionGravar.filter(i => i.value == 0 )
                     let allErrado = this.questionGravar.filter(i => i.value == 1)
 
-                    if(allCorreto.length == 4 || allErrado == 4){
+                    if(allCorreto.length == 5 || allErrado == 5){
                             this.$store.dispatch("snackbars/setSnackbars", {text:'Escolha uma certa ou uma errada', color:'error'})
                     } else {
                         this.questionGravar.forEach(i => {

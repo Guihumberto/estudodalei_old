@@ -27,6 +27,7 @@
             orgao: {{prova.orgao}} <br>
             cargo: {{prova.name}} <br>
             Ano: {{prova.year}} <br>
+            Tipo: {{prova.type == 1 ? 'V/F' : 'ME'}} <br>
             <v-select
                 label="Área"
                 placeholder="escolha a área"
@@ -114,6 +115,7 @@ import { mapActions } from 'vuex'
                 prova2.area = this.codArea
                 prova2.orgao = this.prova.orgao
                 prova2.year = this.prova.year
+                prova2.type = this.prova.type
 
                 this.setProve(prova2)
               

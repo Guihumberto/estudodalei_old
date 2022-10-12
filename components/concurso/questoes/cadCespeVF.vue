@@ -130,6 +130,7 @@
                 let year
                 let orgao
                 let alternative
+                let type = 1
 
                 if(this.questions){
                     let list = this.questions.split('\n')
@@ -175,8 +176,8 @@
                         name, 
                         year,
                         answer, 
-                        alternative
-
+                        alternative,
+                        type
                     }
                 
             },
