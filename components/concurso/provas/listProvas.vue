@@ -99,7 +99,7 @@
             listYear(){
                 let list = this.$store.getters.readProvas.filter( i => i)
                 list = list.map(i => i.year)
-                return list
+                return list.sort(this.order)
             },
             listCompleteProves(){
                 let list = this.$store.getters.readProvas.filter( i => i)
@@ -148,6 +148,9 @@
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Selecione o ano!', color:'error'})
                 }
             },
+            order(a, b){
+                return a - b
+            }
         },
     }
 </script>

@@ -51,7 +51,7 @@
                 <v-btn small icon><v-icon small>mdi-format-font</v-icon></v-btn>
             </v-btn-toggle>
         </v-col>
-        <v-col cols="12" sm="4" class="mx-0 px-0">
+        <v-col cols="12" sm="4" class="mx-0 pl-3">
             <v-btn-toggle class="mx-0 px-0">
                 <leges-dialogs-otherLaws title="conjugar normas" @listOtherLaws="OtherLaws($event)" />
                 <leges-dialogs-estrutura :estrutura="estruturaList" @indice="searchIndice($event)" />
@@ -59,7 +59,9 @@
                 <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
                 <leges-dialogs-statistics :law="nameLaw" :textLaw="textCompleteLaw" @filterArtsPush="filterArtsPush($event)"  />
             </v-btn-toggle>
-            <v-btn outlined small class="ml-2" 
+            <v-btn 
+                color="primary"
+                outlined small class="ml-1" 
                 :to="{
                         name: 'law-summary',
                         params:{law:title, summary: 45},
@@ -89,15 +91,6 @@
             >
                 <v-icon class="mr-1" small v-text="painelExpanse? 'mdi-eye-off-outline' : 'mdi-eye-outline'"></v-icon>
                  {{painelExpanse ? 'ocultar painel' : 'mostrar painel'}}
-            </v-btn>
-            <v-btn
-                x-small
-                text
-                v-if="closeAllPaineis"
-                @click="closeAllPaineisFunction()"
-                >
-                <v-icon small>mdi-close</v-icon> 
-                Fechar Paineis
             </v-btn>
         </v-col>
         <!-- busca de artigos e salvar filtro -->
@@ -242,6 +235,18 @@
     </v-card>
     <!-- text law -->
     <v-card outlined v-else-if="textLaw.text.length">
+        <v-subheader>
+            <v-spacer></v-spacer>
+            <v-btn
+                x-small
+                text
+                v-if="closeAllPaineis"
+                @click="closeAllPaineisFunction()"
+                >
+                <v-icon small>mdi-close</v-icon> 
+                Fechar todos os Paineis
+            </v-btn>
+        </v-subheader>
         <!-- other law -->
         <v-card-text v-if="listOhterLaw" class="primary lighten-5">
             <v-card-title class="mb-2 py-1 primary text-button white--text">{{nameOtherLaw.nickname}} - {{nameOtherLaw.nro}}
@@ -415,7 +420,7 @@
                 @click="closeAllPaineisFunction()"
                 >
                 <v-icon small>mdi-close</v-icon> 
-                Fechar Paineis
+                Fechar todos os Paineis
             </v-btn>  
         </v-subheader>
     </v-card>
