@@ -155,7 +155,7 @@
                         Questões
                     </v-card-title>
                     <v-card-text>
-                        <v-chip-group>
+                        <v-chip-group active-class="primary--text" v-model="amenities">
                             <v-chip 
                                 v-for="item, i in bancas" :key="i"
                                 @click="selectForm = item.id"
@@ -166,6 +166,7 @@
                     </v-card-text>
                     <concurso-questoes-cadQuestoes v-if="selectForm == 1" />
                     <concurso-questoes-cadCespeVF v-if="selectForm == 2" />
+                    <concurso-questoes-cadQuestoesJulgue v-if="selectForm == 3" />
                 </v-tab-item>
                 <v-tab-item>
                     <v-card-title  class="grey lighten-2">
@@ -186,6 +187,7 @@
 
   export default {
     data: () => ({
+      amenities: '',
       selected: [2],
       search: '',
       tab: 3,
@@ -194,6 +196,7 @@
       bancas:[
         {id: 1, name: "FGV/OAB"},
         {id: 2, name: "CESPE/VF"},
+        {id: 3, name: "Julgue"},
       ],
       sumula:{
          text: '',

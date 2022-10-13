@@ -1,7 +1,7 @@
 <template>
     <v-card flat>
             <v-card-title class="text-v-card-title mb-5">
-                Lista de Questões 
+               Questões Julgue 
                 <v-btn small color="primary" class="ml-2" to="../questoes/listQuestions">ver</v-btn>
             </v-card-title>
             <v-card outlined>
@@ -147,21 +147,17 @@
                         orgao = "nao encontrado"
                     }
 
-
-
-                    let divider = list.findIndex(i => i == 'A')
+                    let divider = list.findIndex(i => i.startsWith('I '))
 
                     answer = list.slice(1, divider).join('\n')
 
                     alternatives = list.slice(divider, list.length)
 
-                    alternatives.forEach( i => {
-                        if(i == 'A' || i == 'B' || i == 'C' || i == 'D' || i == 'E'){
-                            let index = alternatives.findIndex(ind => ind == i)
-                            let novaAlt = alternatives[++index]
-                            newAlt.push(novaAlt)
-                        }
-                    })
+                    alternatives = alternatives.filter(i => i)
+                    alternatives = alternatives.map(i => i.trim())
+
+
+                    newAlt = alternatives.filter(i => i)
                 }
                     return {
                         banca: 'CESPE',
@@ -206,19 +202,13 @@
             saveBD(){
                 if(this.questionGravar.length && this.subjects){
                     let n = 1
-                    let allCorreto = this.questionGravar.filter(i => i.value == 0 )
-                    let allErrado = this.questionGravar.filter(i => i.value == 1)
 
-                    if(allCorreto.length == 5 || allErrado == 5){
-                            this.$store.dispatch("snackbars/setSnackbars", {text:'Escolha uma certa ou uma errada', color:'error'})
-                    } else {
-                        this.questionGravar.forEach(i => {
-                            this.setQuestions(i)
-                            n++
-                            this.$store.dispatch("snackbars/setSnackbars", {text:`Gravou ${n - 1} `, color:'success'})
-                            this.clearFields()
-                        })
-                    }
+                    this.questionGravar.forEach(i => {
+                        this.setQuestions(i)
+                        n++
+                        this.$store.dispatch("snackbars/setSnackbars", {text:`Gravou ${n - 1} `, color:'success'})
+                        this.clearFields()
+                    })
 
                 } else {
                     if(!this.subjects){
