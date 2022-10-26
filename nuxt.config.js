@@ -29,6 +29,17 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/fantasma.png' }
     ]
   },
+  runtimeConfig: {
+    private: {
+      stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+      db: process.env.DATABASE_URL
+    },
+    public: {
+      appDomain: process.env.APP_DOMAIN,
+      gitHash: process.env.GITHUB_SHA,
+      releaseVersion: process.env.RELEASE_VERSION,
+    }
+  },
   pageTransition: 'page',
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
