@@ -60,6 +60,7 @@
                     </v-card-title>
                 </v-card-text>
             </v-card>
+            <concurso-questoes-searchQuestoes v-if="!questionGravar.length && _questions.alternative" :search="_questions.alternative" />
     </v-card>
 </template>
 
