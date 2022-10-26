@@ -3,7 +3,9 @@
         <v-card-text>
             <h5 class="text-h6">Questões cadastradas</h5>
             <div v-if="listQuestions">
-                Foram encontrada(s) <strong>{{listQuestions.length}}</strong> questão(ões). <br>
+                <v-alert type="success">
+                    Foram encontrada(s) <strong>{{listQuestions.length}}</strong> questão(ões). <br>
+                </v-alert>
                 <div class="mt-5" v-for="item, index in listQuestions" :key="index">
                     <p>{{item.alternative}}</p>
                 </div>
