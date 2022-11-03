@@ -82,7 +82,9 @@
                 const questoes = this.$store.getters.readQuestions
                 let newQuestoes = []
 
-                const listQuestionsID = this.listQuestionsID.map(item => item.idQuestion)
+                const listQuestion = this.listQuestionsID.map(item => item.idQuestion)
+
+                const listQuestionsID = [...new Set(listQuestion)];
 
                 if (listQuestionsID){
                        listQuestionsID.forEach (i => 
