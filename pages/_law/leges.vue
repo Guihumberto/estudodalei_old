@@ -58,17 +58,28 @@
                 <leges-dialogs-print v-show="false" :law="nameLaw" :textLaw="textLaw.textComplete" />
                 <leges-dialogs-anexos :law="nameLaw"  @filterArtsPush="filterArtsPush($event)" />
                 <leges-dialogs-statistics :law="nameLaw" :textLaw="textCompleteLaw" @filterArtsPush="filterArtsPush($event)"  />
+                <v-btn 
+                    small 
+                    title="Questões"
+                    :to="{
+                            name: 'law-questions',
+                            params:{law:title, questions: 55},
+                        }"
+                >
+                    <v-icon>mdi-format-list-checks</v-icon>
+                </v-btn>
+                <v-btn 
+                    small  
+                    title="Resumo Inteligente"
+                    :to="{
+                            name: 'law-summary',
+                            params:{law:title, summary: 45},
+                        }"
+                >
+                    <v-icon>mdi-script-text-outline</v-icon>
+                </v-btn>
             </v-btn-toggle>
-            <v-btn 
-                color="primary"
-                outlined small class="ml-1" 
-                :to="{
-                        name: 'law-summary',
-                        params:{law:title, summary: 45},
-                      }"
-            >
-                Resumo
-            </v-btn>
+           
         </v-col>
         <v-col cols="12" sm="2" class="mt-n3 d-flex">
             <v-select
