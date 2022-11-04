@@ -82,6 +82,8 @@
           </v-btn>
         {{snack.text}}
       </v-snackbar>
+      <start-pixHelp />
+
     </v-main>
     <v-navigation-drawer
       v-show="loading"
