@@ -1,9 +1,9 @@
 <template>
     <div>
         <v-dialog
-        v-model="dialogPix"
-        width="600"
-      >
+          v-model="dialogPix"
+          width="600"
+        >
         <v-card>
             <v-app-bar
                 
@@ -13,7 +13,6 @@
                 prominent
                 src="https://picsum.photos/1920/1080?random"
                 fade-img-on-scroll
-                scroll-target="#scrolling-techniques-5"
                 scroll-threshold="500"
                 >
                 <template v-slot:img="{ props }">

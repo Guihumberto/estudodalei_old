@@ -47,7 +47,8 @@ export const state = () => ({
     questions:[],
     filterArts:[],
     comments: [],
-    favDispositive: []
+    favDispositive: [],
+    plans:[]
 })
 
 export const getters = {
@@ -123,6 +124,9 @@ export const getters = {
     readFavDispositive(state){
         return state.favDispositive
     },
+    readListPlans(state){
+        return state.plans
+    }
 }
 
 export const mutations = {
@@ -284,6 +288,19 @@ export const mutations = {
     },
     deleteQuestion(state, payload){
         state.questions = state.questions.filter( item => item != payload)
+    },
+    cargaListPlan(state, payload){
+        state.plans = payload
+    },
+    setPlan(state, payload){
+        state.plans.push(payload)
+    },
+    deletePlanner(state, payload){
+        state.plans = state.plans.filter( item => item.id != payload)
+    },
+    editPlanner(state, payload){
+        const x = state.plans.map(item => item.id == payload.id ? payload : item)
+        state.plans = x
     }
 }
 
@@ -935,7 +952,6 @@ export const actions = {
         } 
     },
     async saveCommentFB({commit, state}, data){
-
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsLaw/${data.idLaw}/${data.dispositive}/${data.id}.json`, {
                 method: 'PUT',
@@ -1069,5 +1085,58 @@ export const actions = {
         } catch (error) {
             console.log(error)
         }
-    }
+    },
+    async cargaListPlans({commit, state}){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaListPlan', filterArtList)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async savePlan({commit, state}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans/${data.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const dataDB = await res.json()
+            commit('setPlan', data)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async deletePlanner({commit, state}, dataId){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans/${dataId}.json`, {
+                method: 'DELETE',
+            })
+            commit('deletePlanner', dataId)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async editPlanner({commit, state}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans/${data.id}.json`, {
+                method: 'PATCH',
+                body: JSON.stringify(data)
+            })
+            const dataDB = await res.json()
+            commit('editPlanner', data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
 }

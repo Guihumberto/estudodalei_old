@@ -9,6 +9,7 @@
                      <v-icon color="error" v-for="item in 20" :key="item">mdi-hammer</v-icon>
                 </v-alert>
                 <v-btn outlined to="/">home</v-btn>
+                <v-btn outlined to="/plan">Planejamento</v-btn>
             </v-card-text>
         </v-card>
         <v-card outlined class="mt-5">
