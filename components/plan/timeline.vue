@@ -153,7 +153,8 @@
     },
     computed: {
       timeline(){
-        return this.$store.getters.readCommentsTask.slice().reverse()
+        let list = this.$store.getters.readCommentsTask.filter(i => i.idTask == this.task.id)
+        return list.slice().reverse()
       }
     },
 
