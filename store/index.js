@@ -48,7 +48,12 @@ export const state = () => ({
     filterArts:[],
     comments: [],
     favDispositive: [],
-    plans:[]
+    plans:[],
+    planner: '',
+    planTasks: [],
+    taskOne: '',
+    commentsTask: [],
+    commentTask: ''
 })
 
 export const getters = {
@@ -126,7 +131,20 @@ export const getters = {
     },
     readListPlans(state){
         return state.plans
-    }
+    },
+    readPlanner(state){
+        return state.planner
+    },
+    readPlanTasks(state){
+        return state.planTasks
+    },
+    // commentsTask
+    readCommentsTask(state){
+        return state.commentsTask
+    },
+    readCommentTask(state){
+        return state.commentTask
+    },
 }
 
 export const mutations = {
@@ -289,6 +307,7 @@ export const mutations = {
     deleteQuestion(state, payload){
         state.questions = state.questions.filter( item => item != payload)
     },
+    // planner
     cargaListPlan(state, payload){
         state.plans = payload
     },
@@ -301,7 +320,44 @@ export const mutations = {
     editPlanner(state, payload){
         const x = state.plans.map(item => item.id == payload.id ? payload : item)
         state.plans = x
-    }
+    },
+    loadPlannerOne(state, payload){
+        state.planner = payload
+    },
+    // plannerTask
+    cargaListPlanTask(state, payload){
+        state.planTasks = payload
+    },
+    loadPlannerTask(state, payload){
+        state.taskOne = payload
+    },
+    setPlanTask(state, payload){
+        state.planTasks.push(payload)
+    },
+    deletePlannerTask(state, payload){
+        state.planTasks = state.planTasks.filter( item => item.id != payload.id)
+    },
+    editPlannerTask(state, payload){
+        const x = state.planTasks.map(item => item.id == payload.id ? payload : item)
+        state.planTasks = x
+    },
+    // commentTask
+    cargaListCommnetsTask(state, payload){
+        state.commentsTask = payload
+    },
+    loadCommentTask(state, payload){
+        state.commentTask = payload
+    },
+    setCommentTask(state, payload){
+        state.commentsTask.push(payload)
+    },
+    deleteCommentTask(state, payload){
+        state.commentsTask = state.commentsTask.filter( item => item.id != payload.id)
+    },
+    editCommentTask(state, payload){
+        const x = state.commentsTask.map(item => item.id == payload.id ? payload : item)
+        state.commentsTask = x
+    },
 }
 
 export const actions = {
@@ -1086,6 +1142,7 @@ export const actions = {
             console.log(error)
         }
     },
+    // plnas
     async cargaListPlans({commit, state}){
         try {
             const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans.json`)
@@ -1096,6 +1153,17 @@ export const actions = {
                 filterArtList.push(dataDB[id])
             }
             commit('cargaListPlan', filterArtList)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async cargaPlannerOne({commit, state}, idPlanner){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans/${idPlanner}.json`)
+            const dataDB = await res.json()
+            const planner = dataDB
+
+            commit('loadPlannerOne', planner)    
         } catch (error) {
             console.log(error)
         }
@@ -1135,6 +1203,136 @@ export const actions = {
             })
             const dataDB = await res.json()
             commit('editPlanner', data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    // planner
+    async cargaListTasks({commit, state}, planId){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listTasks/${planId}.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaListPlanTask', filterArtList)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async cargaTaskOne({commit, state}, idPlanner){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listPlans/${idPlanner}.json`)
+            const dataDB = await res.json()
+            const planner = dataDB
+
+            commit('loadPlannerTask', planner)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async savePlannerTask({commit, state}, data){   
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listTasks/${data.planId}/${data.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const dataDB = await res.json()
+            commit('setPlanTask', data)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async deletePlannerTask({commit, state}, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listTasks/${data.planId}/${data.id}.json`, {
+                method: 'DELETE',
+            })
+            commit('deletePlannerTask', data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async editPlannerTask({commit, state}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listTasks/${data.planId}/${data.id}.json`, {
+                method: 'PATCH',
+                body: JSON.stringify(data)
+            })
+            const dataDB = await res.json()
+            commit('editPlannerTask', data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    // commentTask
+    async cargaListCommentsTask({commit, state}, planId){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsTasks.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaListCommnetsTask', filterArtList)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async cargaCommentOne({commit, state}, idTask){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsTasks/${idTask}.json`)
+            const dataDB = await res.json()
+            const commentTask = dataDB
+
+            commit('loadCommentTask', commentTask)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async saveCommentTask({commit, state}, data){   
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsTasks/${data.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const dataDB = await res.json()
+            commit('setCommentTask', data)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async deleteCommentTask({commit, state}, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsTasks/${data.id}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteCommentTask', data)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async editCommentTask({commit, state}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/commentsTasks/${data.id}.json`, {
+                method: 'PATCH',
+                body: JSON.stringify(data)
+            })
+            const dataDB = await res.json()
+            commit('editCommentTask', data)
         } catch (error) {
             console.log(error)
         }

@@ -1,6 +1,7 @@
 <template>
     <v-container style="max-width:1080px">
         <h1 class="my-5 text-h5">Planejamento - Semana 01</h1>
+        {{$route.params}}
         <v-btn small text class="px-0 mb-5" @click="$router.go(-1)">
             <v-icon small>mdi-arrow-left</v-icon>
             voltar

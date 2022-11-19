@@ -152,7 +152,7 @@
                             <nuxt-link 
                                 class="linkMeta"
                                 :to="{
-                                    name:'planLeges',
+                                    name:'planLeges-planner',
                                     params:{planLeges: item.id}
                                 }">
                                 <v-card-text>
@@ -163,7 +163,7 @@
                                         </small> 
                                     <br>
                                     <v-icon small>mdi-office-building</v-icon><small class="caption">{{item.concurso}}</small><br>
-                                    <v-icon small>mdi-clock-outline</v-icon><small>ANDAMENTO</small>
+                                    <v-icon small>{{statusSet(item).icon}}</v-icon><small>{{statusSet(item).name}}</small><br>
                                 </v-card-text>
                             </nuxt-link>
                             <v-card-actions>
@@ -245,7 +245,8 @@
                                     }">
                                     <v-card-text>
                                         <h5 class="text-h5">{{item.name}}</h5>
-                                        <small>{{item.concurso}}</small>
+                                        <small>{{item.concurso}}</small><br>
+                                        <v-icon small>{{statusSet(item).icon}}</v-icon><small>{{statusSet(item).name}}</small><br>
                                     </v-card-text>
                                 </nuxt-link>
                                 <v-card-actions>
@@ -283,7 +284,13 @@
                 concurso: '',
                 dates: [],
                 planData:{
-                    id: '', name: '', concurso: 'REGULAR', toFile: false, dateStart: dataHoje, dateEnd: maisSete, color:'#385F73'
+                    id: '', 
+                    name: '', 
+                    concurso: 'REGULAR', 
+                    toFile: false, 
+                    dateStart: dataHoje, 
+                    dateEnd: maisSete, 
+                    color:'#385F73'
                 },
                 items: [
                     { id: 1, icon: 'mdi-pencil', title: 'Editar' },
@@ -302,6 +309,11 @@
                     {color: 'indigo'},
                     {color: 'purple'},
                     {color: 'cyan'},
+                ],
+                status:[
+                    {icon: 'mdi-alert-octagon-outline', name:'não iniciado'},
+                    {icon: 'mdi-clock-outline', name:'em andamento'},
+                    {icon: 'mdi-check-circle-outline', name:'concluído'}
                 ],
                 rules:{
                     required: (value) => !!value || "Campo obrigatório",
@@ -409,6 +421,24 @@
                         return 12/12
                     }
                 },
+                statusSet(item){
+                    if(item.status){
+                        switch(item.status){
+                            case 0:
+                                return this.status[0]
+                                break
+                            case 1:
+                                return this.status[1]
+                                break
+                            case 2:
+                                return this.status[2]
+                                break
+
+                        }
+                    } else {
+                        return this.status[0]
+                    }
+                }
             },
             created(){
                 this.cargaListPlans()
