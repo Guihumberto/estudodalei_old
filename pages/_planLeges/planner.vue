@@ -40,7 +40,7 @@
                             <v-checkbox
                                 label="incluir na Revisão"
                                 v-model="task.addRev"
-                                title="Será incluído uma revisão no próximo Plan"
+                                title="Será add aos Marcados para Revisão."
                             ></v-checkbox>
                         </v-col>
                         <v-col cols="12" sm="8">
@@ -67,6 +67,7 @@
                         </v-radio-group>
                     </v-row>
                     <v-row>
+                        <plan-revMark @listRev="includesRev($event)" />
                         <v-spacer></v-spacer>
                         <v-btn 
                             color="success"
@@ -170,6 +171,11 @@
                                         <v-list-item-content>
                                             <v-list-item-title>{{item.nro}}. Tarefa {{item.nro}} 
                                                 <v-icon color="info">{{iconType(item.type)}}</v-icon>
+                                                <v-icon 
+                                                    v-if="item.addRev" 
+                                                    color="indigo"
+                                                    title="Marcado para Revisão"
+                                                >mdi-update</v-icon>
                                                 <v-btn 
                                                     v-if="item.rev"
                                                     x-small color="warning">REV</v-btn>
@@ -201,9 +207,44 @@
                                                 >
                                                     <v-icon>mdi-delete-outline</v-icon>
                                                 </v-btn>
-                                                <v-btn icon v-if="false">
-                                                    <v-icon>mdi-dots-vertical</v-icon>
-                                                </v-btn>
+                                                <v-menu offset-y>
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-btn
+                                                        icon     
+                                                        v-bind="attrs"
+                                                        v-on="on"
+                                                        >
+                                                            <v-icon>mdi-dots-vertical</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <v-list>
+                                                        <v-list-item-group
+                                                            v-model="selectedMenuItem"
+                                                            dense
+                                                        >
+                                                            <v-list-item
+                                                                dense
+                                                                v-if="!item.addRev"
+                                                                @click="addTaskAddRev(item)"
+                                                            >
+                                                                <v-list-item-icon>
+                                                                    <v-icon>mdi-update</v-icon>
+                                                                </v-list-item-icon>
+                                                                <v-list-item-title>Add para Revisão</v-list-item-title>
+                                                            </v-list-item>
+                                                            <v-list-item
+                                                                v-else
+                                                                @click="removeTaskAddRev(item)"
+                                                                dense
+                                                            >
+                                                                <v-list-item-icon>
+                                                                    <v-icon>mdi-close</v-icon>
+                                                                </v-list-item-icon>
+                                                                <v-list-item-title>Remover da Revisão</v-list-item-title>
+                                                            </v-list-item>
+                                                        </v-list-item-group>
+                                                    </v-list>
+                                                </v-menu>
                                             </v-row>
                                         </v-list-item-action>
                                     </v-list-item>
@@ -302,6 +343,7 @@ import moment from 'moment'
     export default {
         data: () => ({
             selectedItem: 1,
+            selectedMenuItem: 1,
             checkTask: true,
             conclShow: false,
             dialogTimeline: true,
@@ -373,13 +415,16 @@ import moment from 'moment'
             }
         },
         methods:{
-            ...mapActions(['cargaPlannerOne', 'cargaListTasks','savePlannerTask', 'deletePlannerTask', 'editPlannerTask', 'cargaTaskOne', 'editPlanner']),
+            ...mapActions(['cargaPlannerOne', 'cargaListTasks','savePlannerTask', 'deletePlannerTask', 'editPlannerTask', 'cargaTaskOne', 'editPlanner', 'saveAddRev', 'removeAddRev']),
             addTask(){
                 if(this.$refs.refs.validate()){
                     this.task.id = shortId.generate()
                     this.task.planId = this.$route.params.planLeges
                     this.task.nro = this.nroTask
                     this.savePlannerTask(this.task)
+                    if(this.task.addRev){
+                        this.saveAddRev(this.task)
+                    }
                     this.clearTask()
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Tarefa Adicionada!', color:'success'})
                 }
@@ -391,6 +436,18 @@ import moment from 'moment'
                     }
                     this.editPlanner(planner)
                 }
+            },
+            addTaskAddRev(item){
+                item.addRev = true
+                this.editPlannerTask(item);
+                this.saveAddRev(item)
+                this.$store.dispatch("snackbars/setSnackbars", {text:'Tarefa Adicionada ao Add Rev!', color:'success'})
+            },
+            removeTaskAddRev(item){
+                item.addRev = false
+                this.editPlannerTask(item);
+                this.removeAddRev(item)
+                this.$store.dispatch("snackbars/setSnackbars", {text:'Tarefa removida dos Add Rev!', color:'error'})
             },
             deleteTask(item){
                 this.deletePlannerTask(item)
@@ -410,8 +467,6 @@ import moment from 'moment'
                 this.editPlannerTask(item);
                 this.editId = ''
                 this.$store.dispatch("snackbars/setSnackbars", {text:'Tarefa Editada!', color:'success'})
-            },
-            timeLime(item){
             },
             clearTask(){
                 this.task = {
@@ -449,6 +504,19 @@ import moment from 'moment'
                         return 12/12
                     }
             },
+            includesRev(item){
+                if(item){
+                    item.forEach(el => {
+                        el.addRev = false
+                        this.removeTaskAddRev(el)
+                        el.planId = this.$route.params.planLeges
+                        el.rev = true
+                        el.status = 1
+                        el.nro = this.nroTask
+                        this.savePlannerTask(el)
+                    });
+                }
+            }
         },
         created(){
             this.cargaPlannerOne(this.$route.params.planLeges)

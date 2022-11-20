@@ -53,7 +53,8 @@ export const state = () => ({
     planTasks: [],
     taskOne: '',
     commentsTask: [],
-    commentTask: ''
+    commentTask: '',
+    listAddRev: []
 })
 
 export const getters = {
@@ -145,6 +146,9 @@ export const getters = {
     readCommentTask(state){
         return state.commentTask
     },
+    readListAddRev(state){
+        return state.listAddRev
+    }
 }
 
 export const mutations = {
@@ -357,6 +361,16 @@ export const mutations = {
     editCommentTask(state, payload){
         const x = state.commentsTask.map(item => item.id == payload.id ? payload : item)
         state.commentsTask = x
+    },
+    // addRev Task
+    cargaListAddRevTask(state, payload){
+        state.listAddRev = payload
+    },
+    setAddRevTask(state, payload){
+        state.listAddRev.push(payload)
+    },
+    deleteAddRevTask(state, payload){
+        state.listAddRev = state.listAddRev.filter( item => item.id != payload.id)
     },
 }
 
@@ -1337,4 +1351,46 @@ export const actions = {
             console.log(error)
         }
     },
+    // revisao das tarefas
+    async cargaListAddRev({commit, state}, planId){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listAddRev.json`)
+            const dataDB = await res.json()
+            const filterArtList = []
+
+            for (let id in dataDB){
+                filterArtList.push(dataDB[id])
+            }
+            commit('cargaListAddRevTask', filterArtList)    
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async saveAddRev({commit, state}, data){
+        try {
+            const res = await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listAddRev/${data.id}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const dataDB = await res.json()
+            commit('setAddRevTask', data)
+
+        } catch(error){
+            console.log(error)
+        } 
+    },
+    async removeAddRev({commit, state}, data){
+        try {
+            await fetch(`https://leges-estudo-default-rtdb.firebaseio.com/users/${state.user.uid}/listAddRev/${data.id}.json`, {
+                method: 'DELETE',
+            })
+            commit('deleteAddRevTask', data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
