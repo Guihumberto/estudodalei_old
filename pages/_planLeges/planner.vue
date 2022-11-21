@@ -91,7 +91,7 @@
                     <v-list-item-group
                         v-model="selectedItem"
                         color="primary">
-                        <template v-for="item, i in listTasks.filter(i => !i.concluido)">
+                        <template v-for="item, i in listTasks">
                             <div :key="i">
                                 <!-- edição -->
                                 <div v-if="item.id == editId">
@@ -161,93 +161,97 @@
                                 </div>
                                 <!-- show regular -->
                                 <div v-else>
-                                    <v-list-item>
-                                        <v-list-item-icon>
-                                            <v-checkbox
-                                                v-model="item.concluido"
-                                                @click="editTask(item)"
-                                            ></v-checkbox>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{item.nro}}. Tarefa {{item.nro}} 
-                                                <v-icon color="info">{{iconType(item.type)}}</v-icon>
-                                                <v-icon 
-                                                    v-if="item.addRev" 
-                                                    color="indigo"
-                                                    title="Marcado para Revisão"
-                                                >mdi-update</v-icon>
-                                                <v-btn 
-                                                    v-if="item.rev"
-                                                    x-small color="warning">REV</v-btn>
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle class="font-weight-bold">
-                                                {{nameDisciplina(item.disciplina)}}
-                                            </v-list-item-subtitle>
-                                            <v-list-item-subtitle>
-                                                {{item.description}}
-                                            </v-list-item-subtitle>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-row>
-                                                <v-btn 
-                                                    icon
-                                                    @click="dialogId = item.id, dialogTimeline = true" 
-                                                >
-                                                    <v-icon>mdi-comment-outline</v-icon>
-                                                </v-btn>
-                                                <v-btn 
-                                                    icon
-                                                    @click="editId = item.id" 
-                                                >
-                                                    <v-icon>mdi-note-edit-outline</v-icon>
-                                                </v-btn>
-                                                <v-btn 
-                                                    icon color="error"
-                                                    @click="deleteId = item.id"                                  
-                                                >
-                                                    <v-icon>mdi-delete-outline</v-icon>
-                                                </v-btn>
-                                                <v-menu offset-y>
-                                                    <template v-slot:activator="{ on, attrs }">
-                                                        <v-btn
-                                                        icon     
-                                                        v-bind="attrs"
-                                                        v-on="on"
-                                                        >
-                                                            <v-icon>mdi-dots-vertical</v-icon>
-                                                        </v-btn>
-                                                    </template>
-                                                    <v-list>
-                                                        <v-list-item-group
-                                                            v-model="selectedMenuItem"
-                                                            dense
-                                                        >
-                                                            <v-list-item
-                                                                dense
-                                                                v-if="!item.addRev"
-                                                                @click="addTaskAddRev(item)"
+                                    <v-expand-transition>
+                                        <v-list-item
+                                            v-if="!item.concluido"
+                                        >
+                                            <v-list-item-icon>
+                                                <v-checkbox
+                                                    v-model="item.concluido"
+                                                    @click="editTask(item)"
+                                                ></v-checkbox>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <v-list-item-title>{{item.nro}}. Tarefa {{item.nro}} 
+                                                    <v-icon color="info">{{iconType(item.type)}}</v-icon>
+                                                    <v-icon 
+                                                        v-if="item.addRev" 
+                                                        color="indigo"
+                                                        title="Marcado para Revisão"
+                                                    >mdi-update</v-icon>
+                                                    <v-btn 
+                                                        v-if="item.rev"
+                                                        x-small color="warning">REV</v-btn>
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle class="font-weight-bold">
+                                                    {{nameDisciplina(item.disciplina)}}
+                                                </v-list-item-subtitle>
+                                                <v-list-item-subtitle>
+                                                    {{item.description}}
+                                                </v-list-item-subtitle>
+                                            </v-list-item-content>
+                                            <v-list-item-action>
+                                                <v-row>
+                                                    <v-btn 
+                                                        icon
+                                                        @click="dialogId = item.id, dialogTimeline = true" 
+                                                    >
+                                                        <v-icon>mdi-comment-outline</v-icon>
+                                                    </v-btn>
+                                                    <v-btn 
+                                                        icon
+                                                        @click="editId = item.id" 
+                                                    >
+                                                        <v-icon>mdi-note-edit-outline</v-icon>
+                                                    </v-btn>
+                                                    <v-btn 
+                                                        icon color="error"
+                                                        @click="deleteId = item.id"                                  
+                                                    >
+                                                        <v-icon>mdi-delete-outline</v-icon>
+                                                    </v-btn>
+                                                    <v-menu offset-y>
+                                                        <template v-slot:activator="{ on, attrs }">
+                                                            <v-btn
+                                                            icon     
+                                                            v-bind="attrs"
+                                                            v-on="on"
                                                             >
-                                                                <v-list-item-icon>
-                                                                    <v-icon>mdi-update</v-icon>
-                                                                </v-list-item-icon>
-                                                                <v-list-item-title>Add para Revisão</v-list-item-title>
-                                                            </v-list-item>
-                                                            <v-list-item
-                                                                v-else
-                                                                @click="removeTaskAddRev(item)"
+                                                                <v-icon>mdi-dots-vertical</v-icon>
+                                                            </v-btn>
+                                                        </template>
+                                                        <v-list>
+                                                            <v-list-item-group
+                                                                v-model="selectedMenuItem"
                                                                 dense
                                                             >
-                                                                <v-list-item-icon>
-                                                                    <v-icon>mdi-close</v-icon>
-                                                                </v-list-item-icon>
-                                                                <v-list-item-title>Remover da Revisão</v-list-item-title>
-                                                            </v-list-item>
-                                                        </v-list-item-group>
-                                                    </v-list>
-                                                </v-menu>
-                                            </v-row>
-                                        </v-list-item-action>
-                                    </v-list-item>
+                                                                <v-list-item
+                                                                    dense
+                                                                    v-if="!item.addRev"
+                                                                    @click="addTaskAddRev(item)"
+                                                                >
+                                                                    <v-list-item-icon>
+                                                                        <v-icon>mdi-update</v-icon>
+                                                                    </v-list-item-icon>
+                                                                    <v-list-item-title>Add para Revisão</v-list-item-title>
+                                                                </v-list-item>
+                                                                <v-list-item
+                                                                    v-else
+                                                                    @click="removeTaskAddRev(item)"
+                                                                    dense
+                                                                >
+                                                                    <v-list-item-icon>
+                                                                        <v-icon>mdi-close</v-icon>
+                                                                    </v-list-item-icon>
+                                                                    <v-list-item-title>Remover da Revisão</v-list-item-title>
+                                                                </v-list-item>
+                                                            </v-list-item-group>
+                                                        </v-list>
+                                                    </v-menu>
+                                                </v-row>
+                                            </v-list-item-action>
+                                        </v-list-item>
+                                    </v-expand-transition>
                                 </div>
                                 <v-divider></v-divider>
                                 <v-dialog 
@@ -273,24 +277,33 @@
                         </template>
                     </v-list-item-group>
                 </v-list>
-                <v-subheader v-show="listTasks.filter(i => i.concluido).length">
-                    <v-spacer></v-spacer>
-                    <v-btn 
-                        text x-small
-                        @click="conclShow = !conclShow"
-                        v-text="conclShow ? 'ocultar concluidas': 'mostrar concluidas'"
-                        ></v-btn>
-                </v-subheader>
             </v-card-text>
-            <!-- tarefas concluidas -->
-            <v-card-text v-show="conclShow">
-                <v-list color="grey" dark>
+        </v-card>
+        <!-- btn mostar e ocultar concluidas -->
+        <v-subheader v-show="listTasks.filter(i => i.concluido).length">
+            <v-spacer></v-spacer>
+            <v-btn 
+                text x-small
+                @click="conclShow = !conclShow"
+                v-text="conclShow ? 'ocultar concluidas': 'mostrar concluidas'"
+                ></v-btn>
+        </v-subheader>
+        <!-- tarefas concluidas -->
+        <v-card
+            v-show="conclShow"
+            outlined
+        >
+            <v-card-text>
+                <v-list dark>
                     <v-subheader>CONCLUÍDO</v-subheader>
                     <v-list-item-group
                         v-model="selectedItem"
                         color="primary">
-                        <template v-for="item, i in listTasks.filter(i => i.concluido)">
-                            <v-list-item :key="i">
+                        <template v-for="item, i in listTasks">
+                            <v-list-item 
+                                :key="i"
+                                v-if="item.concluido"
+                            >
                                 <v-list-item-icon>
                                     <v-checkbox
                                         v-model="item.concluido"
@@ -326,10 +339,10 @@
             </v-card-text>
         </v-card>
         <!-- paginaçao de metas -->
-        <div class="text-center mt-5">
+        <div class="text-center mt-5" v-show="false">
             <v-pagination
-            :length="3"
-            disabled
+                :length="3"
+                disabled
             ></v-pagination>
         </div>
     </v-container>
@@ -463,6 +476,9 @@ import moment from 'moment'
                     }
                     this.editPlanner(planner)
                     this.$store.dispatch("snackbars/setSnackbars", {text:'Plan concluído!', color:'success'})
+                }
+                if(!this.listTasks.filter(i => i.concluido).length){
+                    this.conclShow = false
                 }
                 this.editPlannerTask(item);
                 this.editId = ''

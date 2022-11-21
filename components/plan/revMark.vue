@@ -9,7 +9,13 @@
             text color="warning"
             v-bind="attrs"
             v-on="on"
+            :title="alertTextIcon.text"
+            :disabled="!listMarkRev.length"
           >
+          <v-icon
+            v-text="alertTextIcon.icon"
+            class="mr-1"
+          ></v-icon>
           marcados para revisão
           </v-btn>
         </template>
@@ -46,7 +52,7 @@
                                 <v-list-item-content>
                                     <v-list-item-title>{{item.description}}</v-list-item-title>
                                     <v-list-item-subtitle>
-                                        {{item.disciplina}}
+                                        {{findDisciplina(item.disciplina).name}}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                                 <v-list-item-action>
@@ -108,17 +114,41 @@ import { mapActions } from 'vuex';
       return {
         dialog: false,
         selected: [],
-        listAddRev: []
+        listAddRev: [],
+        disciplinas: [
+                {id: 1, name: 'Direito Administrativo'},
+                {id: 2, name: 'Direito Constitucional'},
+                {id: 3, name: 'Direito Previdenciário'},
+                {id: 4, name: 'Direito Tributário'},
+            ],
       }
     },
     computed:{
+        listTasks(){
+            return this.$store.getters.readPlanTasks.map(i => i.id)
+        },
         listMarkRev(){
-            const list = this.$store.getters.readListAddRev.filter(i => i.addRev)
+        
+            let list = this.$store.getters.readListAddRev.filter(i => i.addRev)
+
+            if(list.length){
+              this.listTasks.forEach(id => {
+                list = list.filter(item => item.id != id)
+              })
+            }
+
             return list
+        },
+        alertTextIcon(){
+          let alarm = this.listMarkRev
+          return alarm.length
+          ? {icon: 'mdi-alarm', text:"tarefas marcadas para revisão"}
+          : {icon: 'mdi-alarm-off', text:"tarefas marcadas para revisão"}
+
         }
     },
     methods:{
-        ...mapActions(['cargaListAddRev']),
+        ...mapActions(['cargaListTasks','cargaListAddRev']),
         isExistTask(item){
             let task = this.listAddRev.find(i => i.id == item.id)
             return !!task
@@ -137,9 +167,16 @@ import { mapActions } from 'vuex';
             this.dialog = false
             this.$emit('listRev', this.listAddRev)
             this.listAddRev = []
+        },
+        findDisciplina(item){
+          let disciplina = this.disciplinas.find(i => i.id == item)
+          return disciplina
+          ? disciplina
+          : {id: 0, name: 'não cadastrado'}
         }
     },
     created(){
+        this.cargaListTasks(this.$route.params.planLeges)
         this.cargaListAddRev()
     }
   }

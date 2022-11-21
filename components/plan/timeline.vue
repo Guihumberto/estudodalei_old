@@ -15,7 +15,7 @@
           <template v-slot:icon>
             <span>JH</span>
           </template>
-            <v-text-field
+            <v-textarea
               v-model.trim="input"
               hide-details
               flat outlined
@@ -23,16 +23,18 @@
               solo
               @keydown.enter="comment"
             >
-              <template v-slot:append>
-                <v-btn
-                  class="mx-0"
-                  outlined
-                  @click="comment"
-                >
-                  Enviar
-                </v-btn>
-              </template>
-            </v-text-field>
+            </v-textarea> <br>
+            <v-subheader>
+              <v-spacer></v-spacer>
+              <v-btn
+                class="mx-0" color="success"
+                outlined small
+                @click="comment"
+              >
+                Salvar
+              </v-btn>
+
+            </v-subheader>
         </v-timeline-item>
   
         <v-slide-x-transition
