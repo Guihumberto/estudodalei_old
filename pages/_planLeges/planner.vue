@@ -383,6 +383,9 @@ import moment from 'moment'
                 {id: 2, name: 'Direito Constitucional'},
                 {id: 3, name: 'Direito Previdenciário'},
                 {id: 4, name: 'Direito Tributário'},
+                {id: 21, name: 'Java Iniciante'},
+                {id: 22, name: 'Java Trilha'},
+                {id: 23, name: 'Java Projetos'},
             ],
             status: [
                 {id: 1, name: 'Não Iniciado'},
