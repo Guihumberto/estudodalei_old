@@ -43,6 +43,7 @@
         </v-card>
         <!-- lista de plans -->
         <v-card outlined class="mt-5">
+            <v-subheader>ATIVOS</v-subheader>
             <v-card-text>
                 <v-row>
                     <v-col 
@@ -261,6 +262,20 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
+        </v-card>
+        <v-card outlined class="mt-5">
+            <v-subheader>Últimas tarefas</v-subheader>
+            <v-card-text>
+
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn 
+                    small
+                    color="success"
+                    to="planLeges/disciplinas"
+                >Disciplinas</v-btn>
+            </v-card-actions>
         </v-card>
     </v-container>
 </template>
