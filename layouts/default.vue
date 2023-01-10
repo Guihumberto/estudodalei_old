@@ -33,7 +33,7 @@
         >
           <v-icon>mdi-menu</v-icon>
         </v-btn>
-        
+
         <!-- <v-menu
           left
           origin="center center"
@@ -55,7 +55,7 @@
         <v-list>
           <template v-for="(item, i) in items">
             <v-divider v-if="i != 0"></v-divider>
-            <v-list-item      
+            <v-list-item
               :key="i"
               :to="item.url"
             >
@@ -64,13 +64,13 @@
           </template>
         </v-list>
       </v-menu> -->
-        
+
     </v-app-bar>
 
     <v-main>
        <layoutSite-loadingInit v-if="!loading" />
        <nuxt v-else />
-       <v-snackbar 
+       <v-snackbar
           v-for="(snack, i) in snacks.filter((s)=> s.showing)" :key="i + Math.random()"
           v-model="snack.showing"
           :timeout="snack.timeout"
@@ -82,7 +82,7 @@
           </v-btn>
         {{snack.text}}
       </v-snackbar>
-      <start-pixHelp />
+      <start-pixHelp v-if="pixshow" />
 
     </v-main>
     <v-navigation-drawer
@@ -98,44 +98,42 @@
     </v-navigation-drawer>
 
     <v-footer
-    v-show="loading"
-    dark
-    padless
-  >
-    <v-card
-      flat
-      tile
-      class="grey lighten-1 white--text text-center"
-      width="100%" center
+      v-show="loading"
+      dark
+      padless
     >
-      <v-card-text v-show="false">
-        <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          class="mx-4 white--text"
-          icon
-        >
-          <v-icon size="24px">
-            {{ icon }}
-          </v-icon>
-        </v-btn>
-      </v-card-text>
+      <v-card
+        flat
+        tile
+        class="grey lighten-1 white--text text-center"
+        width="100%" center
+      >
+        <v-card-text>
+          <v-btn
+            v-for="icon, i in icons"
+            :key="i"
+            :href="icon.to"
+            target="_blank"
+            class="mx-4 white--text"
+            icon
+          >
+            <v-icon size="24px">
+              {{ icon.icon }}
+            </v-icon>
+          </v-btn>
+        </v-card-text>
 
-      <v-card-text class="white--text pt-0">
-        
-      </v-card-text>
+        <v-divider></v-divider>
 
-      <v-divider></v-divider>
+        <v-card-text class="white--text">
 
-      <v-card-text class="white--text">
-       
-        <v-icon>mdi-ghost</v-icon><br>
-        www.estudodalei.com.br<br>
-        <strong>Estudo Da Lei - Leges Estudo</strong> - {{ new Date().getFullYear() }}<br>
-        Desenvolvido e idealizado por João Humberto Silva Ribeiro Júnior <br>
-      </v-card-text>
-    </v-card>
-  </v-footer>
+          <v-icon>mdi-ghost</v-icon><br>
+          www.estudodalei.com.br<br>
+          <strong>Estudo Da Lei - Leges Estudo</strong> - {{ new Date().getFullYear() }}<br>
+          Desenvolvido e idealizado por João Humberto Silva Ribeiro Júnior <br>
+        </v-card-text>
+      </v-card>
+    </v-footer>
   </v-app>
 </template>
 
@@ -157,10 +155,10 @@
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { 
-          hid: 'description', 
-          name: 'description', 
-          content: 'Estudo da lei - Estudo da Constituição, Lei, Legislação, Norma, súmulas, STJ, STF, jurisprudência, questões e mais' 
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Estudo da lei - Estudo da Constituição, Lei, Legislação, Norma, súmulas, STJ, STF, jurisprudência, questões e mais'
         },
         { name: 'format-detection', content: 'telephone=no' }
       ],
@@ -172,6 +170,7 @@
       return {
         drawer: false,
         rightDrawer: false,
+        pixshow: false,
         right: true,
         titleWebSite: "Estudo da Lei (beta)",
         snack: false,
@@ -183,10 +182,9 @@
           {icon:'',  title: 'Novidades', url:'/news'},
         ],
         icons: [
-          'mdi-facebook',
-          'mdi-twitter',
-          'mdi-linkedin',
-          'mdi-instagram',
+          {icon:'mdi-youtube', to: "https://www.youtube.com/@aplicadomapas5758"},
+          {icon:'mdi-linkedin', to: "https://www.linkedin.com/in/joao-humberto-6a4713232/"},
+          {icon:'mdi-instagram', to: "https://www.instagram.com/estudodalei.com.br/"},
         ],
       }
     },
@@ -210,8 +208,15 @@
         this.$store.dispatch("snackbars/setSnackbars", {text:'Sessão encerrada', color:'error'})
         this.drawer = false
       },
+      dialogPix(){
+        setTimeout(() => {
+          this.pixshow = true
+          },
+        2000)
+      }
     },
     created(){
+      this.dialogPix()
       this.setUser()
       this.cargaLawList()
       this.cargaSumula()

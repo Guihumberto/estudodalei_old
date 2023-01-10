@@ -1,6 +1,7 @@
 <template>
   <v-container class="mt-5 formatText" style="max-width: 1080px">
         <div class="mb-5 text-h4 Heading 1">O que vamos estudar hoje?</div>
+        <v-subheader class="ml-n2">Digite o nome ou número da legislação na barra de busca.</v-subheader>
         <!-- barra de busca -->
         <v-text-field
           dense
@@ -10,6 +11,7 @@
           label="Busca"
           placeholder="Digite o nome ou número da lei..."
           v-model="search"
+          clearable
           required
         ></v-text-field>
         <!-- busca nao encontrada -->
@@ -36,18 +38,18 @@
           <!-- total de lei e view -->
           <v-card-title>
                 <span class="caption">Total de Leis : {{lawList.length}}</span>
-                <v-btn 
-                  @click="lawFavFilter = !lawFavFilter" 
-                  class="ml-2" v-if="isLogin.login" small 
-                  :outlined="lawFavFilter" 
+                <v-btn
+                  @click="lawFavFilter = !lawFavFilter"
+                  class="ml-2" v-if="isLogin.login" small
+                  :outlined="lawFavFilter"
                   :color="lawFavFilter ? 'warning' : 'secondary'"
                   text>
-                  MEUS FAVORITOS 
+                  MEUS FAVORITOS
                   <v-icon class="ml-1" small v-text="lawFavFilter ?'mdi-star': 'mdi-star-outline'"></v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn 
-                  color="secondary" @click="dashboard = !dashboard" 
+                <v-btn
+                  color="secondary" @click="dashboard = !dashboard"
                   class="mt-n6 d-none d-sm-flex" icon>
                   <v-icon>{{viewDashboard.icon}}</v-icon>
                 </v-btn>
@@ -57,13 +59,12 @@
             <v-row justify="space-around">
               <v-col
                 cols="12"
+                class="px-0"
               >
-                <v-sheet
-                  class="px-1"
-                >
-                  <v-chip-group
-                  >
-                    <v-chip @click="listTags = []">Todas</v-chip>
+                <v-sheet>
+                  <v-chip-group>
+                    <v-chip
+                      @click="listTags = []">Todas</v-chip>
                     <v-chip
                       v-for="(item, index) in tags"
                       :key="index"
@@ -72,7 +73,6 @@
                       @click:close="filterTag(item.sigla)"
                       :color="closeTag(item.sigla) ? 'primary' : 'secondary lighten-2'"
                       class="white--text"
-                  
                     >
                       {{ item.name }}
                     </v-chip>
@@ -84,20 +84,20 @@
           <!-- leis listadas -->
           <v-card-text>
             <v-row >
-              <v-col 
-                class="my-n2" 
-                cols="12" 
-                :sm="viewDashboard.sm" :md="viewDashboard.md" 
+              <v-col
+                class="my-n2"
+                cols="12"
+                :sm="viewDashboard.sm" :md="viewDashboard.md"
                 v-for="(item, index) in lawList.slice(0, sizeScreen.qtd)" :key="index">
-                <v-card  
-                  hover outlined min-height="100" 
+                <v-card
+                  hover outlined min-height="100"
                 >
                   <v-list three-line class="pt-0">
-                    <v-list-item 
+                    <v-list-item
                       :to="{
                         name: 'law-leges',
                         params:{law: item.id},
-                        // query:{id:item.id}  
+                        // query:{id:item.id}
                       }"
                     >
                       <v-list-item-content>
@@ -108,7 +108,7 @@
                     </v-list-item>
                     <v-subheader class="my-n3">
                       <v-spacer></v-spacer>
-                      <v-btn title="Favoritar" 
+                      <v-btn title="Favoritar"
                         @click="favLaw(item)"
                         :color=" listFavExist(item.id) ? '#FFD700': 'grey'"
                         x-small icon>
@@ -119,11 +119,11 @@
                   <!-- <v-card-text>
                     <span class="font-weight-medium">{{item.nickname | truncate(viewDashboard.trun)}}</span> <br>
                     {{item.nro}} <br>
-                    {{item.description | truncate(40)}}     
+                    {{item.description | truncate(40)}}
                   </v-card-text> -->
                 </v-card>
               </v-col>
-            </v-row>  
+            </v-row>
           </v-card-text>
           <v-card-text>
             <!-- btn ver mais -->
@@ -146,7 +146,6 @@
               type="card"
           ></v-skeleton-loader>
         </v-card>
-        <concursoBanner />
   </v-container>
 </template>
 
@@ -158,10 +157,10 @@
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { 
-          hid: 'description', 
-          name: 'description', 
-          content: 'Leges Estudo - Estudo da lei - Estudo da Constituição, Lei, Legislação, Norma, súmulas, STJ, STF, jurisprudência, questões e mais' 
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Leges Estudo - Estudo da lei - Estudo da Constituição, Lei, Legislação, Norma, súmulas, STJ, STF, jurisprudência, questões e mais'
         },
         { name: 'format-detection', content: 'telephone=no' }
       ],
@@ -217,8 +216,8 @@
               return filtro.length
               ? filtro
               : 99
-            } 
-            
+            }
+
             else if(this.listTags.length){
               let novoFiltro = []
               listLaws.filter( item => {
@@ -238,10 +237,10 @@
               ? listLaws
               : 99
 
-            }    
+            }
       },
       viewDashboard(){
-        return this.dashboard 
+        return this.dashboard
         ? {icon: "mdi-view-dashboard", sm: 4, md: 3, trun: 20, trun2: 50}
         : {icon: "mdi-format-list-bulleted-square", sm: 12, md: 12, trun: 100, trun2: 200}
       },
@@ -312,10 +311,6 @@
         this.lawFavFilter = false
       }
     },
-    created(){
-      this.$store.commit("setTextLaw", '')
-      this.$store.commit("setNameLaw", '')
-    }
   }
 </script>
 
