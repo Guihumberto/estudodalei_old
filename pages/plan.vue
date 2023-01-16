@@ -17,7 +17,7 @@
                             :rules="[rules.required, rules.minname]"
                             v-model="planData.name"
                         ></v-text-field>
-                        <v-btn 
+                        <v-btn
                             fab color="success" small
                             type="submit"
                         >
@@ -46,20 +46,20 @@
             <v-subheader>ATIVOS</v-subheader>
             <v-card-text>
                 <v-row>
-                    <v-col 
-                        v-for="item, i in listFilter" :key="i" 
-                        cols="12" sm="3" 
+                    <v-col
+                        v-for="item, i in listFilter" :key="i"
+                        cols="12" sm="3"
                         v-if="!item.toFile">
-                        
+
                         <!-- Excluir -->
-                        <v-card 
+                        <v-card
                             color="error" dark
                             v-if="deleteId == item.id"
                             min-height="175"
                         >
                             <v-card-title class="pa-0 ">
                                 <v-spacer></v-spacer>
-                                <v-btn 
+                                <v-btn
                                     small icon
                                     @click="deleteId = ''"
                                 ><v-icon small>mdi-close</v-icon></v-btn>
@@ -70,11 +70,11 @@
                                 <h4 class="headline text--white"> Excluir {{item.name}}</h4>
                                 <small class="caption">todo o progresso será perdido</small>
                                 <div class="mt-5 d-flex">
-                                    <v-btn 
+                                    <v-btn
                                         block small outlined
                                         @click="deletePlanData(item.id)"
                                     >excluir</v-btn>
-                                </div>   
+                                </div>
                             </v-card-text>
                         </v-card>
                         <!-- editar -->
@@ -84,10 +84,10 @@
                         >
                             <v-card-title class="my-0 pa-0">
                                 <v-spacer></v-spacer>
-                                <v-btn 
+                                <v-btn
                                     icon
                                     @click="editId = ''"
-                                    ><v-icon small>mdi-close</v-icon> 
+                                    ><v-icon small>mdi-close</v-icon>
                                 </v-btn>
                             </v-card-title>
                             <v-card-text>
@@ -117,25 +117,25 @@
                                             v-on="on"
                                         ></v-text-field>
                                     </template>
-                                    
+
                                     <v-date-picker
                                         v-model="dates"
                                         locale="pt-br"
                                         range
                                     >
                                         <v-spacer></v-spacer>
-                                        <v-btn 
+                                        <v-btn
                                             small text
                                             @click="showDateDialog = false"
                                         >cancelar</v-btn>
-                                        <v-btn 
+                                        <v-btn
                                             small outlined color="primary"
                                             @click="saveData(item)"
                                         >Ok</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
 
-                                <v-btn 
+                                <v-btn
                                     block
                                     color="success" x-small
                                     @click="editPlanData(item)"
@@ -144,13 +144,13 @@
 
                         </v-card>
                         <!-- show -->
-                        <v-card 
-                            min-height="177" 
-                            class="mx-auto" 
+                        <v-card
+                            min-height="177"
+                            class="mx-auto"
                             :color="item.color" dark
                             v-else
                             >
-                            <nuxt-link 
+                            <nuxt-link
                                 class="linkMeta"
                                 :to="{
                                     name:'planLeges-planner',
@@ -161,7 +161,7 @@
                                     <v-icon small>mdi-calendar</v-icon>
                                         <small class="overline font-italic">
                                             {{dateFormat(item.dateStart)}} a {{dateFormat(item.dateEnd)}}
-                                        </small> 
+                                        </small>
                                     <br>
                                     <v-icon small>mdi-office-building</v-icon><small class="caption">{{item.concurso}}</small><br>
                                     <v-icon small>{{statusSet(item).icon}}</v-icon><small>{{statusSet(item).name}}</small><br>
@@ -172,7 +172,7 @@
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
-                                        icon x-small      
+                                        icon x-small
                                         dark
                                         v-bind="attrs"
                                         v-on="on"
@@ -203,7 +203,7 @@
                         <!-- escolhar a cor -->
                         <v-card v-if="editColor == item.id">
                             <v-card-text>
-                                <v-btn 
+                                <v-btn
                                     v-for="cor, index in colors" :key="index"
                                     icon :color="cor.color"
                                     @click="item.color = cor.color"
@@ -222,23 +222,23 @@
             </v-card-text>
         </v-card>
         <v-card outlined class="mt-5">
-                <v-btn :disabled="!toFileList" small text color="grey" @click="showIsTrue = !showIsTrue">ARQUIVADOS 
+                <v-btn :disabled="!toFileList" small text color="grey" @click="showIsTrue = !showIsTrue">ARQUIVADOS
                     <v-icon
                         v-text="showIsTrue ? 'mdi-chevron-down': 'mdi-chevron-right'"
                     ></v-icon>
                 </v-btn>
                 <v-card-text v-if="showIsTrue">
                     <v-row>
-                        <v-col 
-                            v-for="item, i in toFileList" :key="i" 
-                            cols="12" sm="3" 
+                        <v-col
+                            v-for="item, i in toFileList" :key="i"
+                            cols="12" sm="3"
                             >
-                            <v-card 
-                                min-height="100" 
-                                class="mx-auto" 
+                            <v-card
+                                min-height="100"
+                                class="mx-auto"
                                 color="grey" dark
                                 >
-                                <nuxt-link 
+                                <nuxt-link
                                     class="linkMeta"
                                     :to="{
                                         name:'planLeges',
@@ -252,7 +252,7 @@
                                 </nuxt-link>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn 
+                                    <v-btn
                                         icon x-small
                                         @click="restorePlanData(item)">
                                         <v-icon>mdi-backup-restore</v-icon>
@@ -270,7 +270,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn 
+                <v-btn
                     small
                     color="success"
                     to="planLeges/disciplinas"
@@ -299,12 +299,12 @@
                 concurso: '',
                 dates: [],
                 planData:{
-                    id: '', 
-                    name: '', 
-                    concurso: 'REGULAR', 
-                    toFile: false, 
-                    dateStart: dataHoje, 
-                    dateEnd: maisSete, 
+                    id: '',
+                    name: '',
+                    concurso: 'REGULAR',
+                    toFile: false,
+                    dateStart: dataHoje,
+                    dateEnd: maisSete,
                     color:'#385F73'
                 },
                 items: [
@@ -335,6 +335,7 @@
                     minname: (v) => (v||'').length >= 4 || "Mínimo de 4 caracteres",
                 },
             }),
+            middleware: "auth",
             computed:{
                 plansList(){
                     let listPlans = this.$store.getters.readListPlans
@@ -470,8 +471,8 @@
     }
     .linkMeta:hover {
         color: hotpink;
-        -webkit-text-stroke: 1px grey; 
+        -webkit-text-stroke: 1px grey;
         transition-timing-function: ease-in-out;
     }
-    
+
 </style>
