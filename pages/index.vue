@@ -1,17 +1,8 @@
 <template>
-  <v-container class="pt-15 groupcolor" style="font-size: 18px" v-scroll-reveal="{ delay: 450 }">
-    <layoutSite-landingPage-welcome />
-
-    <layoutSite-landingPage-geral />
-
-    <layoutSite-landingPage-funcionalidades />
-
-    <layoutSite-landingPage-whohelp />
-
-    <layoutSite-landingPage-knowMore />
-
-    <layoutSite-landingPage-acessar />
-  </v-container>
+  <div class="home">
+    <layoutSite-landingPage-acessar :login="login" @login="login = !login"  />
+    <LayoutSiteLandingPageWelcome class="login" v-if="login" />
+  </div>
 </template>
 
 <script>
@@ -35,15 +26,39 @@
         },
     data(){
       return{
-
+        login: false
       }
+    },
+    methods: {
+
     }
   }
 </script>
 
 <style>
-.groupcolor{
-  background-color: #F0EFF3;
+.home {
+  background: #000;
+  height: 84vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.acessar {
+  transition: .5s;
+  display: none;
+}
+.login {
+  opacity: 0;
+  animation: slideLeft .5s ease forwards;
+  transition: .5s;
+}
+@media (max-width: 800px) {
+  .home {
+    height: 76.5vh;
+  }
 }
 </style>
+
 
